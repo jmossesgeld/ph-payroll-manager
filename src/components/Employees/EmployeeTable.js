@@ -1,24 +1,30 @@
 import { Container } from "@mui/material";
+import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
+import NewEmployee from "./NewEmployee";
+import { useSelector } from "react-redux";
 
-const rows = [
-  { id: 1, col1: "Hello", col2: "World" },
-  { id: 2, col1: "DataGridPro", col2: "is Awesome" },
-  { id: 3, col1: "MUI", col2: "is Amazing" },
-];
 
 const columns = [
-  { field: "col1", headerName: "Column 1", width: 150 },
-  { field: "col2", headerName: "Column 2", width: 150 },
+  { field: "id", headerName: "ID", width: 150 },
+  { field: "lastName", headerName: "Last Name", width: 150 },
+  { field: "firstName", headerName: "First Name", width: 150 },
+  { field: "middleName", headerName: "Middle Name", width: 150 },
+  { field: "dailyrate", headerName: "Is Daily Rate?", width: 150 },
+  { field: "salary", headerName: "Salary", width: 150 },
 ];
 
 const EmployeeTable = () => {
+  const employees = useSelector(state=>state.employees.employees)
+
+
   return (
-    <div style={{ display: "flex", height: "100%" }}>
-      <div style={{ flexGrow: 1 }}>
-        <DataGrid rows={rows} columns={columns} />
-      </div>
-    </div>
+    <Container>
+      <Box mt={3} sx={{ display: "flex", flexDirection: "column" }}>
+        <NewEmployee />
+        <DataGrid rows={employees} columns={columns} />
+      </Box>
+    </Container>
   );
 };
 

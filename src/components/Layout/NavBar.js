@@ -18,7 +18,7 @@ const NavBar = () => {
             style={{ height: "50px", width: "50px", marginRight: "2rem" }}
           />
           <Typography
-            variant="h6"
+            variant="h5"
             color="#630000"
             sx={{ flexGrow: 1, fontFamily: "segoe ui", letterSpacing: "3px" }}
           >
