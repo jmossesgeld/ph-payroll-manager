@@ -1,16 +1,16 @@
 import "./App.css";
 import NavBar from "./components/Layout/NavBar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Card } from "@mui/material";
+import EmployeeTable from "./components/Employees/EmployeeTable";
 
 const theme = createTheme({
   palette: {
     type: "light",
     primary: {
-      main: "#1976d2",
+      main: "#EEEBDD",
     },
     secondary: {
-      main: "rgb(220, 0, 78)",
+      main: "#D8B6A4",
     },
     background: {
       default: "#fff",
@@ -23,6 +23,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavBar />
+      <EmployeeTable/>
     </ThemeProvider>
   );
 }
