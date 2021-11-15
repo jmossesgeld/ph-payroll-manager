@@ -1,5 +1,6 @@
-import NavBar from "./components/Layout/NavBar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import './App.css'
+import NavBar from "./components/Layout/NavBar";
 import EmployeeTable from "./components/Employees/EmployeeTable";
 
 const theme = createTheme({
