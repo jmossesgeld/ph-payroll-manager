@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useRef } from "react";
 import NumberFormat from "react-number-format";
 import {
   Button,
@@ -45,13 +45,24 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
         });
       }}
       thousandSeparator
-      isNumericString
     />
   );
 });
 
 export default function NewEmployee() {
   const [open, setOpen] = useState(false);
+  const [salaryType, setSalaryType] = useState("daily");
+  const firstName = useRef();
+  const lastName = useRef();
+  const middleName = useRef();
+  const suffix = useRef();
+  const address1 = useRef();
+  const address2 = useRef();
+  const salaryAmount = useRef();
+
+  const handleSubmit = (event) => {
+    console.log(salaryAmount.current.value, firstName.current.value, salaryType);
+  };
 
   const handleClick = (event) => {
     setOpen((prev) => !prev);
@@ -77,6 +88,7 @@ export default function NewEmployee() {
                 id="firstName"
                 name="firstName"
                 label="First name"
+                inputRef={firstName}
                 fullWidth
                 autoComplete="given-name"
                 variant="standard"
@@ -87,6 +99,7 @@ export default function NewEmployee() {
                 id="lastName"
                 name="lastName"
                 label="Last name"
+                inputRef={lastName}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
@@ -97,6 +110,7 @@ export default function NewEmployee() {
                 id="middleName"
                 name="middleName"
                 label="Middle name"
+                inputRef={middleName}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
@@ -107,6 +121,7 @@ export default function NewEmployee() {
                 id="suffix"
                 name="suffix"
                 label="Suffix"
+                inputRef={suffix}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
@@ -118,6 +133,7 @@ export default function NewEmployee() {
                 id="address1"
                 name="address1"
                 label="Room, House No., Building, Street, Subdivision, Barangay"
+                inputRef={address1}
                 fullWidth
                 autoComplete="address-line1"
                 variant="standard"
@@ -128,6 +144,7 @@ export default function NewEmployee() {
                 id="address2"
                 name="address2"
                 label="Municipality, City, Province"
+                inputRef={address2}
                 fullWidth
                 autoComplete="address-line2"
                 variant="standard"
@@ -136,7 +153,14 @@ export default function NewEmployee() {
             <Grid item xs={12} sm={6}>
               <FormControl component="fieldset">
                 <FormLabel component="legend">Salary Type</FormLabel>
-                <RadioGroup row aria-label="rate" defaultValue="daily" name="radio-buttons-group">
+                <RadioGroup
+                  row
+                  aria-label="rate"
+                  defaultValue="daily"
+                  value={salaryType}
+                  onChange={(event, value) => setSalaryType(value)}
+                  name="radio-buttons-group"
+                >
                   <FormControlLabel value="daily" control={<Radio />} label="Daily" />
                   <FormControlLabel value="fixed" control={<Radio />} label="Monthly (Fixed)" />
                 </RadioGroup>
@@ -148,6 +172,7 @@ export default function NewEmployee() {
                 id="salary"
                 name="salary"
                 label="Salary Amount"
+                inputRef={salaryAmount}
                 fullWidth
                 variant="outlined"
                 InputProps={{
@@ -157,8 +182,8 @@ export default function NewEmployee() {
               />
             </Grid>
           </Grid>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", width:"100%" }}>
-            <Button variant="contained" onClick={() => {}} sx={{ mt: 3, ml: 1 }}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
+            <Button variant="contained" onClick={handleSubmit} sx={{ mt: 3, ml: 1 }}>
               Add
             </Button>
           </Box>
