@@ -4,9 +4,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import NewEmployee from "./NewEmployee";
 import { useSelector } from "react-redux";
 
-
 const columns = [
-  { field: "id", headerName: "ID", width: 150 },
+  { field: "id", headerName: "ID", width: 50 },
   { field: "lastName", headerName: "Last Name", width: 150 },
   { field: "firstName", headerName: "First Name", width: 150 },
   { field: "middleName", headerName: "Middle Name", width: 150 },
@@ -15,14 +14,13 @@ const columns = [
 ];
 
 const EmployeeTable = () => {
-  const employees = useSelector(state=>state.employees.employees)
-
+  const employees = useSelector((state) => state.employees.employees);
 
   return (
     <Container>
       <Box mt={3} sx={{ display: "flex", flexDirection: "column" }}>
         <NewEmployee />
-        <DataGrid rows={employees} columns={columns} />
+        <DataGrid rows={employees} columns={columns} autoHeight checkboxSelection />
       </Box>
     </Container>
   );

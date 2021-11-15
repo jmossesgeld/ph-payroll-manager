@@ -5,24 +5,25 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
-import Logo from "../Icons/logo.png";
 
 const NavBar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <img
-            src={Logo}
-            alt="mage-logo"
-            style={{ height: "50px", width: "50px", marginRight: "2rem" }}
-          />
           <Typography
             variant="h5"
-            color="#630000"
-            sx={{ flexGrow: 1, fontFamily: "segoe ui", letterSpacing: "3px" }}
+            color="#fff"
+            mr={2}
+            sx={{ fontFamily: "segoe ui", letterSpacing: "1px", fontWeight: "600" }}
           >
-            MAGE Payroll System
+            MAGE
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{ flexGrow: 1, fontFamily: "segoe ui", letterSpacing: "4px", fontWeight: "300" }}
+          >
+            Payroll System
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Button color="inherit">Employees</Button>
