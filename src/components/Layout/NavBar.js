@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const NavBar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -57,9 +57,15 @@ const NavBar = () => {
             Payroll System
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Button onClick={()=>navigate('/employees')} color="inherit">Employees</Button>
-            <Button onClick={()=>navigate('/timekeeping')} color="inherit">Timekeeping</Button>
-            <Button onClick={()=>navigate('/payroll')} color="inherit">Payroll</Button>
+            <Button onClick={() => navigate("/employees")} color="inherit">
+              Employees
+            </Button>
+            <Button onClick={() => navigate("/timekeeping")} color="inherit">
+              Timekeeping
+            </Button>
+            <Button onClick={() => navigate("/payroll")} color="inherit">
+              Payroll
+            </Button>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -102,15 +108,34 @@ const NavBar = () => {
       <Drawer anchor="right" open={isMobileMenuOpen} onClose={handleMobileMenuClose}>
         <Box sx={{ width: 250 }} role="presentation">
           <List>
-            <ListItem button onClick={()=>navigate('/employees')} color="inherit">
+            <ListItem
+              button
+              onClick={() => {
+                navigate("/employees");
+                handleMobileMenuClose();
+              }}
+              color="inherit"
+            >
               <ListItemIcon></ListItemIcon>
               <ListItemText primary="Employees" />
             </ListItem>
-            <ListItem button onClick={()=>navigate('/timekeeping')} >
+            <ListItem
+              button
+              onClick={() => {
+                navigate("/timekeeping");
+                handleMobileMenuClose();
+              }}
+            >
               <ListItemIcon></ListItemIcon>
               <ListItemText primary="Timekeeping" />
             </ListItem>
-            <ListItem button onClick={()=>navigate('/payroll')} >
+            <ListItem
+              button
+              onClick={() => {
+                navigate("/payroll");
+                handleMobileMenuClose();
+              }}
+            >
               <ListItemIcon></ListItemIcon>
               <ListItemText primary="Payroll" />
             </ListItem>
