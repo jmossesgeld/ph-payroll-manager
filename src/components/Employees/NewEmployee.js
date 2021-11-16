@@ -69,7 +69,7 @@ export default function NewEmployee() {
   const address2 = useInput();
   const salaryAmount = useInput((value) => value.length > 0);
 
-  const handleSubmit = (event) => {
+  const onSubmit = (event) => {
     if (firstName.isValid && salaryAmount.isValid) {
       dispatch(
         addEmployees({
@@ -85,13 +85,32 @@ export default function NewEmployee() {
         })
       );
       toggleModal();
+      clearForm();
     } else {
-      console.log("submit failed");
+      alert("Please fill up required fields.\n(First Name, Salary Amount)");
     }
+  };
+
+  const onKeyDown = (event) => {
+    // if (event.key === "Enter") {
+    //   handleSubmit(event);
+    // } else if (event.key === "Esc") {
+    //   clearForm();
+    // }
   };
 
   const toggleModal = (event) => {
     setOpen((prev) => !prev);
+  };
+
+  const clearForm = () => {
+    firstName.reset();
+    lastName.reset();
+    middleName.reset();
+    suffix.reset();
+    address1.reset();
+    address2.reset();
+    salaryAmount.reset();
   };
 
   return (
@@ -100,12 +119,12 @@ export default function NewEmployee() {
         onClick={toggleModal}
         variant="contained"
         color="secondary"
-        sx={{ alignSelf: "flex-end" }}
+        sx={{ alignSelf: "flex-end", mb: 1 }}
       >
         Add New Employee
       </Button>
       <Modal open={open} onClose={toggleModal}>
-        <Box sx={style}>
+        <Box sx={style} onKeyDown={onKeyDown}>
           <Box
             sx={{
               display: "flex",
@@ -124,6 +143,7 @@ export default function NewEmployee() {
             <Grid item xs={12} sm={6}>
               <TextField
                 required
+                autoFocus
                 id="firstName"
                 name="firstName"
                 label="First name"
@@ -243,7 +263,7 @@ export default function NewEmployee() {
             </Grid>
           </Grid>
           <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
-            <Button variant="contained" onClick={handleSubmit} sx={{ mt: 3, ml: 1 }}>
+            <Button variant="contained" onClick={onSubmit} sx={{ mt: 3, ml: 1 }}>
               Add
             </Button>
           </Box>

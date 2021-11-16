@@ -1,7 +1,8 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import './App.css'
+import "./App.css";
 import NavBar from "./components/Layout/NavBar";
 import EmployeeTable from "./components/Employees/EmployeeTable";
+import { Container } from "@mui/material";
 
 const theme = createTheme({
   palette: {
@@ -13,7 +14,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavBar />
-      <EmployeeTable />
+      <Container component="main">
+        <EmployeeTable />
+      </Container>
     </ThemeProvider>
   );
 }
