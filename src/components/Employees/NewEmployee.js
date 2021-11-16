@@ -1,5 +1,9 @@
 import { useState, forwardRef, useRef } from "react";
 import NumberFormat from "react-number-format";
+import useInput from "../../hooks/useInput";
+import { useDispatch } from "react-redux";
+
+
 import {
   Button,
   TextField,
@@ -52,16 +56,19 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
 export default function NewEmployee() {
   const [open, setOpen] = useState(false);
   const [salaryType, setSalaryType] = useState("daily");
-  const firstName = useRef();
+  const firstName = useInput((value) => value.length > 4);
   const lastName = useRef();
   const middleName = useRef();
   const suffix = useRef();
   const address1 = useRef();
   const address2 = useRef();
-  const salaryAmount = useRef();
+  const salaryAmount = useInput((value) => value.length > 0);
 
   const handleSubmit = (event) => {
-    console.log(salaryAmount.current.value, firstName.current.value, salaryType);
+    if (firstName.isValid && salaryAmount.isValid) {
+      console.log(salaryAmount.current.value, firstName.current.value, salaryType);
+    } else {
+    }
   };
 
   const handleClick = (event) => {
@@ -80,7 +87,7 @@ export default function NewEmployee() {
       </Button>
       <Modal open={open} onClose={handleClick}>
         <Box sx={style}>
-          <Typography variant="h6">New Employee</Typography>
+          <Typography variant="h5">New Employee</Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -88,7 +95,10 @@ export default function NewEmployee() {
                 id="firstName"
                 name="firstName"
                 label="First name"
-                inputRef={firstName}
+                value={firstName.value}
+                onChange={firstName.valueChangeHandler}
+                onBlur={firstName.inputBlurHandler}
+                error={firstName.hasError}
                 fullWidth
                 autoComplete="given-name"
                 variant="standard"
@@ -172,7 +182,10 @@ export default function NewEmployee() {
                 id="salary"
                 name="salary"
                 label="Salary Amount"
-                inputRef={salaryAmount}
+                value={salaryAmount.value}
+                onChange={salaryAmount.valueChangeHandler}
+                onBlur={salaryAmount.inputBlurHandler}
+                error={salaryAmount.hasError}
                 fullWidth
                 variant="outlined"
                 InputProps={{
