@@ -1,8 +1,9 @@
-import { useState, forwardRef, useRef } from "react";
+import { useState, forwardRef } from "react";
 import NumberFormat from "react-number-format";
 import useInput from "../../hooks/useInput";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { addEmployees } from "../../store/employeesSlice";
+import CloseIcon from "@mui/icons-material/Close";
 
 import {
   Button,
@@ -17,6 +18,7 @@ import {
   FormControl,
   InputAdornment,
   Typography,
+  IconButton,
 } from "@mui/material";
 
 const style = {
@@ -25,6 +27,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 600,
+  maxWidth: "90vw",
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -54,40 +57,69 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
 });
 
 export default function NewEmployee() {
+  const dispatch = useDispatch();
+  const employees = useSelector((state) => state.employees);
   const [open, setOpen] = useState(false);
   const [salaryType, setSalaryType] = useState("daily");
   const firstName = useInput((value) => value.length > 4);
-  const lastName = useRef();
-  const middleName = useRef();
-  const suffix = useRef();
-  const address1 = useRef();
-  const address2 = useRef();
+  const lastName = useInput();
+  const middleName = useInput();
+  const suffix = useInput();
+  const address1 = useInput();
+  const address2 = useInput();
   const salaryAmount = useInput((value) => value.length > 0);
 
   const handleSubmit = (event) => {
     if (firstName.isValid && salaryAmount.isValid) {
-      console.log(salaryAmount.current.value, firstName.current.value, salaryType);
+      dispatch(
+        addEmployees({
+          id: employees[employees.length - 1].id + 1,
+          firstName: firstName.value,
+          lastName: lastName.value,
+          middleName: middleName.value,
+          suffix: suffix.value,
+          address1: address1.value,
+          address2: address2.value,
+          salaryType,
+          salaryAmount: salaryAmount.value,
+        })
+      );
+      toggleModal();
     } else {
+      console.log("submit failed");
     }
   };
 
-  const handleClick = (event) => {
+  const toggleModal = (event) => {
     setOpen((prev) => !prev);
   };
 
   return (
     <>
       <Button
-        onClick={handleClick}
+        onClick={toggleModal}
         variant="contained"
         color="secondary"
         sx={{ alignSelf: "flex-end" }}
       >
         Add New Employee
       </Button>
-      <Modal open={open} onClose={handleClick}>
+      <Modal open={open} onClose={toggleModal}>
         <Box sx={style}>
-          <Typography variant="h5">New Employee</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              mb: 2,
+              width: "100%",
+            }}
+          >
+            <Typography variant="h5">New Employee</Typography>
+            <IconButton onClick={toggleModal}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Box>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -109,7 +141,10 @@ export default function NewEmployee() {
                 id="lastName"
                 name="lastName"
                 label="Last name"
-                inputRef={lastName}
+                value={lastName.value}
+                onChange={lastName.valueChangeHandler}
+                onBlur={lastName.inputBlurHandler}
+                error={lastName.hasError}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
@@ -120,7 +155,10 @@ export default function NewEmployee() {
                 id="middleName"
                 name="middleName"
                 label="Middle name"
-                inputRef={middleName}
+                value={middleName.value}
+                onChange={middleName.valueChangeHandler}
+                onBlur={middleName.inputBlurHandler}
+                error={middleName.hasError}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
@@ -131,7 +169,10 @@ export default function NewEmployee() {
                 id="suffix"
                 name="suffix"
                 label="Suffix"
-                inputRef={suffix}
+                value={suffix.value}
+                onChange={suffix.valueChangeHandler}
+                onBlur={suffix.inputBlurHandler}
+                error={suffix.hasError}
                 fullWidth
                 autoComplete="family-name"
                 variant="standard"
@@ -143,7 +184,10 @@ export default function NewEmployee() {
                 id="address1"
                 name="address1"
                 label="Room, House No., Building, Street, Subdivision, Barangay"
-                inputRef={address1}
+                value={address1.value}
+                onChange={address1.valueChangeHandler}
+                onBlur={address1.inputBlurHandler}
+                error={address1.hasError}
                 fullWidth
                 autoComplete="address-line1"
                 variant="standard"
@@ -154,7 +198,10 @@ export default function NewEmployee() {
                 id="address2"
                 name="address2"
                 label="Municipality, City, Province"
-                inputRef={address2}
+                value={address2.value}
+                onChange={address2.valueChangeHandler}
+                onBlur={address2.inputBlurHandler}
+                error={address2.hasError}
                 fullWidth
                 autoComplete="address-line2"
                 variant="standard"

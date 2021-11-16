@@ -5,16 +5,19 @@ import NewEmployee from "./NewEmployee";
 import { useSelector } from "react-redux";
 
 const columns = [
-  { field: "id", headerName: "ID", width: 50 },
-  { field: "lastName", headerName: "Last Name", width: 150 },
-  { field: "firstName", headerName: "First Name", width: 150 },
-  { field: "middleName", headerName: "Middle Name", width: 150 },
-  { field: "dailyrate", headerName: "Is Daily Rate?", width: 150 },
-  { field: "salary", headerName: "Salary", width: 150 },
+  { field: "fullName", headerName: "Name", width: 250 },
+  { field: "salaryType", headerName: "Salary Type", width: 150 },
+  { field: "salaryAmount", headerName: "Amount", width: 150 },
 ];
 
 const EmployeeTable = () => {
-  const employees = useSelector((state) => state.employees.employees);
+  const employees = useSelector((state) => state.employees).map((employee) => {
+    return {
+      ...employee,
+      fullName: `${employee.firstName} ${employee.middleName} ${employee.lastName} ${employee.suffix}`,
+    };
+  });
+  console.log(employees);
 
   return (
     <Container>

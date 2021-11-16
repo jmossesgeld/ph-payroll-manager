@@ -1,35 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  employees: [
-    {
-      id: "0",
-      lastName: "Dela Cruz",
-      firstName: "Juan",
-      middleName: "Santiago",
-      dailyrate: true,
-      salary: 500,
-    },
-    {
-      id: "1",
-      lastName: "Rizal",
-      firstName: "Jose",
-      middleName: "Antonio",
-      dailyrate: true,
-      salary: 500,
-    },
-  ],
-};
+const initialState = [
+  {
+    id: 0,
+    firstName: "Juan",
+    lastName: "Dela Cruz",
+    middleName: "Antonio",
+    suffix: "Jr.",
+    address1: "Brgy. Sto. Nino",
+    address2: "Calumpit, Bulacan",
+    salaryType: "daily",
+    salaryAmount: 500,
+  },
+];
 
 export const employeeSlice = createSlice({
   name: "employees",
   initialState,
   reducers: {
-    setEmployees: (state, action) => {
-      state = action.payload;
+    addEmployees: (state, action) => {
+      state.push(action.payload);
     },
   },
 });
 
-export const { setEmployees } = employeeSlice.actions;
+export const { addEmployees } = employeeSlice.actions;
 export default employeeSlice.reducer;

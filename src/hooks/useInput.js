@@ -24,7 +24,7 @@ const useInput = (validateValue) => {
     initialInputState
   );
 
-  const valueIsValid = validateValue(inputState.value);
+  const valueIsValid = validateValue ? validateValue(inputState.value) : true;
   const hasError = !valueIsValid && inputState.isTouched;
 
   const valueChangeHandler = (event) => {

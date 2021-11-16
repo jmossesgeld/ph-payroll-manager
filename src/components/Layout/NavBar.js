@@ -5,7 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
-
+import SettingsIcon from "@mui/icons-material/Settings";
 const NavBar = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -29,6 +29,15 @@ const NavBar = () => {
             <Button color="inherit">Employees</Button>
             <Button color="inherit">Timekeeping</Button>
             <Button color="inherit">Payroll</Button>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <SettingsIcon />
+            </IconButton>
           </Box>
           <IconButton
             size="large"
