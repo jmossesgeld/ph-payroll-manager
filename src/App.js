@@ -3,6 +3,7 @@ import "./App.css";
 import NavBar from "./components/Layout/NavBar";
 import EmployeeTable from "./components/Employees/EmployeeTable";
 import { Container } from "@mui/material";
+import { Route, Routes } from "react-router";
 
 const theme = createTheme({
   palette: {
@@ -15,7 +16,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <NavBar />
       <Container component="main">
-        <EmployeeTable />
+        <Routes>
+          <Route path="/employees" element={<EmployeeTable />} />
+        </Routes>
       </Container>
     </ThemeProvider>
   );
