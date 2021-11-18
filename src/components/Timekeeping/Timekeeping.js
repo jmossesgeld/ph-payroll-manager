@@ -83,8 +83,8 @@ export default function Timekeeping() {
         </Grid>
         <Grid item xs={12}>
           <Stack spacing={2} divider={<Divider />}>
-            {dateList.map((item, idx) => {
-              return <TimeRecord key={idx} date={item} />;
+            {dateList.map((date, idx) => {
+              return <TimeRecord key={idx} date={date} employeeId={selectedEmployee.id} />;
             })}
           </Stack>
         </Grid>
