@@ -1,8 +1,8 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./App.css";
+import { useEffect } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavBar from "./components/Layout/NavBar";
 import EmployeeTable from "./components/Employees/EmployeeTable";
-import { Container } from "@mui/material";
 import { Route, Routes } from "react-router";
 import Timekeeping from "./components/Timekeeping/Timekeeping";
 
@@ -13,15 +13,18 @@ const theme = createTheme({
 });
 
 function App() {
+  useEffect(() => {
+    window.onbeforeunload = () => true;
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <NavBar />
-      <Container component="main">
-        <Routes>
-          <Route path="/employees" element={<EmployeeTable />} />
-          <Route path="/timekeeping" element={<Timekeeping />} />
-        </Routes>
-      </Container>
+      <Routes>
+        <Route path="/" element={<EmployeeTable />} />
+        <Route path="/employees" element={<EmployeeTable />} />
+        <Route path="/timekeeping" element={<Timekeeping />} />
+      </Routes>
     </ThemeProvider>
   );
 }

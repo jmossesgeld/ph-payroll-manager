@@ -24,5 +24,9 @@ export const employeeSlice = createSlice({
   },
 });
 
+export function getFullName(employee) {
+  return `${employee.firstName} ${employee.middleName} ${employee.lastName} ${employee.suffix}`
+}
+
 export const { addEmployees } = employeeSlice.actions;
 export default employeeSlice.reducer;

@@ -1,8 +1,9 @@
 import { Container } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
-import NewEmployee from "./NewEmployee";
 import { useSelector } from "react-redux";
+import { getFullName } from "../../store/employeesSlice";
+import NewEmployee from "./NewEmployee";
 
 const columns = [
   { field: "fullName", headerName: "Name", width: 250, align: "right", headerAlign: "right" },
@@ -25,11 +26,10 @@ const EmployeeTable = () => {
   const employees = useSelector((state) => state.employees).map((employee) => {
     return {
       ...employee,
-      fullName: `${employee.firstName} ${employee.middleName} ${employee.lastName} ${employee.suffix}`,
+      fullName: getFullName(employee),
       salaryAmount: formatter.format(employee.salaryAmount),
     };
   });
-  console.log(employees);
 
   return (
     <Container>
