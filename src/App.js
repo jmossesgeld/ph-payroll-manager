@@ -1,5 +1,4 @@
 import "./App.css";
-import { useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavBar from "./components/Layout/NavBar";
 import EmployeeTable from "./components/Employees/EmployeeTable";
@@ -13,9 +12,9 @@ const theme = createTheme({
 });
 
 function App() {
-  useEffect(() => {
-    window.onbeforeunload = () => true;
-  }, []);
+  // useEffect(() => {
+  //   window.onbeforeunload = () => true;
+  // }, []);
 
   return (
     <ThemeProvider theme={theme}>

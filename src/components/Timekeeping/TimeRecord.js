@@ -1,15 +1,35 @@
-import { ListItem, ListItemText, TextField, Typography } from "@mui/material";
+import { Grid, TextField, Typography } from "@mui/material";
 export default function TimeRecord(props) {
-
   return (
-    <ListItem>
-      <ListItemText>
-        <Typography variant="h6">
-          {props.date}
+    <Grid container>
+      <Grid item xs={12}>
+        <Typography variant="overline">
+          {props.date.toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
         </Typography>
-        <TextField type="time" placeholder="Time In"/>
-        <TextField type="time" placeholder="Time Out"/>
-      </ListItemText>
-    </ListItem>
+      </Grid>
+      <Grid item xs={6} sm={3}>
+        <TextField
+          type="time"
+          label="Time In"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </Grid>
+      <Grid item xs={6} sm={3}>
+        <TextField
+          type="time"
+          label="Time Out"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </Grid>
+    </Grid>
   );
 }
