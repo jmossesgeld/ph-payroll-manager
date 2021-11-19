@@ -1,9 +1,9 @@
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavBar from "./components/Layout/NavBar";
-import Employees from "./components/Employees/EmployeeTable";
+import Employees from "./components/Employees/Employees";
 import { Route, Routes } from "react-router";
-import Timekeeping from "./components/Timekeeping/Timekeeping";
+import TimeKeeping from "./components/Timekeeping/TimeKeeping";
 
 const theme = createTheme({
   palette: {
@@ -22,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Employees />} />
         <Route path="/employees" element={<Employees />} />
-        <Route path="/timekeeping" element={<Timekeeping />} />
+        <Route path="/timekeeping" element={<TimeKeeping />} />
       </Routes>
     </ThemeProvider>
   );

@@ -14,7 +14,7 @@ const paperStyle = {
   backgroundColor: "#FEF5ED",
 };
 
-export default function Timekeeping() {
+export default function TimeKeeping() {
   const employees = useSelector((state) => state.employees);
   const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
   const [startDate, setStartDate] = useState("");
