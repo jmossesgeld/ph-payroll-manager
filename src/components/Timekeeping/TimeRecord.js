@@ -1,17 +1,17 @@
 import { Grid, TextField, Typography } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { createRecord, updateRecord } from "../../store/timeKeepingSlice";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 export default function TimeRecord(props) {
   const dispatch = useDispatch();
   const timeRecords = useSelector((state) => state.timeKeeping);
+  let timeRecordIndex = timeRecords.findIndex(
+    (record) => record.day === props.date.getTime() && record.employeeId === props.employeeId
+  );
 
-  const getRecordIndex = () => {
-    const recordIndex = timeRecords.findIndex(
-      (record) => record.day === props.date.getTime() && record.employeeId === props.employeeId
-    );
-    if (recordIndex === -1) {
+  useEffect(() => {
+    if (timeRecordIndex === -1) {
       dispatch(
         createRecord({
           employeeId: props.employeeId,
@@ -22,13 +22,8 @@ export default function TimeRecord(props) {
           dayCategories: [],
         })
       );
-      return timeRecords.length;
-    } else {
-      return recordIndex;
     }
-  };
-
-  const timeRecordIndex = getRecordIndex();
+  });
 
   return (
     <Grid container>
@@ -44,7 +39,7 @@ export default function TimeRecord(props) {
       </Grid>
       <Grid item xs={6} sm={3}>
         <TextField
-          // type="time"
+          type="time"
           label="Time In"
           value={
             timeRecords[timeRecordIndex] !== undefined ? timeRecords[timeRecordIndex].timeIn : ""
@@ -61,7 +56,7 @@ export default function TimeRecord(props) {
       </Grid>
       <Grid item xs={6} sm={3}>
         <TextField
-          // type="time"
+          type="time"
           label="Time Out"
           value={
             timeRecords[timeRecordIndex] !== undefined ? timeRecords[timeRecordIndex].timeOut : ""

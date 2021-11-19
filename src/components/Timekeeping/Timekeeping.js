@@ -11,7 +11,7 @@ const paperStyle = {
   width: 800,
   maxWidth: "80vw",
   padding: 2,
-  backgroundColor:"#FEF5ED"
+  backgroundColor: "#FEF5ED",
 };
 
 export default function Timekeeping() {
@@ -26,11 +26,11 @@ export default function Timekeeping() {
     const daysDifference = Math.ceil(timeDifference / msPerDay);
     let dates = [];
 
-    for (let index = 0; index < daysDifference+1; index++) {
+    for (let index = 0; index < daysDifference + 1; index++) {
       dates.push(new Date(startDateInMs.getTime() + msPerDay * index));
     }
 
-    return dates;
+    return dates.slice(0,31);
   };
 
   const dateList = getDaysInBetween(new Date(startDate), new Date(endDate));
