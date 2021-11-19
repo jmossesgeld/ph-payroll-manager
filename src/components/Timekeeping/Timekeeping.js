@@ -1,7 +1,7 @@
 import { Grid, Divider, Autocomplete, TextField, Paper, Tooltip, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { getFullName } from "../../store/employeesSlice";
+import { getFullName } from "../../store/employees";
 import TimeRecord from "./TimeRecord";
 
 const paperStyle = {

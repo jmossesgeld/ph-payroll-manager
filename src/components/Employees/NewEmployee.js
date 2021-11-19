@@ -2,7 +2,7 @@ import { useState, forwardRef } from "react";
 import NumberFormat from "react-number-format";
 import useInput from "../../hooks/useInput";
 import { useDispatch, useSelector } from "react-redux";
-import { addEmployees } from "../../store/employeesSlice";
+import { addEmployees } from "../../store/employees";
 import CloseIcon from "@mui/icons-material/Close";
 
 import {

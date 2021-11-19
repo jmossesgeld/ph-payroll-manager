@@ -1,6 +1,6 @@
 import { Grid, TextField, Typography } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { createRecord, updateRecord } from "../../store/timeKeepingSlice";
+import { createRecord, updateRecord } from "../../store/timekeeping";
 import { useEffect } from "react";
 
 export default function TimeRecord(props) {

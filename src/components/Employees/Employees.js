@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
-import { getFullName } from "../../store/employeesSlice";
+import { getFullName } from "../../store/employees";
 import NewEmployee from "./NewEmployee";
 
 const columns = [
@@ -22,7 +22,7 @@ var formatter = new Intl.NumberFormat("en-US", {
   currency: "PHP",
 });
 
-const EmployeeTable = () => {
+const Employees = () => {
   const employees = useSelector((state) => state.employees).map((employee) => {
     return {
       ...employee,
@@ -41,4 +41,4 @@ const EmployeeTable = () => {
   );
 };
 
-export default EmployeeTable;
+export default Employees;

@@ -1,7 +1,7 @@
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavBar from "./components/Layout/NavBar";
-import EmployeeTable from "./components/Employees/EmployeeTable";
+import Employees from "./components/Employees/EmployeeTable";
 import { Route, Routes } from "react-router";
 import Timekeeping from "./components/Timekeeping/Timekeeping";
 
@@ -20,8 +20,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <NavBar />
       <Routes>
-        <Route path="/" element={<EmployeeTable />} />
-        <Route path="/employees" element={<EmployeeTable />} />
+        <Route path="/" element={<Employees />} />
+        <Route path="/employees" element={<Employees />} />
         <Route path="/timekeeping" element={<Timekeeping />} />
       </Routes>
     </ThemeProvider>
