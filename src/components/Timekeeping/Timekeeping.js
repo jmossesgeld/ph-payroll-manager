@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { getFullName } from "../../store/employees";
 import TimeRecord from "./TimeRecord";
+import NewHoliday from "./NewHoliday";
 
 const paperStyle = {
   display: "flex",
@@ -80,6 +81,9 @@ export default function TimeKeeping() {
               />
             </div>
           </Tooltip>
+        </Grid>
+        <Grid item xs={12}>
+          <NewHoliday/>
         </Grid>
         <Grid item xs={12}>
           <Stack spacing={2} divider={<Divider />}>

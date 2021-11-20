@@ -10,7 +10,7 @@ export default function TimeRecord(props) {
     (record) => record.day === props.date.getTime() && record.employeeId === props.employeeId
   );
 
-  const onChangeHandler = (event, key) =>
+  const onChangeHandler = (key, event) =>
     dispatch(updateRecord({ index: timeRecordIndex, key: key, newValue: event.target.value }));
 
   useEffect(() => {
@@ -44,10 +44,8 @@ export default function TimeRecord(props) {
         <TextField
           type="time"
           label="Time In"
-          value={
-            timeRecords[timeRecordIndex] !== undefined ? timeRecords[timeRecordIndex].timeIn : ""
-          }
-          onChange={onChangeHandler.bind("timeIn")}
+          value={timeRecords[timeRecordIndex]?.timeIn ?? ""}
+          onChange={onChangeHandler.bind(null,"timeIn")}
           InputLabelProps={{
             shrink: true,
           }}
@@ -57,9 +55,7 @@ export default function TimeRecord(props) {
         <TextField
           type="time"
           label="Time Out"
-          value={
-            timeRecords[timeRecordIndex] !== undefined ? timeRecords[timeRecordIndex].timeOut : ""
-          }
+          value={timeRecords[timeRecordIndex]?.timeOut ?? ""}
           onChange={(e) =>
             dispatch(
               updateRecord({ index: timeRecordIndex, key: "timeOut", newValue: e.target.value })
