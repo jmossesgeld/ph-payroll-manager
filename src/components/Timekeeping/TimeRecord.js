@@ -1,4 +1,4 @@
-import { Grid, TextField, Typography } from "@mui/material";
+import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { createRecord, updateRecord } from "../../store/timekeeping";
 import { useEffect } from "react";
@@ -9,6 +9,7 @@ export default function TimeRecord(props) {
   let timeRecordIndex = timeRecords.findIndex(
     (record) => record.day === props.date.getTime() && record.employeeId === props.employeeId
   );
+  const record = timeRecords[timeRecordIndex];
 
   const onChangeHandler = (key, event) =>
     dispatch(updateRecord({ index: timeRecordIndex, key: key, newValue: event.target.value }));
@@ -29,9 +30,9 @@ export default function TimeRecord(props) {
   });
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Typography variant="overline">
+    <Grid container rowSpacing={2}>
+      <Grid item xs={12} mb={1}>
+        <Typography variant="overline" fontWeight="bold">
           {props.date.toLocaleDateString("en-US", {
             weekday: "long",
             year: "numeric",
@@ -40,28 +41,36 @@ export default function TimeRecord(props) {
           })}
         </Typography>
       </Grid>
-      <Grid item xs={6} sm={3}>
+      <Grid item xs={6} sm={4} md={3}>
         <TextField
           type="time"
           label="Time In"
-          value={timeRecords[timeRecordIndex]?.timeIn ?? ""}
-          onChange={onChangeHandler.bind(null,"timeIn")}
+          value={record?.timeIn ?? ""}
+          onChange={onChangeHandler.bind(null, "timeIn")}
           InputLabelProps={{
             shrink: true,
           }}
         />
       </Grid>
-      <Grid item xs={6} sm={3}>
+      <Grid item xs={6} sm={4} md={3}>
         <TextField
           type="time"
           label="Time Out"
-          value={timeRecords[timeRecordIndex]?.timeOut ?? ""}
-          onChange={(e) =>
-            dispatch(
-              updateRecord({ index: timeRecordIndex, key: "timeOut", newValue: e.target.value })
-            )
-          }
+          value={record?.timeOut ?? ""}
+          onChange={onChangeHandler.bind(null, "timeOut")}
           InputLabelProps={{
+            shrink: true,
+          }}
+        />
+      </Grid>
+      <Grid item xs={4} sm={4} md={2}>
+        <TextField
+          type="number"
+          label="Overtime"
+          value={record?.overtime ?? ""}
+          onChange={onChangeHandler.bind(null, "overtime")}
+          InputProps={{
+            endAdornment: <InputAdornment position="start">hour(s)</InputAdornment>,
             shrink: true,
           }}
         />

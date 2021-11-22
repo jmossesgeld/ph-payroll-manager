@@ -19,7 +19,7 @@ const style = {
 
 export default function CustomModal(props) {
   return (
-    <Modal open={props.open} onClose={props.toggleModal}>
+    <Modal open={props.open} onClose={props.onClose}>
       <Box sx={style}>{props.children}</Box>
     </Modal>
   );
