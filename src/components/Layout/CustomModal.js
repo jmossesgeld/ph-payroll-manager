@@ -15,6 +15,7 @@ const style = {
   "& input": { margin: "2px" },
   display: "flex",
   flexWrap: "wrap",
+  overflow:"auto"
 };
 
 export default function CustomModal(props) {

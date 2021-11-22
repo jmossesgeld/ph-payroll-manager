@@ -7,18 +7,16 @@ const slice = createSlice({
   initialState,
   reducers: {
     addHoliday: (state, action) => {
-      let existingHolidayIndex = state.findIndex((holiday) => holiday.date === action.payload.date);
-      if (existingHolidayIndex === -1) {
-        state.push(action.payload);
-      } else {
-        state[existingHolidayIndex] = action.payload;
-      }
+      state.push(action.payload);
     },
     removeHoliday: (state, action) => {
       const existingHolidayIndex = state.findIndex(
-        (holiday) => holiday.date === action.payload.date
+        (holiday) =>
+          holiday.date === action.payload.date && holiday.description === action.payload.description
       );
-      state.splice(existingHolidayIndex, 1);
+      if (existingHolidayIndex !== -1) {
+        state.splice(existingHolidayIndex, 1);
+      }
     },
   },
 });

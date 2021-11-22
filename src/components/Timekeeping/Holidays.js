@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CustomModal from "../Layout/CustomModal";
 import HolidayItem from "./HolidayItem";
-import { addHoliday, removeHoliday } from "../../store/holidays";
+import { addHoliday } from "../../store/holidays";
 import useDateNow from "../../hooks/useDateNow";
 
 export default function NewHoliday(props) {
@@ -36,19 +36,18 @@ export default function NewHoliday(props) {
     mt: 2,
   };
 
-  const holidayList = props.dateList
-    .map(
-      (date) =>
-        holidays.find((holiday) => new Date(holiday.date).getTime() === new Date(date).getTime()) ??
-        null
-    )
-    .filter((n) => n);
+  const holidayList = props.dateList.map((date) =>
+    holidays.filter((holiday) => new Date(holiday.date).getTime() === new Date(date).getTime())
+  );
 
   const onAddHoliday = () => {
-    dispatch(addHoliday({ date, type: "regular", description }));
-  };
-  const onRemoveHoliday = (date) => {
-    dispatch(removeHoliday(date));
+    console.log(description.length);
+    if (description.length > 1) {
+      dispatch(addHoliday({ date, type: "regular", description }));
+      setDescription("");
+    } else {
+      alert("Please enter holiday description");
+    }
   };
 
   return (
@@ -102,15 +101,11 @@ export default function NewHoliday(props) {
           <Grid item xs={12}>
             <Divider />
             <Stack divider={<Divider />} sx={stackStyle} spacing={0}>
-              {holidayList.map((holiday, index) => (
-                <HolidayItem
-                  date={holiday.date}
-                  description={holiday.description}
-                  index={index}
-                  key={index}
-                  onRemove={onRemoveHoliday}
-                />
-              ))}
+              {holidayList.map((holidays, i) =>
+                holidays.map((holiday, j) => (
+                  <HolidayItem {...holiday}/>
+                ))
+              )}
             </Stack>
           </Grid>
         </Grid>
