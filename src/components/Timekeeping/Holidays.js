@@ -43,7 +43,7 @@ export default function NewHoliday(props) {
   const onAddHoliday = () => {
     console.log(description.length);
     if (description.length > 1) {
-      dispatch(addHoliday({ date, type: "regular", description }));
+      dispatch(addHoliday({ date, type: holidayType, description }));
       setDescription("");
     } else {
       alert("Please enter holiday description");

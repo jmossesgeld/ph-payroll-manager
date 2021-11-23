@@ -1,4 +1,4 @@
-import { Chip, Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import { Chip, Grid, InputAdornment, TextField, Tooltip, Typography } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { createRecord, updateRecord } from "../../store/timekeeping";
 import { useEffect } from "react";
@@ -6,7 +6,7 @@ import { Box } from "@mui/system";
 
 export default function TimeRecord(props) {
   const dispatch = useDispatch();
-  const holiday = useSelector((state) => state.holidays).find(
+  const holidays = useSelector((state) => state.holidays).filter(
     (holiday) => new Date(holiday.date).getTime() === new Date(props.date).getTime()
   );
 
@@ -35,16 +35,30 @@ export default function TimeRecord(props) {
   });
 
   return (
-    <Grid container rowSpacing={1}>
+    <Grid container rowSpacing={2}>
       <Grid item xs={12} mb={1}>
-        <Typography variant="overline" fontWeight="bold">
-          {props.date.toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </Typography>
+        <Box sx={{ display: "flex", "& div": { ml: 2 }, overflow: "auto" }}>
+          <Typography variant="overline" fontWeight="bold" fullWidth>
+            {props.date.toLocaleDateString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </Typography>
+          {holidays.map((holiday, idx) => (
+            <Tooltip title={holiday.description} placement="top" arrow >
+              <Chip
+                label={
+                  holiday.type === "regular" ? "Regular Holiday" : "Special Non-Working Holiday"
+                }
+                variant="outlined"
+                key={idx}
+                color="warning"
+              />
+            </Tooltip>
+          ))}
+        </Box>
       </Grid>
       <Grid item xs={6} sm={4} md={3}>
         <TextField
@@ -82,12 +96,7 @@ export default function TimeRecord(props) {
           }}
         />
       </Grid>
-      <Grid item xs={12} sm={12} md={3}>
-        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-          {holiday !== undefined ? <Chip label="Regular Holiday" variant="outlined" /> : null}
-          <Chip label="Special Non-Working Holiday" variant="outlined" />
-        </Box>
-      </Grid>
+      <Grid item xs={12} sm={12} md={3}></Grid>
     </Grid>
   );
 }

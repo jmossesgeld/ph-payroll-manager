@@ -5,7 +5,6 @@ import { getFullName } from "../../store/employees";
 import TimeRecord from "./TimeRecord";
 import Holidays from "./Holidays";
 import { Box } from "@mui/system";
-import useDateNow from "../../hooks/useDateNow";
 
 const paperStyle = {
   display: "flex",
@@ -15,7 +14,7 @@ const paperStyle = {
   maxWidth: "80vw",
   padding: 2,
   backgroundColor: "#FEF5ED",
-  mt:4
+  mt: 4,
 };
 
 const getDaysInBetween = (startDateInMs, endDateInMs) => {
@@ -34,8 +33,8 @@ const getDaysInBetween = (startDateInMs, endDateInMs) => {
 export default function TimeKeeping() {
   const employees = useSelector((state) => state.employees);
   const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
-  const [startDate, setStartDate] = useDateNow(-15);
-  const [endDate, setEndDate] = useDateNow();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const dateList = getDaysInBetween(new Date(startDate), new Date(endDate));
 
