@@ -9,12 +9,12 @@ export default function TimeRecord(props) {
   const holidays = useSelector((state) => state.holidays).filter(
     (holiday) => new Date(holiday.date).getTime() === new Date(props.date).getTime()
   );
-
   const timeRecords = useSelector((state) => state.timeKeeping);
   let timeRecordIndex = timeRecords.findIndex(
-    (record) => record.day === props.date.getTime() && record.employeeId === props.employeeId
+    (record) => record.day === props.date.getTime() && record.employeeId === props.employee.id
   );
   const record = timeRecords[timeRecordIndex];
+  const isRestDay = props.employee.restDay === new Date(record?.day).getDay();
 
   const onChangeHandler = (key, event) =>
     dispatch(updateRecord({ index: timeRecordIndex, key: key, newValue: event.target.value }));
@@ -23,12 +23,12 @@ export default function TimeRecord(props) {
     if (timeRecordIndex === -1) {
       dispatch(
         createRecord({
-          employeeId: props.employeeId,
+          employeeId: props.employee.id,
           day: props.date.getTime(),
           timeIn: "",
           timeOut: "",
           overtime: 0,
-          dayCategories: [],
+          dayCategories: [isRestDay && "restDay", ...holidays.map((holiday) => holiday.type)],
         })
       );
     }
@@ -47,7 +47,7 @@ export default function TimeRecord(props) {
             })}
           </Typography>
           {holidays.map((holiday, idx) => (
-            <Tooltip title={holiday.description} placement="top" arrow >
+            <Tooltip title={holiday.description} placement="top" arrow>
               <Chip
                 label={
                   holiday.type === "regular" ? "Regular Holiday" : "Special Non-Working Holiday"
@@ -58,6 +58,7 @@ export default function TimeRecord(props) {
               />
             </Tooltip>
           ))}
+          {isRestDay && <Chip label="Rest Day" variant="outlined" color="primary" />}
         </Box>
       </Grid>
       <Grid item xs={6} sm={4} md={3}>
