@@ -98,7 +98,7 @@ export default function TimeRecord(props) {
           }}
         />
       </Grid>
-      <Grid item xs={6} sm={6} md={5}>
+      <Grid item xs={6} sm={6} md={4}>
         <Grid container columnSpacing={2}>
           <Grid item xs={12} sm={6} md={6}>
             <TextField
