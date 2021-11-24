@@ -1,8 +1,6 @@
 import { Chip, Grid, InputAdornment, Stack, TextField, Tooltip, Typography } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import { createRecord, updateRecord } from "../../store/timekeeping";
-import { useCallback, useEffect } from "react";
 import { Box } from "@mui/system";
+import useTimeRecord from "../../hooks/useTimeRecord";
 
 const styles = {
   dateLabel: { display: "flex", "& div": { ml: 2 }, overflow: "auto" },
@@ -10,28 +8,7 @@ const styles = {
 };
 
 export default function TimeRecord(props) {
-  const dispatch = useDispatch();
-  const timeRecords = useSelector((state) => state.timeKeeping);
-  let timeRecordIndex = timeRecords.findIndex(
-    useCallback(
-      (record) => record.day === props.date.getTime() && record.employeeId === props.employee.id,
-      [props]
-    )
-  );
-  const record = timeRecords[timeRecordIndex];
-  const holidays = useSelector(
-    useCallback(
-      (state) =>
-        state.holidays.filter(
-          (holiday) => new Date(holiday.date).getTime() === new Date(props.date).getTime()
-        ),
-      [props.date]
-    )
-  );
-  const isRestDay = props.employee.restDay === new Date(record?.day).getDay();
-
-  const onChangeHandler = (key, event) =>
-    dispatch(updateRecord({ index: timeRecordIndex, key: key, newValue: event.target.value }));
+  const { record, onChangeHandler, holidays, isRestDay } = useTimeRecord(props);
 
   const dayCategories = (
     <Stack>
@@ -48,21 +25,6 @@ export default function TimeRecord(props) {
       {isRestDay && <Chip label="Rest Day" variant="outlined" color="primary" />}
     </Stack>
   );
-
-  useEffect(() => {
-    if (timeRecordIndex === -1) {
-      dispatch(
-        createRecord({
-          employeeId: props.employee.id,
-          day: props.date.getTime(),
-          timeIn: "",
-          timeOut: "",
-          overtime: 0,
-          dayCategories: [isRestDay && "restDay", ...holidays.map((holiday) => holiday.type)],
-        })
-      );
-    }
-  });
 
   return (
     <Grid container rowSpacing={2}>
