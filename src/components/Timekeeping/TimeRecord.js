@@ -1,8 +1,13 @@
-import { Chip, Grid, InputAdornment, TextField, Tooltip, Typography } from "@mui/material";
+import { Chip, Grid, InputAdornment, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { createRecord, updateRecord } from "../../store/timekeeping";
 import { useEffect } from "react";
 import { Box } from "@mui/system";
+
+const styles = {
+  dateLabel: { display: "flex", "& div": { ml: 2 }, overflow: "auto" },
+  timeInput: { display: "flex", flexWrap: "wrap", "& .MuiFormControl-root": { mr: 1, mb: 1 } },
+};
 
 export default function TimeRecord(props) {
   const dispatch = useDispatch();
@@ -18,6 +23,22 @@ export default function TimeRecord(props) {
 
   const onChangeHandler = (key, event) =>
     dispatch(updateRecord({ index: timeRecordIndex, key: key, newValue: event.target.value }));
+
+  const dayCategories = (
+    <Stack>
+      {holidays.map((holiday, idx) => (
+        <Tooltip key={idx} title={holiday.description} placement="top" arrow>
+          <Chip
+            label={holiday.type === "regular" ? "Regular Holiday" : "Special Non-Working Holiday"}
+            variant="outlined"
+            key={idx}
+            color="warning"
+          />
+        </Tooltip>
+      ))}
+      {isRestDay && <Chip label="Rest Day" variant="outlined" color="primary" />}
+    </Stack>
+  );
 
   useEffect(() => {
     if (timeRecordIndex === -1) {
@@ -37,8 +58,8 @@ export default function TimeRecord(props) {
   return (
     <Grid container rowSpacing={2}>
       <Grid item xs={12} mb={1}>
-        <Box sx={{ display: "flex", "& div": { ml: 2 }, overflow: "auto" }}>
-          <Typography variant="overline" fontWeight="bold" fullWidth>
+        <Box sx={styles.dateLabel}>
+          <Typography variant="overline" fontWeight="bold">
             {props.date.toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",
@@ -46,22 +67,9 @@ export default function TimeRecord(props) {
               day: "numeric",
             })}
           </Typography>
-          {holidays.map((holiday, idx) => (
-            <Tooltip title={holiday.description} placement="top" arrow>
-              <Chip
-                label={
-                  holiday.type === "regular" ? "Regular Holiday" : "Special Non-Working Holiday"
-                }
-                variant="outlined"
-                key={idx}
-                color="warning"
-              />
-            </Tooltip>
-          ))}
-          {isRestDay && <Chip label="Rest Day" variant="outlined" color="primary" />}
         </Box>
       </Grid>
-      <Grid item xs={6} sm={4} md={3}>
+      <Grid item xs={6} sm={6} md={6} sx={styles.timeInput}>
         <TextField
           type="time"
           label="Time In"
@@ -71,8 +79,6 @@ export default function TimeRecord(props) {
             shrink: true,
           }}
         />
-      </Grid>
-      <Grid item xs={6} sm={4} md={3}>
         <TextField
           type="time"
           label="Time Out"
@@ -83,21 +89,27 @@ export default function TimeRecord(props) {
           }}
         />
       </Grid>
-      <Grid item xs={4} sm={4} md={2} mr={2}>
-        <TextField
-          type="number"
-          label="Overtime"
-          value={record?.overtime ?? ""}
-          onChange={onChangeHandler.bind(null, "overtime")}
-          InputProps={{
-            endAdornment: <InputAdornment position="start">hour(s)</InputAdornment>,
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+      <Grid item xs={6} sm={6} md={6}>
+        <Grid container columnSpacing={2}>
+          <Grid item xs={12} sm={6} md={6}>
+            <TextField
+              type="number"
+              label="Overtime"
+              value={record?.overtime ?? ""}
+              onChange={onChangeHandler.bind(null, "overtime")}
+              InputProps={{
+                endAdornment: <InputAdornment position="start">hour(s)</InputAdornment>,
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={6}>
+            {dayCategories}
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={12} md={3}></Grid>
     </Grid>
   );
 }
