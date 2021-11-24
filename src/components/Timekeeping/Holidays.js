@@ -1,5 +1,6 @@
 import {
   Button,
+  Collapse,
   Divider,
   FormControl,
   FormControlLabel,
@@ -12,10 +13,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { TransitionGroup } from "react-transition-group";
 import CustomModal from "../Layout/CustomModal";
+import useDateNow from "../../hooks/useDateNow";
 import HolidayItem from "./HolidayItem";
 import { addHoliday } from "../../store/holidays";
-import useDateNow from "../../hooks/useDateNow";
 
 export default function NewHoliday(props) {
   const holidays = useSelector((state) => state.holidays);
@@ -101,11 +103,15 @@ export default function NewHoliday(props) {
           <Grid item xs={12}>
             <Divider />
             <Stack divider={<Divider />} sx={stackStyle} spacing={0}>
-              {holidayList.map((holidays, i) =>
-                holidays.map((holiday, j) => (
-                  <HolidayItem {...holiday}/>
-                ))
-              )}
+              <TransitionGroup>
+                {holidayList.map((holidays, i) =>
+                  holidays.map((holiday, j) => (
+                    <Collapse key={String(i)+String(j)}>
+                      <HolidayItem {...holiday} />
+                    </Collapse>
+                  ))
+                )}
+              </TransitionGroup>
             </Stack>
           </Grid>
         </Grid>
