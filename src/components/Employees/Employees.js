@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
@@ -34,6 +34,7 @@ const Employees = () => {
   return (
     <Container>
       <Box mt={3} sx={{ display: "flex", flexDirection: "column" }}>
+        <Typography variant="h4">Employees List</Typography>
         <NewEmployee />
         <DataGrid rows={employees} columns={columns} autoHeight checkboxSelection />
       </Box>
