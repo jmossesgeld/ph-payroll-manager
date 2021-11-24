@@ -1,4 +1,4 @@
-import { Container, Paper } from "@mui/material";
+import { Container, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
 import { getFullName } from "../../store/employees";
@@ -12,6 +12,7 @@ const columns = [
     width: 150,
     align: "right",
     headerAlign: "right",
+    renderCell: (cell) => <Typography variant="overline">{cell.value}</Typography>,
   },
   { field: "salaryAmount", headerName: "Amount", width: 150, align: "right", headerAlign: "right" },
 ];
@@ -32,7 +33,7 @@ const Employees = () => {
 
   return (
     <Container>
-      <Paper elevation={5} sx={{ display: "flex", flexDirection: "column", padding:5, mt:3 }}>
+      <Paper elevation={5} sx={{ display: "flex", flexDirection: "column", padding: 5, mt: 3 }}>
         <NewEmployee />
         <DataGrid rows={employees} columns={columns} autoHeight checkboxSelection />
       </Paper>
