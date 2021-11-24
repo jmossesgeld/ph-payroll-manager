@@ -9,12 +9,12 @@ import {
   Button,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { getFullName } from "../../store/employees";
+import { getDaysInBetween, setPayrollPeriodFrom, setPayrollPeriodTo } from "../../store/userprefs";
 import TimeRecord from "./TimeRecord";
 import Holidays from "./Holidays";
-import useDateNow from "../../hooks/useDateNow";
 
 const paperStyle = {
   display: "flex",
@@ -27,26 +27,14 @@ const paperStyle = {
   mt: 4,
 };
 
-const getDaysInBetween = (startDateInMs, endDateInMs) => {
-  const msPerDay = 1000 * 60 * 60 * 24;
-  const timeDifference = endDateInMs - startDateInMs;
-  const daysDifference = Math.ceil(timeDifference / msPerDay);
-  let dates = [];
-
-  for (let index = 0; index < daysDifference + 1 && index < 31; index++) {
-    dates.push(new Date(startDateInMs.getTime() + msPerDay * index));
-  }
-
-  return dates;
-};
-
 export default function TimeKeeping() {
+  const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees);
+  const startDate = useSelector((state) => state.userprefs.currentPayrollPeriod.from);
+  const endDate = useSelector((state) => state.userprefs.currentPayrollPeriod.to);
   const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
-  const [startDate, setStartDate] = useDateNow(-15);
-  const [endDate, setEndDate] = useDateNow();
 
-  const dateList = getDaysInBetween(new Date(startDate), new Date(endDate));
+  const dateList = getDaysInBetween(startDate, endDate);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", margin: "auto" }}>
@@ -76,7 +64,7 @@ export default function TimeKeeping() {
                   helperText="Covered Period"
                   value={startDate}
                   onChange={(e) => {
-                    setStartDate(e.target.value);
+                    dispatch(setPayrollPeriodFrom(e.target.value));
                   }}
                   InputLabelProps={{
                     shrink: true,
@@ -87,7 +75,7 @@ export default function TimeKeeping() {
                   label="to"
                   value={endDate}
                   onChange={(e) => {
-                    setEndDate(e.target.value);
+                    dispatch(setPayrollPeriodTo(e.target.value));
                   }}
                   InputLabelProps={{
                     shrink: true,
