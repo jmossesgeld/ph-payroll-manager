@@ -1,35 +1,36 @@
-import xlsx from "xlsx-js-style";
-import { Input, Typography } from "@mui/material";
-import { useState } from "react";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { useSelector } from "react-redux";
 
 export default function Payroll() {
-  const [output, setOutput] = useState("");
-
-  const onFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const data = await file.arrayBuffer();
-    const workbook = xlsx.read(data, { type: "buffer" });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const cell = worksheet["A1"];
-    setOutput(cell?.v ?? "undefined");
-    cell.s = {
-      font: {
-        name: "Calibri",
-        sz: 24,
-        bold: true,
-        color: { rgb: "FFFFAA00" },
-      },
-    };
-    cell.v = "SAMPLE";
-    xlsx.writeFile(workbook, "out.xlsx");
-  };
-
+  const employees = useSelector((state) => state.employees);
   return (
-    <>
-      <Input type="file" onChange={onFileUpload}>
-        Upload Excel
-      </Input>
-      <Typography>{output}</Typography>
-    </>
+    <TableContainer component={Paper}>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Employees</TableCell>
+            <TableCell align="right">Salary Type</TableCell>
+            <TableCell align="right">Basic Salary</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {employees.map((employee) => (
+            <TableRow>
+              <TableCell>{employee.lastName}</TableCell>
+              <TableCell align="right">{employee.salaryType}</TableCell>
+              <TableCell align="right">{employee.salaryAmount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
