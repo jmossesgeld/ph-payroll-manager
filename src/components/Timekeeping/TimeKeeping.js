@@ -1,10 +1,19 @@
-import { Grid, Divider, Autocomplete, TextField, Paper, Tooltip, Stack } from "@mui/material";
+import {
+  Grid,
+  Divider,
+  Autocomplete,
+  TextField,
+  Paper,
+  Tooltip,
+  Stack,
+  Button,
+} from "@mui/material";
+import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { getFullName } from "../../store/employees";
 import TimeRecord from "./TimeRecord";
 import Holidays from "./Holidays";
-import { Box } from "@mui/system";
 import useDateNow from "../../hooks/useDateNow";
 
 const paperStyle = {
@@ -64,6 +73,7 @@ export default function TimeKeeping() {
                 <TextField
                   type="date"
                   label="from"
+                  helperText="Covered Period"
                   value={startDate}
                   onChange={(e) => {
                     setStartDate(e.target.value);
@@ -86,14 +96,19 @@ export default function TimeKeeping() {
               </div>
             </Tooltip>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Holidays dateList={dateList} />
+            <Button variant="contained" color="success">
+              Generate Individual Salary
+            </Button>
           </Grid>
           <Grid item xs={12}>
             <Stack spacing={1} divider={<Divider />}>
-              {dateList.map((date, idx) => {
-                return <TimeRecord key={idx} date={date} employee={selectedEmployee} />;
-              })}
+                {dateList.map((date, idx) => {
+                  return (
+                      <TimeRecord key={idx} date={date} employee={selectedEmployee} />
+                  );
+                })}
             </Stack>
           </Grid>
         </Grid>
