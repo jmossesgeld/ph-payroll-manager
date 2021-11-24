@@ -92,14 +92,17 @@ export default function NewEmployee() {
 
   return (
     <>
-      <Button
-        onClick={toggleModal}
-        variant="contained"
-        color="secondary"
-        sx={{ alignSelf: "flex-end", mb: 1 }}
-      >
-        Add New Employee
-      </Button>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography variant="h4">Employees List</Typography>
+        <Button
+          onClick={toggleModal}
+          variant="contained"
+          color="secondary"
+          sx={{ alignSelf: "flex-end", mb: 1 }}
+        >
+          Add New Employee
+        </Button>
+      </Box>
       <CustomModal open={open} onClose={toggleModal}>
         <Box
           sx={{

@@ -1,5 +1,4 @@
-import { Container, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Container, Paper } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useSelector } from "react-redux";
 import { getFullName } from "../../store/employees";
@@ -33,11 +32,10 @@ const Employees = () => {
 
   return (
     <Container>
-      <Box mt={3} sx={{ display: "flex", flexDirection: "column" }}>
-        <Typography variant="h4">Employees List</Typography>
+      <Paper elevation={5} sx={{ display: "flex", flexDirection: "column", padding:5, mt:3 }}>
         <NewEmployee />
         <DataGrid rows={employees} columns={columns} autoHeight checkboxSelection />
-      </Box>
+      </Paper>
     </Container>
   );
 };

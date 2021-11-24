@@ -1,9 +1,10 @@
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Route, Routes } from "react-router";
 import NavBar from "./components/Layout/NavBar";
 import Employees from "./components/Employees/Employees";
-import { Route, Routes } from "react-router";
 import TimeKeeping from "./components/Timekeeping/TimeKeeping";
+import Payroll from "./components/Payroll/Payroll";
 
 const theme = createTheme({
   palette: {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" element={<Employees />} />
         <Route path="/employees" element={<Employees />} />
         <Route path="/timekeeping" element={<TimeKeeping />} />
+        <Route path="/payroll" element={<Payroll />} />
       </Routes>
     </ThemeProvider>
   );

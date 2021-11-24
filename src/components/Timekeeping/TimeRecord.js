@@ -1,7 +1,7 @@
 import { Chip, Grid, InputAdornment, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { createRecord, updateRecord } from "../../store/timekeeping";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Box } from "@mui/system";
 
 const styles = {
@@ -11,14 +11,23 @@ const styles = {
 
 export default function TimeRecord(props) {
   const dispatch = useDispatch();
-  const holidays = useSelector((state) => state.holidays).filter(
-    (holiday) => new Date(holiday.date).getTime() === new Date(props.date).getTime()
-  );
   const timeRecords = useSelector((state) => state.timeKeeping);
   let timeRecordIndex = timeRecords.findIndex(
-    (record) => record.day === props.date.getTime() && record.employeeId === props.employee.id
+    useCallback(
+      (record) => record.day === props.date.getTime() && record.employeeId === props.employee.id,
+      [props]
+    )
   );
   const record = timeRecords[timeRecordIndex];
+  const holidays = useSelector(
+    useCallback(
+      (state) =>
+        state.holidays.filter(
+          (holiday) => new Date(holiday.date).getTime() === new Date(props.date).getTime()
+        ),
+      [props.date]
+    )
+  );
   const isRestDay = props.employee.restDay === new Date(record?.day).getDay();
 
   const onChangeHandler = (key, event) =>
@@ -69,7 +78,7 @@ export default function TimeRecord(props) {
           </Typography>
         </Box>
       </Grid>
-      <Grid item xs={6} sm={6} md={6} sx={styles.timeInput}>
+      <Grid item xs={6} sm={6} md={7} sx={styles.timeInput}>
         <TextField
           type="time"
           label="Time In"
@@ -89,7 +98,7 @@ export default function TimeRecord(props) {
           }}
         />
       </Grid>
-      <Grid item xs={6} sm={6} md={6}>
+      <Grid item xs={6} sm={6} md={5}>
         <Grid container columnSpacing={2}>
           <Grid item xs={12} sm={6} md={6}>
             <TextField

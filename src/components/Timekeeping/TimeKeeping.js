@@ -23,7 +23,7 @@ const paperStyle = {
   width: 800,
   maxWidth: "80vw",
   padding: 2,
-  backgroundColor: "#FEF5ED",
+  // backgroundColor: "#FEF5ED",
   mt: 4,
 };
 
@@ -104,11 +104,9 @@ export default function TimeKeeping() {
           </Grid>
           <Grid item xs={12}>
             <Stack spacing={1} divider={<Divider />}>
-                {dateList.map((date, idx) => {
-                  return (
-                      <TimeRecord key={idx} date={date} employee={selectedEmployee} />
-                  );
-                })}
+              {dateList.map((date, idx) => {
+                return <TimeRecord key={idx} date={date} employee={selectedEmployee} />;
+              })}
             </Stack>
           </Grid>
         </Grid>
