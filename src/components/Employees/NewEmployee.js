@@ -97,10 +97,10 @@ export default function NewEmployee() {
         <Button
           onClick={toggleModal}
           variant="contained"
-          color="secondary"
+          color="success"
           sx={{ alignSelf: "flex-end", mb: 1 }}
         >
-          Add New Employee
+          + New Employee
         </Button>
       </Box>
       <CustomModal open={open} onClose={toggleModal}>

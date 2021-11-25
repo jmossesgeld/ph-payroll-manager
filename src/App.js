@@ -3,7 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Route, Routes } from "react-router";
 import NavBar from "./components/Layout/NavBar";
 import Employees from "./components/Employees/Employees";
-import TimeKeeping from "./components/Timekeeping/TimeKeeping";
+import TimeCard from "./components/Timekeeping/TimeCard";
 import Payroll from "./components/Payroll/Payroll";
 
 const theme = createTheme({
@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Employees />} />
         <Route path="/employees" element={<Employees />} />
-        <Route path="/timekeeping" element={<TimeKeeping />} />
+        <Route path="/timekeeping" element={<TimeCard />} />
         <Route path="/payroll" element={<Payroll />} />
       </Routes>
     </ThemeProvider>
