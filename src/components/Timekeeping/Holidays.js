@@ -10,6 +10,7 @@ import {
   RadioGroup,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -52,10 +53,12 @@ export default function NewHoliday(props) {
     }
   };
 
+  console.log(holidayList);
+
   return (
     <>
-      <Button onClick={toggleModal} variant="outlined" color="warning">
-        Holidays
+      <Button onClick={toggleModal} variant="contained" color="warning">
+        Set Holidays
       </Button>
       <CustomModal open={open} onClose={toggleModal}>
         <Grid container spacing={3}>
@@ -99,14 +102,20 @@ export default function NewHoliday(props) {
               Add
             </Button>
           </Grid>
-
           <Grid item xs={12}>
             <Divider />
+            {holidayList.length ? (
+              <Typography variant="caption" sx={{display:"flex", justifyContent:"center"}}>{`Holidays from ${props.dateList[0].toLocaleDateString()} to ${props.dateList[
+                props.dateList.length - 1
+              ].toLocaleDateString()}`}</Typography>
+            ) : (
+              ""
+            )}
             <Stack divider={<Divider />} sx={stackStyle} spacing={0}>
               <TransitionGroup>
                 {holidayList.map((holidays, i) =>
                   holidays.map((holiday, j) => (
-                    <Collapse key={String(i)+String(j)}>
+                    <Collapse key={String(i) + String(j)}>
                       <HolidayItem {...holiday} />
                     </Collapse>
                   ))
