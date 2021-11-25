@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createRecord, updateRecord } from "../store/timekeeping";
+import { createRecord, updateRecord } from "../store/timerecords";
 
 export default function useTimeRecord(props) {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export default function useTimeRecord(props) {
       [props]
     )
   );
-  const isRestDay = props.employee.restDay === new Date(record?.day).getDay();
+  const isRestDay = props.employee.restDay === props.date.getDay();
 
   const onChangeHandler = (key, event) =>
     dispatch(updateRecord({ index: timeRecordIndex, key: key, newValue: event.target.value }));
@@ -32,10 +32,11 @@ export default function useTimeRecord(props) {
         createRecord({
           employeeId: props.employee.id,
           day: props.date.getTime(),
-          timeIn: "",
-          timeOut: "",
+          timeIn: isRestDay || holidays.length ? "" : props.employee.workingHours.from,
+          timeOut: isRestDay || holidays.length ? "" : props.employee.workingHours.to,
           overtime: 0,
-          dayCategories: [isRestDay && "restDay", ...holidays.map((holiday) => holiday.type)],
+          isRestDay,
+          holidays: holidays.map((holiday) => holiday.type),
         })
       );
     }

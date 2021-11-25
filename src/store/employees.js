@@ -12,6 +12,7 @@ const initialState = [
     salaryType: "daily",
     salaryAmount: 500,
     restDay: 0,
+    workingHours: { from: "08:00", to: "17:00" },
   },
   {
     id: 1,
@@ -24,6 +25,7 @@ const initialState = [
     salaryType: "daily",
     salaryAmount: 650,
     restDay: 0,
+    workingHours: { from: "07:00", to: "16:00" },
   },
   {
     id: 2,
@@ -36,6 +38,7 @@ const initialState = [
     salaryType: "fixed",
     salaryAmount: 19650,
     restDay: 0,
+    workingHours: { from: "06:00", to: "15:00" },
   },
 ];
 
