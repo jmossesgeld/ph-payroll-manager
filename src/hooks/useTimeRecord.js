@@ -1,34 +1,58 @@
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { createRecord, updateRecord } from "../store/timerecords";
 
 export default function useTimeRecord(props) {
   const dispatch = useDispatch();
   const record = useSelector(
-    useCallback(
-      (state) =>
-        state.timeKeeping.find(
-          (record) => record.day === props.date && record.employeeId === props.employeeId
-        ),
-      [props.employeeId, props.date]
-    ), shallowEqual
+    (state) =>
+      state.timeKeeping.find(
+        (record) => record.day === props.date && record.employeeId === props.employeeId
+      ),
+    shallowEqual
   );
 
   const holidays = useSelector(
-    useCallback(
-      (state) =>
-        state.holidays.filter((holiday) => new Date(holiday.date).getTime() === props.date),
-      [props]
-    )
+    (state) => state.holidays.filter((holiday) => new Date(holiday.date).getTime() === props.date),
+    shallowEqual
   );
+
   const isRestDay = Boolean(
     props.restDays.filter((day) => day === new Date(props.date).getDay()).length
   );
 
-  const onChangeHandler = (key, event) => {
-    dispatch(updateRecord({ index: record.id, key: key, newValue: event.target.value }));
+  const getTimeDifference = (start, end) => {
+    const [startHour, startMinutes] = start.split(":").map((item) => parseInt(item));
+    const [endHour, endMinutes] = end.split(":").map((item) => parseInt(item));
+    const diffMinutes = (startMinutes - endMinutes) / 60;
+    const diffHour = startHour - endHour;
+    const result = diffHour + diffMinutes;
+    if (isNaN(result)) {
+      return 0;
+    } else {
+      return result.toFixed(2);
+    }
   };
-  console.log("useTimeRecord rendered");
+
+  const onChangeHandler = (key, e) => {
+    if (key === "isAbsent") {
+      dispatch(updateRecord({ index: record.id, key, newValue: e.target.checked }));
+      onChangeHandler("timeIn", { target: { value: e.target.checked ? "" : String(props.from) } });
+      onChangeHandler("timeOut", { target: { value: e.target.checked ? "" : String(props.to) } });
+    } else {
+      dispatch(updateRecord({ index: record.id, key, newValue: e.target.value }));
+    }
+
+    if (key === "timeOut") {
+      dispatch(
+        updateRecord({
+          index: record.id,
+          key: "overtime",
+          newValue: Math.max(getTimeDifference(e.target.value, props.to), 0),
+        })
+      );
+    }
+  };
 
   useEffect(() => {
     if (!record) {

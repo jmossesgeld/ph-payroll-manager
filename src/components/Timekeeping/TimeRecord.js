@@ -1,4 +1,14 @@
-import { Chip, Grid, InputAdornment, Stack, TextField, Tooltip, Typography } from "@mui/material";
+import {
+  Checkbox,
+  Chip,
+  FormControlLabel,
+  Grid,
+  InputAdornment,
+  Stack,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import useTimeRecord from "../../hooks/useTimeRecord";
 
@@ -40,10 +50,11 @@ export default function TimeRecord(props) {
           </Typography>
         </Box>
       </Grid>
-      <Grid item xs={6} sm={6} md={7} sx={styles.timeInput}>
+      <Grid item xs={4} sm={4} md={5} sx={styles.timeInput}>
         <TextField
           type="time"
           label="Time In"
+          disabled={record?.isAbsent}
           value={record?.timeIn ?? ""}
           onChange={onChangeHandler.bind(null, "timeIn")}
           InputLabelProps={{
@@ -53,6 +64,7 @@ export default function TimeRecord(props) {
         <TextField
           type="time"
           label="Time Out"
+          disabled={record?.isAbsent}
           value={record?.timeOut ?? ""}
           onChange={onChangeHandler.bind(null, "timeOut")}
           InputLabelProps={{
@@ -60,24 +72,54 @@ export default function TimeRecord(props) {
           }}
         />
       </Grid>
-      <Grid item xs={6} sm={6} md={5}>
+      <Grid item xs={8} sm={8} md={7}>
         <Grid container columnSpacing={2}>
-          <Grid item xs={12} sm={6} md={5}>
+          <Grid item xs={4} sm={4} md={3}>
+            <FormControlLabel
+              label="Absent"
+              control={
+                <Checkbox
+                  checked={record?.isAbsent ?? false}
+                  onChange={onChangeHandler.bind(null, "isAbsent")}
+                />
+              }
+            />
+          </Grid>
+          <Grid item xs={4} sm={4} md={3}>
             <TextField
               type="number"
               variant="standard"
-              label="Overtime"
-              value={record?.overtime ?? ""}
-              onChange={onChangeHandler.bind(null, "overtime")}
+              label="Late"
+              size="small"
+              disabled={record?.isAbsent}
+              value={record?.late ?? 0}
+              onChange={onChangeHandler.bind(null, "late")}
               InputProps={{
-                endAdornment: <InputAdornment position="start">hour(s)</InputAdornment>,
+                endAdornment: <InputAdornment position="start">hr(s)</InputAdornment>,
               }}
               InputLabelProps={{
                 shrink: true,
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={7}>
+          <Grid item xs={4} sm={4} md={3}>
+            <TextField
+              type="number"
+              variant="standard"
+              label="Overtime"
+              size="small"
+              disabled={record?.isAbsent}
+              value={record?.overtime ?? ""}
+              onChange={onChangeHandler.bind(null, "overtime")}
+              InputProps={{
+                endAdornment: <InputAdornment position="start">hr(s)</InputAdornment>,
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={3}>
             {dayCategories}
           </Grid>
         </Grid>
