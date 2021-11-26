@@ -1,39 +1,43 @@
 import { useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { createRecord, updateRecord } from "../store/timerecords";
 
 export default function useTimeRecord(props) {
   const dispatch = useDispatch();
-  const timeRecords = useSelector((state) => state.timeKeeping);
-  let timeRecordIndex = timeRecords.findIndex(
+  const record = useSelector(
     useCallback(
-      (record) => record.day === props.date.getTime() && record.employeeId === props.employee.id,
-      [props]
-    )
+      (state) =>
+        state.timeKeeping.find(
+          (record) => record.day === props.date && record.employeeId === props.employeeId
+        ),
+      [props.employeeId, props.date]
+    ), shallowEqual
   );
-  const record = timeRecords[timeRecordIndex];
+
   const holidays = useSelector(
     useCallback(
       (state) =>
-        state.holidays.filter(
-          (holiday) => new Date(holiday.date).getTime() === new Date(props.date).getTime()
-        ),
+        state.holidays.filter((holiday) => new Date(holiday.date).getTime() === props.date),
       [props]
     )
   );
-  const isRestDay = props.employee.restDay === props.date.getDay();
+  const isRestDay = Boolean(
+    props.restDays.filter((day) => day === new Date(props.date).getDay()).length
+  );
 
-  const onChangeHandler = (key, event) =>
-    dispatch(updateRecord({ index: timeRecordIndex, key: key, newValue: event.target.value }));
+  const onChangeHandler = (key, event) => {
+    dispatch(updateRecord({ index: record.id, key: key, newValue: event.target.value }));
+  };
+  console.log("useTimeRecord rendered");
 
   useEffect(() => {
-    if (timeRecordIndex === -1) {
+    if (!record) {
       dispatch(
         createRecord({
-          employeeId: props.employee.id,
-          day: props.date.getTime(),
-          timeIn: isRestDay || holidays.length ? "" : props.employee.workingHours.from,
-          timeOut: isRestDay || holidays.length ? "" : props.employee.workingHours.to,
+          employeeId: props.employeeId,
+          day: props.date,
+          timeIn: isRestDay || holidays.length ? "" : props.from,
+          timeOut: isRestDay || holidays.length ? "" : props.to,
           overtime: 0,
           isRestDay,
           holidays: holidays.map((holiday) => holiday.type),
