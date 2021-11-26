@@ -31,7 +31,7 @@ export default function TimeRecord(props) {
       <Grid item xs={12} mb={1}>
         <Box sx={styles.dateLabel}>
           <Typography variant="overline" fontWeight="bold">
-            {props.date.toLocaleDateString("en-US", {
+            {new Date(props.date).toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",
               month: "long",
@@ -65,6 +65,7 @@ export default function TimeRecord(props) {
           <Grid item xs={12} sm={6} md={5}>
             <TextField
               type="number"
+              variant="standard"
               label="Overtime"
               value={record?.overtime ?? ""}
               onChange={onChangeHandler.bind(null, "overtime")}

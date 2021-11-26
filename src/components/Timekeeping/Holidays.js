@@ -39,12 +39,13 @@ export default function NewHoliday(props) {
     mt: 2,
   };
 
-  const holidayList = props.dateList.map((date) =>
-    holidays.filter((holiday) => new Date(holiday.date).getTime() === new Date(date).getTime())
-  );
+  const holidayList = props.dateList
+    .map((date) =>
+      holidays.filter((holiday) => new Date(holiday.date).getTime() === new Date(date).getTime())
+    )
+    .filter((holiday) => holiday.length);
 
   const onAddHoliday = () => {
-    console.log(description.length);
     if (description.length > 1) {
       dispatch(addHoliday({ date, type: holidayType, description }));
       setDescription("");
@@ -53,7 +54,18 @@ export default function NewHoliday(props) {
     }
   };
 
-  console.log(holidayList);
+  const holidayLabel = holidayList.length ? (
+    <Typography
+      variant="caption"
+      sx={{ display: "flex", justifyContent: "center" }}
+    >{`Holidays from ${props.dateList[0].toLocaleDateString()} to ${props.dateList[
+      props.dateList.length - 1
+    ].toLocaleDateString()}`}</Typography>
+  ) : (
+    ""
+  );
+
+  console.log("Holidays rendered")
 
   return (
     <>
@@ -104,13 +116,7 @@ export default function NewHoliday(props) {
           </Grid>
           <Grid item xs={12}>
             <Divider />
-            {holidayList.length ? (
-              <Typography variant="caption" sx={{display:"flex", justifyContent:"center"}}>{`Holidays from ${props.dateList[0].toLocaleDateString()} to ${props.dateList[
-                props.dateList.length - 1
-              ].toLocaleDateString()}`}</Typography>
-            ) : (
-              ""
-            )}
+            {holidayLabel}
             <Stack divider={<Divider />} sx={stackStyle} spacing={0}>
               <TransitionGroup>
                 {holidayList.map((holidays, i) =>

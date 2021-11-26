@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import React, { useState } from "react";
 import { getFullName } from "../../store/employees";
 import { getDaysInBetween, setPayrollPeriodFrom, setPayrollPeriodTo } from "../../store/userprefs";
 import TimeRecord from "./TimeRecord";
@@ -35,6 +35,9 @@ export default function TimeKeeping() {
   const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
 
   const dateList = getDaysInBetween(startDate, endDate);
+
+  console.log("TimeCard rendered");
+  const MemoizedTimeRecord = React.memo((props) => <TimeRecord {...props} />);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", margin: "auto" }}>
@@ -92,8 +95,18 @@ export default function TimeKeeping() {
           </Grid>
           <Grid item xs={12}>
             <Stack spacing={1} divider={<Divider />}>
-              {dateList.map((date, idx) => {
-                return <TimeRecord key={idx} date={date} employee={selectedEmployee} />;
+              {dateList.map((date) => {
+                return (
+                  <MemoizedTimeRecord
+                    // key={date.toString().concat(selectedEmployee.id)}
+                    key={Math.random()}
+                    date={date.getTime()}
+                    employeeId={selectedEmployee.id}
+                    restDays={selectedEmployee.restDays}
+                    from={selectedEmployee.workingHours.from}
+                    to={selectedEmployee.workingHours.to}
+                  />
+                );
               })}
             </Stack>
           </Grid>
