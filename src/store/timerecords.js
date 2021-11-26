@@ -7,11 +7,11 @@ const slice = createSlice({
   initialState,
   reducers: {
     createRecord: (state, action) => {
-      console.log(action.payload);
       state.push({ ...action.payload, id: state.length });
     },
     updateRecord: (state, action) => {
-      state[action.payload.index][action.payload.key] = action.payload.newValue;
+      const { key, index, newValue } = action.payload;
+      state[index][key] = newValue;
     },
   },
 });
