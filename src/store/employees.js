@@ -11,7 +11,7 @@ const initialState = [
     address2: "Calumpit, Bulacan",
     salaryType: "daily",
     salaryAmount: 500,
-    restDay: 0,
+    restDays: [0, 5, 6],
     workingHours: { from: "08:00", to: "17:00" },
   },
   {
@@ -24,7 +24,7 @@ const initialState = [
     address2: "Calumpit, Bulacan",
     salaryType: "daily",
     salaryAmount: 650,
-    restDay: 0,
+    restDays: [0, 6],
     workingHours: { from: "07:00", to: "16:00" },
   },
   {
@@ -37,7 +37,7 @@ const initialState = [
     address2: "Calumpit, Bulacan",
     salaryType: "fixed",
     salaryAmount: 19650,
-    restDay: 0,
+    restDays: [0, 6],
     workingHours: { from: "06:00", to: "15:00" },
   },
 ];
