@@ -13,8 +13,12 @@ const slice = createSlice({
       const { key, index, newValue } = action.payload;
       state[index][key] = newValue;
     },
+    replaceRecord: (state, action) => {
+      const { index, newRecord } = action.payload;
+      state[index] = newRecord;
+    },
   },
 });
 
-export const { createRecord, updateRecord } = slice.actions;
+export const { createRecord, updateRecord, replaceRecord } = slice.actions;
 export default slice.reducer;
