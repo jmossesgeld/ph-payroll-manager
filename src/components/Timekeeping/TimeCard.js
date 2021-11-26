@@ -37,13 +37,12 @@ export default function TimeKeeping() {
   const dateList = getDaysInBetween(startDate, endDate);
 
   console.log("TimeCard rendered");
-  const MemoizedTimeRecord = React.memo((props) => <TimeRecord {...props} />);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", margin: "auto" }}>
       <Paper sx={paperStyle} elevation={5}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={5}>
             <Autocomplete
               options={employees}
               getOptionLabel={(option) => getFullName(option)}
@@ -58,7 +57,7 @@ export default function TimeKeeping() {
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={7} sx={{display:"flex", justifyContent:"flex-end"}}>
             <Tooltip title="Choose payroll period" placement="top">
               <div>
                 <TextField
@@ -97,9 +96,8 @@ export default function TimeKeeping() {
             <Stack spacing={1} divider={<Divider />}>
               {dateList.map((date) => {
                 return (
-                  <MemoizedTimeRecord
-                    // key={date.toString().concat(selectedEmployee.id)}
-                    key={Math.random()}
+                  <TimeRecord
+                    key={date.toString().concat(selectedEmployee.id)}
                     date={date.getTime()}
                     employeeId={selectedEmployee.id}
                     restDays={selectedEmployee.restDays}
