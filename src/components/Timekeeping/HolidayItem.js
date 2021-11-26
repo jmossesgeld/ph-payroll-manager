@@ -9,6 +9,9 @@ export default function HolidayItem(props) {
     dispatch(removeHoliday({ date: props.date, description: props.description }));
   };
 
+  console.log("HolidayItem rendered")
+
+
   return (
     <Grid container spacing={1} sx={{ padding: 2 }}>
       <Grid item xs={12} sm={3}>
