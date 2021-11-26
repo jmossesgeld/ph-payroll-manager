@@ -19,11 +19,11 @@ import {
   InputAdornment,
   Typography,
   IconButton,
+  Autocomplete,
 } from "@mui/material";
 
 const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
-
   return (
     <NumberFormat
       {...other}
@@ -53,6 +53,8 @@ export default function NewEmployee() {
   const address1 = useInput();
   const address2 = useInput();
   const salaryAmount = useInput((value) => value.length > 0);
+  const [restDays, setRestDays] = useState([0]);
+  const [workingHours, setWorkingHours] = useState({ from: "08:00", to: "17:00" });
 
   const onSubmit = (event) => {
     if (firstName.isValid && salaryAmount.isValid) {
@@ -67,6 +69,8 @@ export default function NewEmployee() {
           address2: address2.value,
           salaryType,
           salaryAmount: salaryAmount.value,
+          restDays,
+          workingHours,
         })
       );
       toggleModal();
@@ -237,6 +241,59 @@ export default function NewEmployee() {
               InputProps={{
                 startAdornment: <InputAdornment position="start">₱</InputAdornment>,
                 inputComponent: NumberFormatCustom,
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Autocomplete
+              multiple
+              autoHighlight
+              id="tags-standard"
+              value={restDays}
+              onChange={(e, newValue) => setRestDays(newValue)}
+              options={[0, 1, 2, 3, 4, 5, 6]}
+              getOptionLabel={(option) =>
+                ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][
+                  option
+                ]
+              }
+              defaultValue={[0]}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="standard"
+                  label="Rest Day(s)"
+                  placeholder="Select multiple days if necessary..."
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="caption" sx={{display:"block", mb:1}}>Working Hours</Typography>
+            <TextField  
+              type="time"
+              label="From"
+              value={workingHours.from}
+              onChange={(e) => {
+                setWorkingHours((prev) => {
+                  return { ...prev, from: e.target.value };
+                });
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              type="time"
+              label="To"
+              value={workingHours.to}
+              onChange={(e) => {
+                setWorkingHours((prev) => {
+                  return { ...prev, to: e.target.value };
+                });
+              }}
+              InputLabelProps={{
+                shrink: true,
               }}
             />
           </Grid>
