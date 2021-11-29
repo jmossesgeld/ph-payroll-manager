@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { TransitionGroup } from "react-transition-group";
-import CustomModal from "../Layout/CustomModal";
+import CustomModal from "../Controls/CustomModal";
 import useDateNow from "../../hooks/useDateNow";
 import HolidayItem from "./HolidayItem";
 import { addHoliday } from "../../store/holidays";

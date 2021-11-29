@@ -1,20 +1,12 @@
-import {
-  Grid,
-  Divider,
-  Autocomplete,
-  TextField,
-  Paper,
-  Tooltip,
-  Stack,
-  Button,
-} from "@mui/material";
+import { Grid, Divider, Autocomplete, TextField, Paper, Stack, Button } from "@mui/material";
 import { Box } from "@mui/system";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import React, { useState } from "react";
 import { getFullName } from "../../store/employees";
-import { getDaysInBetween, setPayrollPeriodFrom, setPayrollPeriodTo } from "../../store/userprefs";
+import { getDaysInBetween } from "../../store/userprefs";
 import TimeRecord from "./TimeRecord";
 import Holidays from "./Holidays";
+import PayrollPeriod from "../Controls/PayrollPeriod";
 
 const paperStyle = {
   display: "flex",
@@ -28,10 +20,10 @@ const paperStyle = {
 };
 
 export default function TimeKeeping() {
-  const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees);
-  const startDate = useSelector((state) => state.userprefs.currentPayrollPeriod.from);
-  const endDate = useSelector((state) => state.userprefs.currentPayrollPeriod.to);
+  const current = useSelector((state) => state.userprefs.currentPayrollPeriod);
+  const startDate = current.from;
+  const endDate = current.to;
   const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
 
   const dateList = getDaysInBetween(startDate, endDate);
@@ -57,34 +49,8 @@ export default function TimeKeeping() {
               )}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={7} sx={{display:"flex", justifyContent:"flex-end"}}>
-            <Tooltip title="Choose payroll period" placement="top">
-              <div>
-                <TextField
-                  type="date"
-                  label="from"
-                  helperText="Covered Period"
-                  value={startDate}
-                  onChange={(e) => {
-                    dispatch(setPayrollPeriodFrom(e.target.value));
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <TextField
-                  type="date"
-                  label="to"
-                  value={endDate}
-                  onChange={(e) => {
-                    dispatch(setPayrollPeriodTo(e.target.value));
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </div>
-            </Tooltip>
+          <Grid item xs={12} sm={12} md={7} sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <PayrollPeriod />
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Holidays dateList={dateList} />
