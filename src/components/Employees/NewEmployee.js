@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import NumberFormat from "react-number-format";
 import useInput from "../../hooks/useInput";
 import { addEmployees } from "../../store/employees";
-import CustomModal from "../Layout/CustomModal";
+import CustomModal from "../Controls/CustomModal";
 
 import {
   Button,
