@@ -1,7 +1,7 @@
 import "./App.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Route, Routes } from "react-router";
-import NavBar from "./components/Layout/NavBar";
+import NavBar from "./components/Controls/NavBar";
 import Employees from "./components/Employees/Employees";
 import TimeCard from "./components/Timekeeping/TimeCard";
 import Payroll from "./components/Payroll/Payroll";
