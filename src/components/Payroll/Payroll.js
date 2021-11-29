@@ -1,4 +1,6 @@
 import {
+  Button,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -8,29 +10,60 @@ import {
   TableRow,
 } from "@mui/material";
 import { useSelector } from "react-redux";
+import PayrollPeriod from "../Controls/PayrollPeriod";
+import { getDaysInBetween } from "../../store/userprefs";
+
+const styles = {
+  paper: {
+    width: "90vw",
+    margin: "auto",
+    mt: 4,
+    padding: 4,
+  },
+};
 
 export default function Payroll() {
   const employees = useSelector((state) => state.employees);
+  const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod);
+  const datelist = getDaysInBetween(currentPeriod.from, currentPeriod.to);
+  const timerecords = useSelector((state) => state.timerecords.filter(item=>datelist.includes()));
+  const computePayrollDaily = (employee) => {};
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Employees</TableCell>
-            <TableCell align="right">Salary Type</TableCell>
-            <TableCell align="right">Basic Salary</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {employees.map((employee) => (
-            <TableRow>
-              <TableCell>{employee.lastName}</TableCell>
-              <TableCell align="right">{employee.salaryType}</TableCell>
-              <TableCell align="right">{employee.salaryAmount}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Paper elevation={5} sx={styles.paper}>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <PayrollPeriod />
+        </Grid>
+        <Grid
+          item
+          xs={6}
+          sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}
+        >
+          <Button variant="contained">Generate Payroll</Button>
+        </Grid>
+        <Grid item xs={12}>
+          <TableContainer component={Paper}>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Employees</TableCell>
+                  <TableCell align="right">Salary Type</TableCell>
+                  <TableCell align="right">Basic Salary</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {employees.map((employee) => (
+                  <TableRow>
+                    <TableCell>{employee.lastName}</TableCell>
+                    <TableCell align="right">{employee.salaryType}</TableCell>
+                    <TableCell align="right">{employee.salaryAmount}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 }
