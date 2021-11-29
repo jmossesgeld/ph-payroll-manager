@@ -4,7 +4,6 @@ import {
   FormControlLabel,
   Grid,
   InputAdornment,
-  Stack,
   TextField,
   Tooltip,
   Typography,
@@ -21,19 +20,25 @@ export default function TimeRecord(props) {
   const { record, onChangeHandler, holidays, isRestDay } = useTimeRecord(props);
 
   const dayCategories = (
-    <Stack>
+    <Grid container>
       {holidays.map((holiday, idx) => (
-        <Tooltip key={idx} title={holiday.description} placement="top" arrow>
-          <Chip
-            label={holiday.type === "regular" ? "Regular Holiday" : "Special Non-Working Holiday"}
-            variant="outlined"
-            key={idx}
-            color="warning"
-          />
-        </Tooltip>
+        <Grid item xs={6}>
+          <Tooltip key={idx} title={holiday.description} placement="top" arrow>
+            <Chip
+              label={holiday.type === "regular" ? "Regular Holiday" : "Special Non-Working Holiday"}
+              variant="outlined"
+              key={idx}
+              color="warning"
+            />
+          </Tooltip>
+        </Grid>
       ))}
-      {isRestDay && <Chip label="Rest Day" variant="outlined" color="primary" />}
-    </Stack>
+      {isRestDay && (
+        <Grid item xs={6}>
+          <Chip label="Rest Day" variant="outlined" color="primary" />
+        </Grid>
+      )}
+    </Grid>
   );
 
   return (
@@ -73,13 +78,14 @@ export default function TimeRecord(props) {
         />
       </Grid>
       <Grid item xs={8} sm={8} md={7}>
-        <Grid container columnSpacing={2}>
-          <Grid item xs={4} sm={4} md={3}>
+        <Grid container spacing={2}>
+          <Grid item xs={4} sm={4} md={2.5}>
             <FormControlLabel
               label="Absent"
               control={
                 <Checkbox
                   checked={record?.isAbsent ?? false}
+                  disabled={(isRestDay || holidays.length) ?? false}
                   onChange={onChangeHandler.bind(null, "isAbsent")}
                 />
               }
@@ -92,7 +98,7 @@ export default function TimeRecord(props) {
               label="Late"
               size="small"
               disabled={record?.isAbsent}
-              value={record?.late ?? 0}
+              value={record?.late ?? 0.0}
               onChange={onChangeHandler.bind(null, "late")}
               InputProps={{
                 endAdornment: <InputAdornment position="start">hr(s)</InputAdornment>,
@@ -109,7 +115,7 @@ export default function TimeRecord(props) {
               label="Overtime"
               size="small"
               disabled={record?.isAbsent}
-              value={record?.overtime ?? ""}
+              value={record?.overtime ?? 0.0}
               onChange={onChangeHandler.bind(null, "overtime")}
               InputProps={{
                 endAdornment: <InputAdornment position="start">hr(s)</InputAdornment>,
@@ -119,8 +125,8 @@ export default function TimeRecord(props) {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={3}>
-            {dayCategories}
+          <Grid item xs={12} sm={12} md={3.5}>
+            {dayCategories.map}
           </Grid>
         </Grid>
       </Grid>

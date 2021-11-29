@@ -30,15 +30,23 @@ export default function useTimeRecord(props) {
     if (isNaN(result)) {
       return 0;
     } else {
-      return result.toFixed(2);
+      return Math.max(result.toFixed(2),0);
     }
   };
 
   const onChangeHandler = (key, e) => {
     if (key === "isAbsent") {
       dispatch(updateRecord({ index: record.id, key, newValue: e.target.checked }));
-      onChangeHandler("timeIn", { target: { value: e.target.checked ? "" : String(props.from) } });
-      onChangeHandler("timeOut", { target: { value: e.target.checked ? "" : String(props.to) } });
+      onChangeHandler("timeIn", {
+        target: {
+          value: e.target.checked || isRestDay || holidays.length ? "" : String(props.from),
+        },
+      });
+      onChangeHandler("timeOut", {
+        target: {
+          value: e.target.checked || isRestDay || holidays.length ? "" : String(props.to),
+        },
+      });
     } else {
       dispatch(updateRecord({ index: record.id, key, newValue: e.target.value }));
     }
@@ -48,7 +56,17 @@ export default function useTimeRecord(props) {
         updateRecord({
           index: record.id,
           key: "overtime",
-          newValue: Math.max(getTimeDifference(e.target.value, props.to), 0),
+          newValue: getTimeDifference(e.target.value, props.to),
+        })
+      );
+    }
+
+    if (key === "timeIn") {
+      dispatch(
+        updateRecord({
+          index: record.id,
+          key: "late",
+          newValue: getTimeDifference(e.target.value, props.from),
         })
       );
     }
@@ -59,10 +77,11 @@ export default function useTimeRecord(props) {
       dispatch(
         createRecord({
           employeeId: props.employeeId,
-          day: props.date,
+          date: props.date,
           timeIn: isRestDay || holidays.length ? "" : props.from,
           timeOut: isRestDay || holidays.length ? "" : props.to,
-          overtime: 0,
+          overtime: 0.00,
+          late:0.00,
           isRestDay,
           holidays: holidays.map((holiday) => holiday.type),
         })
