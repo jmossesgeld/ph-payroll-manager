@@ -22,7 +22,7 @@ export default function TimeRecord(props) {
   const dayCategories = (
     <Grid container>
       {holidays.map((holiday, idx) => (
-        <Grid item xs={6}>
+        <Grid item xs={6} sm={6} md={12}>
           <Tooltip key={idx} title={holiday.description} placement="top" arrow>
             <Chip
               label={holiday.type === "regular" ? "Regular Holiday" : "Special Non-Working Holiday"}
@@ -34,8 +34,8 @@ export default function TimeRecord(props) {
         </Grid>
       ))}
       {isRestDay && (
-        <Grid item xs={6}>
-          <Chip label="Rest Day" variant="outlined" color="primary" />
+        <Grid item xs={6} sm={6} md={12}>
+          <Chip label="Rest Day" variant="outlined" color="primary"/>
         </Grid>
       )}
     </Grid>
@@ -85,7 +85,7 @@ export default function TimeRecord(props) {
               control={
                 <Checkbox
                   checked={record?.isAbsent ?? false}
-                  disabled={(isRestDay || holidays.length) ?? false}
+                  disabled={isRestDay || holidays.length || false}
                   onChange={onChangeHandler.bind(null, "isAbsent")}
                 />
               }
@@ -126,7 +126,7 @@ export default function TimeRecord(props) {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={3.5}>
-            {dayCategories.map}
+            {dayCategories}
           </Grid>
         </Grid>
       </Grid>
