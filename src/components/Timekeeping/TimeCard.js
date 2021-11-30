@@ -65,10 +65,7 @@ export default function TimeKeeping() {
                   <TimeRecord
                     key={date.toString().concat(selectedEmployee.id)}
                     date={date.getTime()}
-                    employeeId={selectedEmployee.id}
-                    restDays={selectedEmployee.restDays}
-                    from={selectedEmployee.workingHours.from}
-                    to={selectedEmployee.workingHours.to}
+                    employee={selectedEmployee}
                   />
                 );
               })}

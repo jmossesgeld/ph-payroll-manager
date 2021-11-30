@@ -9,9 +9,10 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useSelector } from "react-redux";
-import PayrollPeriod from "../Controls/PayrollPeriod";
+import { shallowEqual, useSelector } from "react-redux";
+import useTimeRecord from "../../hooks/useTimeRecord";
 import { getDaysInBetween } from "../../store/userprefs";
+import PayrollPeriod from "../Controls/PayrollPeriod";
 
 const styles = {
   paper: {
@@ -23,11 +24,11 @@ const styles = {
 };
 
 export default function Payroll() {
-  const employees = useSelector((state) => state.employees);
-  const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod);
-  const datelist = getDaysInBetween(currentPeriod.from, currentPeriod.to);
-  const timerecords = useSelector((state) => state.timerecords.filter(item=>datelist.includes()));
-  const computePayrollDaily = (employee) => {};
+  const employees = useSelector((state) => state.employees, shallowEqual);
+  const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod, shallowEqual);
+  const dateList = getDaysInBetween(currentPeriod.from, currentPeriod.to);
+
+
   return (
     <Paper elevation={5} sx={styles.paper}>
       <Grid container spacing={2}>
@@ -52,8 +53,8 @@ export default function Payroll() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {employees.map((employee) => (
-                  <TableRow>
+                {employees.map((employee, idx) => (
+                  <TableRow key={idx}>
                     <TableCell>{employee.lastName}</TableCell>
                     <TableCell align="right">{employee.salaryType}</TableCell>
                     <TableCell align="right">{employee.salaryAmount}</TableCell>
