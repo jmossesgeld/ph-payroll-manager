@@ -9,7 +9,6 @@ export default function HolidayItem(props) {
     dispatch(removeHoliday({ date: props.date, description: props.description }));
   };
 
-  console.log("HolidayItem rendered")
 
 
   return (

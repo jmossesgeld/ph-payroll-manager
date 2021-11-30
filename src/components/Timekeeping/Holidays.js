@@ -65,7 +65,6 @@ export default function NewHoliday(props) {
     ""
   );
 
-  console.log("Holidays rendered")
 
   return (
     <>
