@@ -7,7 +7,7 @@ export default function useTimeRecord(props) {
   const record = useSelector(
     (state) =>
       state.timeKeeping.find(
-        (record) => record.day === props.date && record.employeeId === props.employeeId
+        (record) => record.date === props.date && record.employeeId === props.employee.id
       ),
     shallowEqual
   );
@@ -18,7 +18,7 @@ export default function useTimeRecord(props) {
   );
 
   const isRestDay = Boolean(
-    props.restDays.filter((day) => day === new Date(props.date).getDay()).length
+    props.employee.restDays.filter((day) => day === new Date(props.date).getDay()).length
   );
 
   const getTimeDifference = (start, end) => {
@@ -30,7 +30,7 @@ export default function useTimeRecord(props) {
     if (isNaN(result)) {
       return 0;
     } else {
-      return Math.max(result.toFixed(2),0);
+      return Math.max(result.toFixed(2), 0);
     }
   };
 
@@ -39,12 +39,18 @@ export default function useTimeRecord(props) {
       dispatch(updateRecord({ index: record.id, key, newValue: e.target.checked }));
       onChangeHandler("timeIn", {
         target: {
-          value: e.target.checked || isRestDay || holidays.length ? "" : String(props.from),
+          value:
+            e.target.checked || isRestDay || holidays.length
+              ? ""
+              : String(props.employee.workingHours.from),
         },
       });
       onChangeHandler("timeOut", {
         target: {
-          value: e.target.checked || isRestDay || holidays.length ? "" : String(props.to),
+          value:
+            e.target.checked || isRestDay || holidays.length
+              ? ""
+              : String(props.employee.workingHours.to),
         },
       });
     } else {
@@ -56,7 +62,7 @@ export default function useTimeRecord(props) {
         updateRecord({
           index: record.id,
           key: "overtime",
-          newValue: getTimeDifference(e.target.value, props.to),
+          newValue: getTimeDifference(e.target.value, props.employee.workingHours.to),
         })
       );
     }
@@ -66,7 +72,7 @@ export default function useTimeRecord(props) {
         updateRecord({
           index: record.id,
           key: "late",
-          newValue: getTimeDifference(e.target.value, props.from),
+          newValue: getTimeDifference(e.target.value, props.employee.workingHours.from),
         })
       );
     }
@@ -76,14 +82,29 @@ export default function useTimeRecord(props) {
     if (!record) {
       dispatch(
         createRecord({
-          employeeId: props.employeeId,
+          employeeId: props.employee.id,
           date: props.date,
-          timeIn: isRestDay || holidays.length ? "" : props.from,
-          timeOut: isRestDay || holidays.length ? "" : props.to,
-          overtime: 0.00,
-          late:0.00,
+          timeIn: isRestDay || holidays.length ? "" : props.employee.workingHours.from,
+          timeOut: isRestDay || holidays.length ? "" : props.employee.workingHours.to,
+          overtime: 0.0,
+          late: 0.0,
           isRestDay,
-          holidays: holidays.map((holiday) => holiday.type),
+          holidays,
+        })
+      );
+    } else {
+      dispatch(
+        updateRecord({
+          index: record.id,
+          key: "holidays",
+          newValue: holidays,
+        })
+      );
+      dispatch(
+        updateRecord({
+          index: record.id,
+          key: "isRestDay",
+          newValue: isRestDay,
         })
       );
     }

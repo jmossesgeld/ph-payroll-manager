@@ -13,29 +13,31 @@ import useTimeRecord from "../../hooks/useTimeRecord";
 
 const styles = {
   dateLabel: { display: "flex", "& div": { ml: 2 }, overflow: "auto" },
-  timeInput: { display: "flex", flexWrap: "wrap", "& .MuiFormControl-root": { mr: 1, mb: 1 } },
+  timeInput: { display: "flex", "& .MuiFormControl-root": { mb: 1 } },
 };
 
 export default function TimeRecord(props) {
   const { record, onChangeHandler, holidays, isRestDay } = useTimeRecord(props);
+  console.log(record)
 
   const dayCategories = (
     <Grid container>
-      {holidays.map((holiday, idx) => (
-        <Grid item xs={6} sm={6} md={12}>
-          <Tooltip key={idx} title={holiday.description} placement="top" arrow>
+      {record?.holidays.map((holiday, idx) => (
+        <Grid key={idx} item xs={6} sm={6} md={12}>
+          <Tooltip title={holiday.description} placement="top" arrow>
             <Chip
-              label={holiday.type === "regular" ? "Regular Holiday" : "Special Non-Working Holiday"}
+              label={holiday.type === "regular" ? "Regular Holiday" : "Special Day"}
               variant="outlined"
               key={idx}
               color="warning"
+              sx={{ width: "100%" }}
             />
           </Tooltip>
         </Grid>
       ))}
-      {isRestDay && (
+      {record?.isRestDay && (
         <Grid item xs={6} sm={6} md={12}>
-          <Chip label="Rest Day" variant="outlined" color="primary"/>
+          <Chip label="Rest Day" variant="outlined" sx={{ width: "100%" }} color="primary" />
         </Grid>
       )}
     </Grid>
@@ -55,7 +57,7 @@ export default function TimeRecord(props) {
           </Typography>
         </Box>
       </Grid>
-      <Grid item xs={4} sm={4} md={5} sx={styles.timeInput}>
+      <Grid item xs={12} sm={8} md={5} sx={styles.timeInput}>
         <TextField
           type="time"
           label="Time In"
@@ -77,9 +79,9 @@ export default function TimeRecord(props) {
           }}
         />
       </Grid>
-      <Grid item xs={8} sm={8} md={7}>
+      <Grid item xs={12} sm={8} md={7}>
         <Grid container spacing={2}>
-          <Grid item xs={4} sm={4} md={2.5}>
+          <Grid item xs={4} sm={4} md={3}>
             <FormControlLabel
               label="Absent"
               control={
@@ -91,7 +93,7 @@ export default function TimeRecord(props) {
               }
             />
           </Grid>
-          <Grid item xs={4} sm={4} md={3}>
+          <Grid item xs={4} sm={4} md={2.75}>
             <TextField
               type="number"
               variant="standard"
@@ -108,7 +110,7 @@ export default function TimeRecord(props) {
               }}
             />
           </Grid>
-          <Grid item xs={4} sm={4} md={3}>
+          <Grid item xs={4} sm={4} md={2.75}>
             <TextField
               type="number"
               variant="standard"
@@ -125,7 +127,7 @@ export default function TimeRecord(props) {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} md={3.5}>
+          <Grid item xs={12} sm={4} md={3.5}>
             {dayCategories}
           </Grid>
         </Grid>
