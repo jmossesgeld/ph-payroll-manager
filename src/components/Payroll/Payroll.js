@@ -9,10 +9,10 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { shallowEqual, useSelector } from "react-redux";
-import useTimeRecord from "../../hooks/useTimeRecord";
-import { getDaysInBetween } from "../../store/userprefs";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { getDaysInBetween, getTimeDifference } from "../../store/userprefs";
 import PayrollPeriod from "../Controls/PayrollPeriod";
+import { createRecord } from "../../store/timerecords";
 
 const styles = {
   paper: {
@@ -24,10 +24,86 @@ const styles = {
 };
 
 export default function Payroll() {
+  const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees, shallowEqual);
   const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod, shallowEqual);
-  const dateList = getDaysInBetween(currentPeriod.from, currentPeriod.to);
+  const dateList = getDaysInBetween(currentPeriod.from, currentPeriod.to).map((date) =>
+    date.getTime()
+  );
+  const filteredTimeRecords = useSelector((state) =>
+    state.timeKeeping.filter((record) => dateList.includes(record.date))
+  );
+  const holidays = useSelector((state) => state.holidays);
 
+  const getGrossModifiers = (timeRecords) => {
+    return timeRecords.reduce(
+      (prev, current) => {
+        const hours = getTimeDifference(current.timeOut, current.timeIn);
+        console.log(prev);
+        return {
+          overtime: prev.overtime + Math.max(current.overtime, 0),
+          undertime: prev.undertime + Math.min(current.overtime, 0),
+          regularHoliday:
+            prev.regularHoliday +
+            current.holidays.filter((holiday) => holiday.type === "regular").length * hours,
+          specialHoliday:
+            prev.specialHoliday +
+            current.holidays.filter((holiday) => holiday.type === "special").length * hours,
+          restDay: prev.restDay + (current.isRestDay ? 1 : 0) * hours,
+          late: prev.late + current.late,
+          absences: prev.absences + (current.isAbsent ? 8 : 0),
+        };
+      },
+      {
+        overtime: 0,
+        undertime: 0,
+        regularHoliday: 0,
+        specialHoliday: 0,
+        restDay: 0,
+        late: 0,
+        absences: 0,
+      }
+    );
+  };
+
+  const onGeneratePayroll = () => {
+    const payroll = employees.map((employee) => {
+      const timeRecords = dateList.map((date) => {
+        const record = filteredTimeRecords.find(
+          (record) => record.date === date && record.employeeId === employee.id
+        );
+        if (!record) {
+          const listOfHolidays = holidays.filter(
+            (holiday) => new Date(holiday.date).getTime() === date
+          );
+          const isRestDay = Boolean(
+            employee.restDays.filter((day) => day === new Date(date).getDay()).length
+          );
+          const newRecord = {
+            employeeId: employee.id,
+            date,
+            timeIn: isRestDay || listOfHolidays.length ? "" : employee.workingHours.from,
+            timeOut: isRestDay || listOfHolidays.length ? "" : employee.workingHours.to,
+            overtime: 0.0,
+            late: 0.0,
+            isRestDay,
+            holidays: listOfHolidays,
+          };
+          dispatch(createRecord(newRecord));
+          return newRecord;
+        } else {
+          return record;
+        }
+      });
+      const grossModifiers = getGrossModifiers(timeRecords);
+      return {
+        employee,
+        timeRecords,
+        grossModifiers,
+      };
+    });
+    console.log(payroll);
+  };
 
   return (
     <Paper elevation={5} sx={styles.paper}>
@@ -40,7 +116,9 @@ export default function Payroll() {
           xs={6}
           sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}
         >
-          <Button variant="contained">Generate Payroll</Button>
+          <Button variant="contained" onClick={onGeneratePayroll}>
+            Generate Payroll
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <TableContainer component={Paper}>
