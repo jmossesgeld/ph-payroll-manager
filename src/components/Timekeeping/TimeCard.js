@@ -25,8 +25,24 @@ export default function TimeKeeping() {
   const startDate = current.from;
   const endDate = current.to;
   const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
-
   const dateList = getDaysInBetween(startDate, endDate);
+  const [timeRecords, setTimeRecords] = useState("");
+
+  const generateTimeRecords = () => {
+    setTimeRecords(
+      <Stack spacing={1} divider={<Divider />}>
+        {dateList.map((date) => {
+          return (
+            <TimeRecord
+              key={date.toString().concat(selectedEmployee.id)}
+              date={date.getTime()}
+              employee={selectedEmployee}
+            />
+          );
+        })}
+      </Stack>
+    );
+  };
 
   console.log("TimeCard rendered");
 
@@ -54,22 +70,12 @@ export default function TimeKeeping() {
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Holidays dateList={dateList} />
-            <Button variant="contained" color="success">
-              Generate Individual Salary
+            <Button variant="contained" color="success" onClick={generateTimeRecords}>
+              Generate Time Card
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <Stack spacing={1} divider={<Divider />}>
-              {dateList.map((date) => {
-                return (
-                  <TimeRecord
-                    key={date.toString().concat(selectedEmployee.id)}
-                    date={date.getTime()}
-                    employee={selectedEmployee}
-                  />
-                );
-              })}
-            </Stack>
+            {timeRecords}
           </Grid>
         </Grid>
       </Paper>
