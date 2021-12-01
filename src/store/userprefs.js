@@ -32,5 +32,18 @@ export const getDaysInBetween = (startDate, endDate) => {
   return dates;
 };
 
+export const getTimeDifference = (start, end) => {
+  const [startHour, startMinutes] = start.split(":").map((item) => parseInt(item));
+  const [endHour, endMinutes] = end.split(":").map((item) => parseInt(item));
+  const diffMinutes = (startMinutes - endMinutes) / 60;
+  const diffHour = startHour - endHour;
+  const result = diffHour + diffMinutes;
+  if (isNaN(result)) {
+    return 0;
+  } else {
+    return result.toFixed(2);
+  }
+};
+
 export const { setPayrollPeriodFrom, setPayrollPeriodTo } = slice.actions;
 export default slice.reducer;
