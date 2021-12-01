@@ -17,8 +17,7 @@ const styles = {
 };
 
 export default function TimeRecord(props) {
-  const { record, onChangeHandler, holidays, isRestDay } = useTimeRecord(props);
-  console.log(record)
+  const { record, onChangeHandler } = useTimeRecord(props.date, props.employee);
 
   const dayCategories = (
     <Grid container>
@@ -61,7 +60,7 @@ export default function TimeRecord(props) {
         <TextField
           type="time"
           label="Time In"
-          disabled={record?.isAbsent}
+          disabled={record?.isAbsent || false}
           value={record?.timeIn ?? ""}
           onChange={onChangeHandler.bind(null, "timeIn")}
           InputLabelProps={{
@@ -71,7 +70,7 @@ export default function TimeRecord(props) {
         <TextField
           type="time"
           label="Time Out"
-          disabled={record?.isAbsent}
+          disabled={record?.isAbsent || false}
           value={record?.timeOut ?? ""}
           onChange={onChangeHandler.bind(null, "timeOut")}
           InputLabelProps={{
@@ -87,7 +86,7 @@ export default function TimeRecord(props) {
               control={
                 <Checkbox
                   checked={record?.isAbsent ?? false}
-                  disabled={isRestDay || holidays.length || false}
+                  disabled={record?.isRestDay || record?.holidays.length > 0 || false}
                   onChange={onChangeHandler.bind(null, "isAbsent")}
                 />
               }
@@ -99,7 +98,7 @@ export default function TimeRecord(props) {
               variant="standard"
               label="Late"
               size="small"
-              disabled={record?.isAbsent}
+              disabled={record?.isAbsent || false}
               value={record?.late ?? 0.0}
               onChange={onChangeHandler.bind(null, "late")}
               InputProps={{
@@ -114,10 +113,10 @@ export default function TimeRecord(props) {
             <TextField
               type="number"
               variant="standard"
-              label="Overtime"
+              label={record?.overtime > 0 ? "Overtime" : "Undertime"}
               size="small"
-              disabled={record?.isAbsent}
-              value={record?.overtime ?? 0.0}
+              disabled={record?.isAbsent || false}
+              value={record?.overtime || record?.undertime || 0}
               onChange={onChangeHandler.bind(null, "overtime")}
               InputProps={{
                 endAdornment: <InputAdornment position="start">hr(s)</InputAdornment>,
