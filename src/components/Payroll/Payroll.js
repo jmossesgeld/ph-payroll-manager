@@ -39,17 +39,34 @@ export default function Payroll() {
     return timeRecords.reduce(
       (prev, current) => {
         const hours = getTimeDifference(current.timeOut, current.timeIn);
-        console.log(prev);
+        const regularHolidays = current.holidays.filter(
+          (holiday) => holiday.type === "regular"
+        ).length; //determine no. of regular holidays
+        const specialHolidays = current.holidays.filter(
+          (holiday) => holiday.type === "special"
+        ).length; //determine no. of special holidays
+        let multiplier = 1;
+        if (current.isRestDay) {
+          if (specialHolidays) {
+            multiplier = 1.5;
+          } else if (regularHolidays) {
+            multiplier = 2.6;
+          } else {
+            multiplier = 1.3;
+          }
+        } else if (specialHolidays) {
+          multiplier = 1.3;
+        } else if (regularHolidays) {
+          multiplier = 1 + regularHolidays;
+        }
         return {
-          overtime: prev.overtime + Math.max(current.overtime, 0),
-          undertime: prev.undertime + Math.min(current.overtime, 0),
-          regularHoliday:
-            prev.regularHoliday +
-            current.holidays.filter((holiday) => holiday.type === "regular").length * hours,
-          specialHoliday:
-            prev.specialHoliday +
-            current.holidays.filter((holiday) => holiday.type === "special").length * hours,
-          restDay: prev.restDay + (current.isRestDay ? 1 : 0) * hours,
+          overtime: prev.overtime + Math.max(current.overtime, 0) * multiplier * 1.25,
+          undertime: prev.undertime + Math.min(current.overtime, 0) * multiplier,
+          regularHoliday: prev.regularHoliday + (regularHolidays ? multiplier : 0) * hours,
+          specialHoliday: prev.specialHoliday + (specialHolidays ? multiplier : 0) * hours,
+          restDay:
+            prev.restDay +
+            (current.isRestDay && !specialHolidays && !regularHolidays ? multiplier : 0) * hours,
           late: prev.late + current.late,
           absences: prev.absences + (current.isAbsent ? 8 : 0),
         };
@@ -62,7 +79,7 @@ export default function Payroll() {
         restDay: 0,
         late: 0,
         absences: 0,
-      }
+      } //initial value of reduce
     );
   };
 

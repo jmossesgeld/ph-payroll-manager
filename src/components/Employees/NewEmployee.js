@@ -221,8 +221,18 @@ export default function NewEmployee() {
                 onChange={(event, value) => setSalaryType(value)}
                 name="radio-buttons-group"
               >
-                <FormControlLabel value="daily" control={<Radio />} label="Daily" />
-                <FormControlLabel value="fixed" control={<Radio />} label="Monthly (Fixed)" />
+                <FormControlLabel value="daily" control={<Radio />} label="Daily Rate" />
+                <FormControlLabel value="w-fixed" control={<Radio />} label="Fixed Rate (Weekly)" />
+                <FormControlLabel
+                  value="sm-fixed"
+                  control={<Radio />}
+                  label="Fixed Rate (Semi-Monthly)"
+                />
+                <FormControlLabel
+                  value="m-fixed"
+                  control={<Radio />}
+                  label="Fixed Rate (Monthly)"
+                />
               </RadioGroup>
             </FormControl>
           </Grid>
@@ -269,8 +279,10 @@ export default function NewEmployee() {
             />
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="caption" sx={{display:"block", mb:1}}>Working Hours</Typography>
-            <TextField  
+            <Typography variant="caption" sx={{ display: "block", mb: 1 }}>
+              Working Hours
+            </Typography>
+            <TextField
               type="time"
               label="From"
               value={workingHours.from}
