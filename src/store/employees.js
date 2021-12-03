@@ -11,7 +11,7 @@ const initialState = [
     address2: "Calumpit, Bulacan",
     salaryType: "daily",
     salaryAmount: 500,
-    restDays: [0, 5, 6],
+    restDays: [0],
     workingHours: { from: "08:00", to: "17:00" },
   },
   {

@@ -13,6 +13,13 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { getDaysInBetween, getTimeDifference } from "../../store/userprefs";
 import PayrollPeriod from "../Controls/PayrollPeriod";
 import { createRecord } from "../../store/timerecords";
+import { useState } from "react";
+import { getFullName } from "../../store/employees";
+import {
+  computeHDMFContribution,
+  computePHICContribution,
+  computeSSSContribution,
+} from "./Contributions";
 
 const styles = {
   paper: {
@@ -34,11 +41,15 @@ export default function Payroll() {
     state.timeKeeping.filter((record) => dateList.includes(record.date))
   );
   const holidays = useSelector((state) => state.holidays);
+  const [payrollData, setPayrollData] = useState([]);
 
   const getGrossModifiers = (timeRecords) => {
     return timeRecords.reduce(
       (prev, current) => {
-        const hours = getTimeDifference(current.timeOut, current.timeIn);
+        const hours =
+          parseFloat(getTimeDifference(current.timeOut, current.timeIn)) > 0
+            ? 8 - current.late - Math.min(current.overtime, 0)
+            : 0;
         const regularHolidays = current.holidays.filter(
           (holiday) => holiday.type === "regular"
         ).length; //determine no. of regular holidays
@@ -60,18 +71,23 @@ export default function Payroll() {
           multiplier = 1 + regularHolidays;
         }
         return {
+          normalDaysWorked:
+            prev.normalDaysWorked +
+            (!current.isRestDay && !specialHolidays && !regularHolidays ? 1 : 0),
           overtime: prev.overtime + Math.max(current.overtime, 0) * multiplier * 1.25,
           undertime: prev.undertime + Math.min(current.overtime, 0) * multiplier,
           regularHoliday: prev.regularHoliday + (regularHolidays ? multiplier : 0) * hours,
           specialHoliday: prev.specialHoliday + (specialHolidays ? multiplier : 0) * hours,
           restDay:
             prev.restDay +
-            (current.isRestDay && !specialHolidays && !regularHolidays ? multiplier : 0) * hours,
-          late: prev.late + current.late,
+            (current.isRestDay && specialHolidays === 0 && regularHolidays === 0 ? multiplier : 0) *
+              hours,
+          late: prev.late + current.late * multiplier,
           absences: prev.absences + (current.isAbsent ? 8 : 0),
-        };
+        }; //grossModifier object to be passed to next record
       },
       {
+        normalDaysWorked: 0,
         overtime: 0,
         undertime: 0,
         regularHoliday: 0,
@@ -82,6 +98,40 @@ export default function Payroll() {
       } //initial value of reduce
     );
   };
+
+  const rows = payrollData.map((data) => {
+    if (data.employee.salaryType === "daily") {
+      const rate = data.employee.salaryAmount / 8;
+      const modifiers = data.grossModifiers;
+      const employeeName = getFullName(data.employee);
+      const basicPay = rate * modifiers.normalDaysWorked * 8;
+      const overtime = rate * modifiers.overtime;
+      const holiday = rate * (modifiers.regularHoliday + modifiers.specialHoliday);
+      const restDay = rate * modifiers.restDay;
+      const lateUndertime = rate * (modifiers.late + modifiers.undertime);
+      const absences = rate * modifiers.absences;
+      const grossPay = basicPay + overtime + holiday + restDay - lateUndertime - absences;
+      const sssCont = computeSSSContribution(grossPay).EE;
+      const phicCont = computePHICContribution(data.employee);
+      const hdmfCont = computeHDMFContribution(grossPay).EE;
+      return {
+        employeeName,
+        basicPay,
+        overtime,
+        holiday,
+        restDay,
+        lateUndertime,
+        absences,
+        grossPay,
+        sssCont,
+        phicCont,
+        hdmfCont,
+      };
+    } else {
+      return {};
+    }
+  });
+  console.log(rows);
 
   const onGeneratePayroll = () => {
     const payroll = employees.map((employee) => {
@@ -119,7 +169,7 @@ export default function Payroll() {
         grossModifiers,
       };
     });
-    console.log(payroll);
+    setPayrollData(payroll);
   };
 
   return (
