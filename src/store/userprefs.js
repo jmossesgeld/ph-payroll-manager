@@ -41,7 +41,7 @@ export const getTimeDifference = (start, end) => {
   if (isNaN(result)) {
     return 0;
   } else {
-    return result.toFixed(2);
+    return Math.round(result.toFixed(2) * 100) / 100;
   }
 };
 
