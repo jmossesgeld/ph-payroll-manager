@@ -5,6 +5,9 @@ import {
   computeHDMFContribution,
   computePHICContribution,
   computeSSSContribution,
+  SSSthresholds,
+  PHICthresholds,
+  HDMFthresholds,
 } from "./Contributions";
 
 export function computeGrossModifiers(timeRecords) {
@@ -63,41 +66,74 @@ export function computeGrossModifiers(timeRecords) {
   );
 }
 
+function getPreviousContributions(previousPayrolls, employeeID) {
+  return previousPayrolls.reduce(
+    (prev, curr) => {
+      const employeePay = curr.find((payroll) => payroll.employeeID === employeeID);
+      return {
+        prevSSSConts: prev.prevSSSConts + employeePay?.sssCont ?? 0,
+        prevPHICConts: prev.prevSSSConts + employeePay?.phicCont ?? 0,
+        prevHDMFConts: prev.prevSSSConts + employeePay?.hdmfCont ?? 0,
+      };
+    },
+    { prevSSSConts: 0, prevPHICConts: 0, prevHDMFConts: 0 } //initial value
+  );
+}
+
 export function createRows(payrollData, previousPayrolls) {
   return payrollData.map((data) => {
+    let rate, modifiers, basicPay;
     if (data.employee.salaryType === "daily") {
-      const { prevSSSCont, prevPHICCont, prevHDMFCont } = previousPayrolls;
-      const dateList = data.dateList;
-      const rate = data.employee.salaryAmount / 8;
-      const modifiers = data.grossModifiers;
-      const employeeName = getFullName(data.employee);
-      const basicPay = rate * modifiers.normalDaysWorked * 8;
-      const overtime = rate * modifiers.overtime;
-      const holiday = rate * (modifiers.regularHoliday + modifiers.specialHoliday);
-      const restDay = rate * modifiers.restDay;
-      const lateUndertime = rate * (modifiers.late + modifiers.undertime);
-      const absences = rate * modifiers.absences;
-      const grossPay = basicPay + overtime + holiday + restDay - lateUndertime - absences;
-      const sssCont = computeSSSContribution(grossPay).EE;
-      const phicCont = computePHICContribution(data.employee);
-      const hdmfCont = computeHDMFContribution(grossPay).EE;
-      return {
-        dateList,
-        employeeName,
-        basicPay,
-        overtime,
-        holiday,
-        restDay,
-        lateUndertime,
-        absences,
-        grossPay,
-        sssCont,
-        phicCont,
-        hdmfCont,
-      };
+      rate = data.employee.salaryAmount / 8;
+      modifiers = data.grossModifiers;
+      basicPay = rate * modifiers.normalDaysWorked * 8;
     } else {
-      return {};
+      rate = data.employee.salaryAmount / 8;
+      modifiers = data.grossModifiers;
+      basicPay = rate * modifiers.normalDaysWorked * 8;
     }
+    const dateList = data.dateList;
+    const employeeID = data.employee.id;
+    const employeeName = getFullName(data.employee);
+    const overtime = rate * modifiers.overtime;
+    const holiday = rate * (modifiers.regularHoliday + modifiers.specialHoliday);
+    const restDay = rate * modifiers.restDay;
+    const lateUndertime = rate * (modifiers.late + modifiers.undertime);
+    const absences = rate * modifiers.absences;
+    const grossPay = basicPay + overtime + holiday + restDay - lateUndertime - absences;
+
+    const { prevSSSConts, prevPHICConts, prevHDMFConts } = getPreviousContributions(
+      previousPayrolls,
+      employeeID
+    );
+    const sssCont = Math.min(
+      computeSSSContribution(grossPay).EE,
+      new SSSthresholds().maxEE - prevSSSConts
+    );
+    const phicCont = Math.min(
+      computePHICContribution(data.employee),
+      new PHICthresholds().maxEE - prevPHICConts
+    );
+    const hdmfCont = Math.min(
+      computeHDMFContribution(grossPay).EE,
+      new HDMFthresholds().maxEE(grossPay) - prevHDMFConts
+    );
+
+    return {
+      dateList,
+      employeeID,
+      employeeName,
+      basicPay,
+      overtime,
+      holiday,
+      restDay,
+      lateUndertime,
+      absences,
+      grossPay,
+      sssCont,
+      phicCont,
+      hdmfCont,
+    };
   });
 }
 
@@ -130,6 +166,7 @@ export function generatePayrollData(employees, dateList, filteredTimeRecords, ho
         return record;
       }
     });
+
     return {
       employee,
       dateList,
@@ -137,5 +174,6 @@ export function generatePayrollData(employees, dateList, filteredTimeRecords, ho
       grossModifiers: computeGrossModifiers(timeRecords),
     };
   });
+
   return payrollData;
 }

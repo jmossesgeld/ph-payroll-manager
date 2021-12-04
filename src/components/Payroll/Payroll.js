@@ -39,12 +39,11 @@ export default function Payroll() {
   );
   const previousPayrolls = useSelector((state) =>
     state.payrolls.filter((payroll) => {
-      const prev = new Date(payroll.dateList[payroll.dateList.length - 1]);
+      const prev = new Date(payroll[0].dateList?.at(-1) ?? 0);
       const current = new Date(currentPeriod.to);
-      return (
-        new Date(prev.getFullYear, prev.getMonth() + 1, 0).getTime() ===
-        new Date(current.getFullYear, current.getMonth() + 1, 0).getTime()
-      );
+      const a = new Date(prev.getFullYear(), prev.getMonth() + 1, 0).getTime();
+      const b = new Date(current.getFullYear(), current.getMonth() + 1, 0).getTime();
+      return a === b;
     })
   );
 
@@ -58,9 +57,7 @@ export default function Payroll() {
     );
     setPayrollData(payroll);
   }
-
   const rows = createRows(payrollData, previousPayrolls);
-
   function onFinalizePayroll() {
     dispatch(createPayroll(rows));
   }

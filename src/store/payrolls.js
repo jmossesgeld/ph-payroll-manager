@@ -7,7 +7,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     createPayroll: (state, action) => {
-      state.push({ ...action.payload, id: state.length });
+      state.push(action.payload);
     },
     updatePayroll: (state, action) => {
       const { key, index, newValue } = action.payload;
