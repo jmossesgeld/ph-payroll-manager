@@ -72,8 +72,8 @@ function getPreviousContributions(previousPayrolls, employeeID) {
       const employeePay = curr.find((payroll) => payroll.employeeID === employeeID);
       return {
         prevSSSConts: prev.prevSSSConts + employeePay?.sssCont ?? 0,
-        prevPHICConts: prev.prevSSSConts + employeePay?.phicCont ?? 0,
-        prevHDMFConts: prev.prevSSSConts + employeePay?.hdmfCont ?? 0,
+        prevPHICConts: prev.prevPHICConts + employeePay?.phicCont ?? 0,
+        prevHDMFConts: prev.prevHDMFConts + employeePay?.hdmfCont ?? 0,
       };
     },
     { prevSSSConts: 0, prevPHICConts: 0, prevHDMFConts: 0 } //initial value
@@ -106,6 +106,7 @@ export function createRows(payrollData, previousPayrolls) {
       previousPayrolls,
       employeeID
     );
+    console.log(prevSSSConts, prevPHICConts, prevHDMFConts);
     const sssCont = Math.min(
       computeSSSContribution(grossPay).EE,
       new SSSthresholds().maxEE - prevSSSConts
