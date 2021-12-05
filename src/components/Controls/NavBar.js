@@ -57,6 +57,7 @@ const NavBar = () => {
             Payroll System
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Button onClick={() => localStorage.clear()} color="inherit">Clear Local Storage</Button>
             <Button onClick={() => navigate("/employees")} color="inherit">
               Employees
             </Button>

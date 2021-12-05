@@ -5,6 +5,30 @@ import holidayReducer from "./holidays";
 import userprefsReducer from "./userprefs";
 import payrollsReducer from "./payrolls";
 
+class StateLoader {
+  loadState() {
+    try {
+      let serializedState = localStorage.getItem("magePayrollState");
+
+      if (serializedState === null) {
+        return undefined;
+      }
+      return JSON.parse(serializedState);
+    } catch (err) {
+      return undefined;
+    }
+  }
+
+  saveState(state) {
+    try {
+      let serializedState = JSON.stringify(state);
+      localStorage.setItem("magePayrollState", serializedState);
+    } catch (err) {}
+  }
+}
+
+const stateLoader = new StateLoader();
+
 export const store = configureStore({
   reducer: {
     employees: employeesReducer,
@@ -13,4 +37,9 @@ export const store = configureStore({
     userprefs: userprefsReducer,
     payrolls: payrollsReducer,
   },
+  preloadedState: stateLoader.loadState(),
+});
+
+store.subscribe(() => {
+  stateLoader.saveState(store.getState());
 });
