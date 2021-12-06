@@ -14,7 +14,7 @@ import { getDaysInBetween } from "../../store/userprefs";
 import { createPayroll } from "../../store/payrolls";
 import { useState } from "react";
 import { createRows, generatePayrollData } from "./PayrollFunctions";
-import PayrollPeriod from "../Controls/PayrollPeriod";
+import ChoosePeriod from "../Controls/ChoosePeriod";
 
 const styles = {
   paper: {
@@ -68,7 +68,7 @@ export default function Payroll() {
     <Paper elevation={5} sx={styles.paper}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <PayrollPeriod />
+          <ChoosePeriod />
         </Grid>
         <Grid
           item

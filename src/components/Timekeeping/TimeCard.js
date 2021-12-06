@@ -1,12 +1,20 @@
-import { Grid, Divider, Autocomplete, TextField, Paper, Stack, Button } from "@mui/material";
+import {
+  Grid,
+  Divider,
+  Autocomplete,
+  TextField,
+  Paper,
+  Stack,
+  Button,
+  Skeleton,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
-import React, { useState } from "react";
+import React, { useState, Suspense, useEffect, useCallback, useMemo } from "react";
 import { getFullName } from "../../store/employees";
 import { getDaysInBetween } from "../../store/userprefs";
-import TimeRecord from "./TimeRecord";
 import Holidays from "./Holidays";
-import PayrollPeriod from "../Controls/PayrollPeriod";
+import ChoosePeriod from "../Controls/ChoosePeriod";
 
 const paperStyle = {
   display: "flex",
@@ -22,29 +30,34 @@ const paperStyle = {
 export default function TimeKeeping() {
   const employees = useSelector((state) => state.employees);
   const current = useSelector((state) => state.userprefs.currentPayrollPeriod);
-  const startDate = current.from;
-  const endDate = current.to;
+  const dateList = useMemo(() => getDaysInBetween(current.from, current.to), [current]);
   const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
-  const dateList = getDaysInBetween(startDate, endDate);
   const [timeRecords, setTimeRecords] = useState("");
+  const TimeRecord = React.lazy(() => import("./TimeRecord"));
 
-  const generateTimeRecords = () => {
-    setTimeRecords(
-      <Stack spacing={1} divider={<Divider />}>
-        {dateList.map((date) => {
-          return (
-            <TimeRecord
-              key={date.toString().concat(selectedEmployee.id)}
-              date={date.getTime()}
-              employee={selectedEmployee}
-            />
-          );
-        })}
-      </Stack>
-    );
-  };
+  const generateTimeRecords = useCallback(() => {
+    setTimeout(() => {
+      setTimeRecords(
+        <Stack spacing={1} divider={<Divider />}>
+          {dateList.map((date) => {
+            return (
+              <Suspense key={date} fallback={<Skeleton variant="rectangular" height={120} />}>
+                <TimeRecord
+                  key={date.toString().concat(selectedEmployee.id)}
+                  date={date.getTime()}
+                  employee={selectedEmployee}
+                />
+              </Suspense>
+            );
+          })}
+        </Stack>
+      );
+    }, 0);
+  }, [dateList, selectedEmployee]);
 
-  console.log("TimeCard rendered");
+  useEffect(() => {
+    generateTimeRecords();
+  }, [generateTimeRecords]);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", margin: "auto" }}>
@@ -66,7 +79,7 @@ export default function TimeKeeping() {
             />
           </Grid>
           <Grid item xs={12} sm={12} md={7} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <PayrollPeriod />
+            <ChoosePeriod />
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Holidays dateList={dateList} />
