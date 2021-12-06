@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { useDispatch, useSelector } from "react-redux";
 import { setPayrollPeriodFrom, setPayrollPeriodTo } from "../../store/userprefs";
 
-export default function PayrollPeriod(props) {
+export default function ChoosePeriod(props) {
   const dispatch = useDispatch();
   const current = useSelector((state) => state.userprefs.currentPayrollPeriod);
   const startDate = current.from;
