@@ -41,7 +41,7 @@ export default function TimeKeeping() {
         <Stack spacing={1} divider={<Divider />}>
           {dateList.map((date) => {
             return (
-              <Suspense key={date} fallback={<Skeleton variant="rectangular" height={120} />}>
+              <Suspense key={date} fallback={<Skeleton sx={{bgcolor:"grey.100"}} variant="rectangular" height={120} />}>
                 <TimeRecord
                   key={date.toString().concat(selectedEmployee.id)}
                   date={date.getTime()}

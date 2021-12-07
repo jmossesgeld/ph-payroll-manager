@@ -1,20 +1,11 @@
-import {
-  Button,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { getDaysInBetween } from "../../store/userprefs";
 import { createPayroll } from "../../store/payrolls";
 import { useState } from "react";
 import { createRows, generatePayrollData } from "./PayrollFunctions";
 import ChoosePeriod from "../Controls/ChoosePeriod";
+import PayrollTable from "./PayrollTable";
 
 const styles = {
   paper: {
@@ -31,12 +22,15 @@ export default function Payroll() {
   const employees = useSelector((state) => state.employees, shallowEqual);
   const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod, shallowEqual);
   const holidays = useSelector((state) => state.holidays);
+
   const dateList = getDaysInBetween(currentPeriod.from, currentPeriod.to).map((date) =>
     date.getTime()
   );
+
   const filteredTimeRecords = useSelector((state) =>
     state.timeKeeping.filter((record) => dateList.includes(record.date))
   );
+
   const previousPayrolls = useSelector((state) =>
     state.payrolls.filter((payroll) => {
       const prev = new Date(payroll[0]?.dateList?.at(-1) ?? 0);
@@ -56,10 +50,10 @@ export default function Payroll() {
       dispatch
     );
     setPayrollData(payroll);
-
   }
-  const rows = createRows(payrollData, previousPayrolls);
-  console.log(rows);
+
+  let rows = createRows(payrollData, previousPayrolls);
+
   function onFinalizePayroll() {
     dispatch(createPayroll(rows));
   }
@@ -75,31 +69,17 @@ export default function Payroll() {
           xs={6}
           sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}
         >
-          <Button variant="contained" onClick={onGeneratePayroll}>
+          <Button variant="contained" onClick={onGeneratePayroll} sx={{ mr: 2 }}>
             Generate Payroll
+          </Button>
+          <Button variant="contained" onClick={() => console.log(rows)}>
+            Check Values
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <TableContainer component={Paper}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Employees</TableCell>
-                  <TableCell align="right">Salary Type</TableCell>
-                  <TableCell align="right">Basic Salary</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {employees.map((employee, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell>{employee.lastName}</TableCell>
-                    <TableCell align="right">{employee.salaryType}</TableCell>
-                    <TableCell align="right">{employee.salaryAmount}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Paper sx={{ height: "50vh" }}>
+            <PayrollTable rows={rows} />
+          </Paper>
         </Grid>
         <Grid
           item

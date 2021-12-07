@@ -121,7 +121,7 @@ export function createRows(payrollData, previousPayrolls) {
     );
 
     return {
-      dateList,
+      id: employeeID,
       employeeID,
       employeeName,
       basicPay,
@@ -134,6 +134,7 @@ export function createRows(payrollData, previousPayrolls) {
       sssCont,
       phicCont,
       hdmfCont,
+      dateList,
     };
   });
 }
