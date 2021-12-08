@@ -8,7 +8,15 @@ import Button from "@mui/material/Button";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  LinearProgress,
+} from "@mui/material";
 
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -17,6 +25,7 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -38,6 +47,16 @@ const NavBar = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleNavigation = (path, e) => {
+    navigate(path);
+    if (path === "/timekeeping") {
+      setIsNavigating(true);
+      setTimeout(() => {
+        setIsNavigating(false);
+      }, 2000);
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -57,14 +76,16 @@ const NavBar = () => {
             Payroll System
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Button onClick={() => localStorage.clear()} color="inherit">Clear Local Storage</Button>
-            <Button onClick={() => navigate("/employees")} color="inherit">
+            <Button onClick={() => localStorage.clear()} color="inherit">
+              Clear Local Storage
+            </Button>
+            <Button onClick={handleNavigation.bind(null, "/employees")} color="inherit">
               Employees
             </Button>
-            <Button onClick={() => navigate("/timekeeping")} color="inherit">
+            <Button onClick={handleNavigation.bind(null, "/timekeeping")} color="inherit">
               Timekeeping
             </Button>
-            <Button onClick={() => navigate("/payroll")} color="inherit">
+            <Button onClick={handleNavigation.bind(null, "/payroll")} color="inherit">
               Payroll
             </Button>
             <IconButton
@@ -158,6 +179,7 @@ const NavBar = () => {
           </List>
         </Box>
       </Drawer>
+      {isNavigating ? <LinearProgress /> : <div style={{ height: "4px" }}></div>}
     </Box>
   );
 };
