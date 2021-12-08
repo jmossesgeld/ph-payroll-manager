@@ -2,7 +2,6 @@ import { Button, Grid, Paper } from "@mui/material";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { getDaysInBetween } from "../../store/userprefs";
 import { createPayroll } from "../../store/payrolls";
-import { useState } from "react";
 import { createRows, generatePayrollData } from "./PayrollFunctions";
 import ChoosePeriod from "../Controls/ChoosePeriod";
 import PayrollTable from "./PayrollTable";
@@ -18,7 +17,6 @@ const styles = {
 
 export default function Payroll() {
   const dispatch = useDispatch();
-  const [payrollData, setPayrollData] = useState([]);
   const employees = useSelector((state) => state.employees, shallowEqual);
   const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod, shallowEqual);
   const holidays = useSelector((state) => state.holidays);
@@ -41,18 +39,9 @@ export default function Payroll() {
     })
   );
 
-  function onGeneratePayroll() {
-    const payroll = generatePayrollData(
-      employees,
-      dateList,
-      filteredTimeRecords,
-      holidays,
-      dispatch
-    );
-    setPayrollData(payroll);
-  }
+  const payroll = generatePayrollData(employees, dateList, filteredTimeRecords, holidays, dispatch);
 
-  let rows = createRows(payrollData, previousPayrolls);
+  let rows = createRows(payroll, previousPayrolls);
 
   function onFinalizePayroll() {
     dispatch(createPayroll(rows));
@@ -69,7 +58,7 @@ export default function Payroll() {
           xs={6}
           sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}
         >
-          <Button variant="contained" onClick={onGeneratePayroll} sx={{ mr: 2 }}>
+          <Button variant="contained" onClick={() => {}} sx={{ mr: 2 }}>
             Generate Payroll
           </Button>
           <Button variant="contained" onClick={() => console.log(rows)}>
