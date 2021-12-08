@@ -1,7 +1,17 @@
+import { Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useState } from "react";
+import React, { useState, useMemo } from "react";
 
-export default function PayrollTable(props) {
+const styles = {
+  boxShadow: 2,
+  border: 2,
+  borderColor: "primary.light",
+  "& .MuiDataGrid-cell:hover": {
+    color: "red",
+  },
+};
+
+function PayrollTable(props) {
   const { rows } = props;
   const [editRowsModel, setEditRowsModel] = useState({});
   const columns = [
@@ -12,7 +22,11 @@ export default function PayrollTable(props) {
     { field: "restDay", headerName: "Rest Day", type: "number" },
     { field: "lateUndertime", headerName: "Late / UT", type: "number" },
     { field: "absences", headerName: "Absences", type: "number" },
-    { field: "grossPay", headerName: "Gross Pay", type: "number" },
+    {
+      field: "grossPay",
+      headerName: "Gross Pay",
+      type: "number",
+    },
     { field: "sssCont", headerName: "SSS", type: "number" },
     { field: "phicCont", headerName: "Philhealth", type: "number" },
     { field: "hdmfCont", headerName: "Pag-ibig", type: "number" },
@@ -21,7 +35,7 @@ export default function PayrollTable(props) {
   columns.forEach((column) => {
     column.editable = true;
     if (!column.width) {
-      column.width = 120;
+      column.width = 150;
     }
     if (column.field !== "employeeName") {
       column.valueFormatter = (params) => {
@@ -64,6 +78,7 @@ export default function PayrollTable(props) {
 
   return (
     <DataGrid
+      sx={styles}
       rows={rows}
       columns={columns}
       editRowsModel={editRowsModel}
@@ -71,3 +86,5 @@ export default function PayrollTable(props) {
     />
   );
 }
+
+export default React.memo(PayrollTable);
