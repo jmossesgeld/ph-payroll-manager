@@ -24,7 +24,7 @@ const paperStyle = {
   maxWidth: "80vw",
   padding: 2,
   // backgroundColor: "#FEF5ED",
-  mt: 4,
+  mt: 12,
 };
 
 export default function TimeKeeping() {

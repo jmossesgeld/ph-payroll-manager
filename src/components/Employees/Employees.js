@@ -17,10 +17,12 @@ const columns = [
   { field: "salaryAmount", headerName: "Amount", width: 150, align: "right", headerAlign: "right" },
 ];
 
-var formatter = new Intl.NumberFormat("en-US", {
+const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "PHP",
 });
+
+const styles = { display: "flex", flexDirection: "column", padding: 5, mt: 12 };
 
 const Employees = () => {
   const employees = useSelector((state) => state.employees).map((employee) => {
@@ -31,10 +33,9 @@ const Employees = () => {
     };
   });
 
-
   return (
     <Container>
-      <Paper elevation={5} sx={{ display: "flex", flexDirection: "column", padding: 5, mt: 3 }}>
+      <Paper elevation={5} sx={styles}>
         <NewEmployee />
         <DataGrid rows={employees} columns={columns} autoHeight checkboxSelection />
       </Paper>
