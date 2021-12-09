@@ -80,7 +80,7 @@ function getPreviousContributions(previousPayrolls, employeeID) {
   );
 }
 
-export function createRows(payrollData, previousPayrolls) {
+export function createRows(payrollData, previousPayrolls, toggleDeductions) {
   return payrollData.map((data) => {
     let rate, modifiers, basicPay;
     if (data.employee.salaryType === "daily") {
@@ -106,19 +106,18 @@ export function createRows(payrollData, previousPayrolls) {
       previousPayrolls,
       employeeID
     );
-    console.log(prevSSSConts, prevPHICConts, prevHDMFConts);
-    const sssCont = Math.min(
-      computeSSSContribution(grossPay).EE,
-      new SSSthresholds().maxEE - prevSSSConts
-    );
-    const phicCont = Math.min(
-      computePHICContribution(data.employee),
-      new PHICthresholds().maxEE - prevPHICConts
-    );
-    const hdmfCont = Math.min(
-      computeHDMFContribution(grossPay).EE,
-      new HDMFthresholds().maxEE(grossPay) - prevHDMFConts
-    );
+    const sssCont = toggleDeductions.sssCont
+      ? Math.min(computeSSSContribution(grossPay).EE, new SSSthresholds().maxEE - prevSSSConts)
+      : 0;
+    const phicCont = toggleDeductions.phicCont
+      ? Math.min(computePHICContribution(data.employee), new PHICthresholds().maxEE - prevPHICConts)
+      : 0;
+    const hdmfCont = toggleDeductions.hdmfCont
+      ? Math.min(
+          computeHDMFContribution(grossPay).EE,
+          new HDMFthresholds().maxEE(grossPay) - prevHDMFConts
+        )
+      : 0;
 
     return {
       id: employeeID,
@@ -145,13 +144,13 @@ export function generatePayrollData(employees, dateList, filteredTimeRecords, ho
       const record = filteredTimeRecords.find(
         (record) => record.date === date && record.employeeId === employee.id
       );
+      const listOfHolidays = holidays.filter(
+        (holiday) => new Date(holiday.date).getTime() === date
+      );
+      const isRestDay = Boolean(
+        employee.restDays.filter((day) => day === new Date(date).getDay()).length
+      );
       if (!record) {
-        const listOfHolidays = holidays.filter(
-          (holiday) => new Date(holiday.date).getTime() === date
-        );
-        const isRestDay = Boolean(
-          employee.restDays.filter((day) => day === new Date(date).getDay()).length
-        );
         const newRecord = {
           employeeId: employee.id,
           date,
@@ -165,7 +164,7 @@ export function generatePayrollData(employees, dateList, filteredTimeRecords, ho
         dispatch(createRecord(newRecord));
         return newRecord;
       } else {
-        return record;
+        return { ...record, isRestDay, holidays: listOfHolidays };
       }
     });
 

@@ -5,12 +5,13 @@ import { createPayroll } from "../../store/payrolls";
 import { createRows, generatePayrollData } from "./PayrollFunctions";
 import ChoosePeriod from "../Controls/ChoosePeriod";
 import PayrollTable from "./PayrollTable";
+import { useState } from "react";
 
 const styles = {
   paper: {
     width: "90vw",
     margin: "auto",
-    mt: 4,
+    mt: 12,
     padding: 4,
   },
 };
@@ -39,9 +40,14 @@ export default function Payroll() {
     })
   );
 
-  const payroll = generatePayrollData(employees, dateList, filteredTimeRecords, holidays, dispatch);
+  const [toggleDeductions, setToggleDeductions] = useState({
+    sssCont: true,
+    phicCont: true,
+    hdmfCont: true,
+  });
 
-  let rows = createRows(payroll, previousPayrolls);
+  const payroll = generatePayrollData(employees, dateList, filteredTimeRecords, holidays, dispatch);
+  const rows = createRows(payroll, previousPayrolls, toggleDeductions);
 
   function onFinalizePayroll() {
     dispatch(createPayroll(rows));
@@ -67,7 +73,11 @@ export default function Payroll() {
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ height: "50vh" }}>
-            <PayrollTable rows={rows} />
+            <PayrollTable
+              rows={rows}
+              toggleDeductions={toggleDeductions}
+              setToggleDeductions={setToggleDeductions}
+            />
           </Paper>
         </Grid>
         <Grid
