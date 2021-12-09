@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
-import React, { useState, Suspense, useEffect, useCallback, useMemo } from "react";
+import React, { useState, Suspense, useCallback, useMemo } from "react";
 import { getFullName } from "../../store/employees";
 import { getDaysInBetween } from "../../store/userprefs";
 import Holidays from "./Holidays";
@@ -24,7 +24,7 @@ const paperStyle = {
   maxWidth: "80vw",
   padding: 2,
   // backgroundColor: "#FEF5ED",
-  mt: 12,
+  mt: 2,
 };
 
 export default function TimeKeeping() {
@@ -41,7 +41,12 @@ export default function TimeKeeping() {
         <Stack spacing={1} divider={<Divider />}>
           {dateList.map((date) => {
             return (
-              <Suspense key={date} fallback={<Skeleton sx={{bgcolor:"grey.100"}} variant="rectangular" height={120} />}>
+              <Suspense
+                key={date}
+                fallback={
+                  <Skeleton sx={{ bgcolor: "grey.100" }} variant="rectangular" height={120} />
+                }
+              >
                 <TimeRecord
                   key={date.toString().concat(selectedEmployee.id)}
                   date={date.getTime()}
@@ -54,10 +59,6 @@ export default function TimeKeeping() {
       );
     }, 0);
   }, [dateList, selectedEmployee]);
-
-  useEffect(() => {
-    generateTimeRecords();
-  }, [generateTimeRecords]);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", margin: "auto" }}>
@@ -83,7 +84,7 @@ export default function TimeKeeping() {
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Holidays dateList={dateList} />
-            <Button variant="contained" color="success" onClick={generateTimeRecords}>
+            <Button variant="contained"  onClick={generateTimeRecords}>
               Generate Time Card
             </Button>
           </Grid>

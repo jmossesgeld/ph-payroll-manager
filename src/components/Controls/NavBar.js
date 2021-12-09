@@ -4,10 +4,12 @@ import Typography from "@mui/material/Typography";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Button from "@mui/material/Button";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Employees from "../Employees/Employees";
+import TimeCard from "../Timekeeping/TimeCard";
+import Payroll from "../Payroll/Payroll";
 import {
   Divider,
   Drawer,
@@ -20,8 +22,26 @@ import {
 
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Tab, Tabs } from "@mui/material";
+import SwipeableViews from "react-swipeable-views";
 
-const NavBar = () => {
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
+    </div>
+  );
+}
+
+export default function NavBar() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -29,6 +49,7 @@ const NavBar = () => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [value, setValue] = useState(0);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,6 +68,14 @@ const NavBar = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
+
   const handleNavigation = (path, e) => {
     navigate(path);
     if (path === "/timekeeping") {
@@ -56,6 +85,31 @@ const NavBar = () => {
       }, 2000);
     }
   };
+
+  const TabPanels = (
+    <>
+      <Tabs
+        sx={{ mt: 10, display: "flex", justifyContent: "flex-end" }}
+        value={value}
+        onChange={handleChange}
+      >
+        <Tab label="Employees" />
+        <Tab label="Time Keeping" />
+        <Tab label="Payroll" />
+      </Tabs>
+      <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
+        <TabPanel value={value} index={0}>
+          <Employees />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <TimeCard />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Payroll />
+        </TabPanel>
+      </SwipeableViews>
+    </>
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -76,18 +130,6 @@ const NavBar = () => {
             Payroll System
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Button onClick={() => localStorage.clear()} color="inherit">
-              Clear Local Storage
-            </Button>
-            <Button onClick={handleNavigation.bind(null, "/employees")} color="inherit">
-              Employees
-            </Button>
-            <Button onClick={handleNavigation.bind(null, "/timekeeping")} color="inherit">
-              Timekeeping
-            </Button>
-            <Button onClick={handleNavigation.bind(null, "/payroll")} color="inherit">
-              Payroll
-            </Button>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -179,9 +221,8 @@ const NavBar = () => {
           </List>
         </Box>
       </Drawer>
+      {TabPanels}
       {isNavigating ? <LinearProgress /> : <div style={{ height: "4px" }}></div>}
     </Box>
   );
-};
-
-export default NavBar;
+}

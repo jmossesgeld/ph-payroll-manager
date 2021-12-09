@@ -11,7 +11,7 @@ const styles = {
   paper: {
     width: "90vw",
     margin: "auto",
-    mt: 12,
+    mt: 2,
     padding: 4,
   },
 };

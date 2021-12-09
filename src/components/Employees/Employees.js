@@ -22,7 +22,7 @@ const formatter = new Intl.NumberFormat("en-US", {
   currency: "PHP",
 });
 
-const styles = { display: "flex", flexDirection: "column", padding: 5, mt: 12 };
+const styles = { display: "flex", flexDirection: "column", padding: 5, mt: 2 };
 
 const Employees = () => {
   const employees = useSelector((state) => state.employees).map((employee) => {

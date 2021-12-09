@@ -13,7 +13,7 @@ import React from "react";
 
 function PayrollTable(props) {
   const columns = [
-    { field: "employeeName", headerName: "Employee", width: 200 },
+    { field: "employeeName", headerName: "Employee", width: 300 },
     { field: "basicPay", headerName: "Basic Pay", type: "number" },
     { field: "overtime", headerName: "Overtime", type: "number" },
     { field: "holiday", headerName: "Holiday", type: "number" },
@@ -111,7 +111,7 @@ function PayrollTable(props) {
   return (
     <>
       <TableContainer>
-        <Table sx={{ minWidth: "100%" }}>
+        <Table sx={{ minWidth: "1200px" }}>
           <TableHead>
             <TableRow>{columns.map((column) => renderColumn(column))}</TableRow>
           </TableHead>
