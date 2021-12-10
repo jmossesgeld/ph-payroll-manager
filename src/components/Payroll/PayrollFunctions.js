@@ -83,16 +83,15 @@ function getPreviousContributions(previousPayrolls, employeeID) {
 export function createRows(payrollData, previousPayrolls, payrollOptions) {
   return payrollData.map((data) => {
     const dateList = data.dateList;
+    const modifiers = data.grossModifiers;
 
-    let hourlyRate, modifiers, basicPay;
+    let hourlyRate, basicPay;
     if (data.employee.salaryType === "daily") {
       hourlyRate = data.employee.salaryAmount / 8;
-      modifiers = data.grossModifiers;
       basicPay = hourlyRate * modifiers.normalDaysWorked * 8;
     } else {
       hourlyRate =
         (data.employee.salaryAmount * 12) / (365 - data.employee.restDays.length * 52) / 8;
-      modifiers = data.grossModifiers;
       basicPay = payrollOptions.enforceDailyRate
         ? hourlyRate * modifiers.normalDaysWorked * 8
         : dateList.length > 17
@@ -101,8 +100,6 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
         ? data.employee.salaryAmount / 2
         : data.employee.salaryAmount / 4;
     }
-
-    console.log(payrollOptions.enforceDailyRate);
 
     const employeeID = data.employee.id;
     const employeeName = getFullName(data.employee);
