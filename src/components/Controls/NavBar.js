@@ -10,15 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Employees from "../Employees/Employees";
 import TimeCard from "../Timekeeping/TimeCard";
 import Payroll from "../Payroll/Payroll";
-import {
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  LinearProgress,
-} from "@mui/material";
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -47,7 +39,6 @@ export default function NavBar() {
   const animateTransitions = useSelector((state) => state.animateTransitions);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const [isNavigating, setIsNavigating] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -70,22 +61,12 @@ export default function NavBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   const handleChangeIndex = (index) => {
     setValue(index);
   };
 
-  const handleNavigation = (path, e) => {
-    navigate(path);
-    if (path === "/timekeeping") {
-      setIsNavigating(true);
-      setTimeout(() => {
-        setIsNavigating(false);
-      }, 2000);
-    }
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   const TabPanels = (
@@ -228,7 +209,6 @@ export default function NavBar() {
         </Box>
       </Drawer>
       {TabPanels}
-      {isNavigating ? <LinearProgress /> : <div style={{ height: "4px" }}></div>}
     </Box>
   );
 }
