@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentPayrollPeriod: { from: "", to: "" },
+  animateTransitions: true,
 };
 
 const slice = createSlice({
@@ -13,6 +14,9 @@ const slice = createSlice({
     },
     setPayrollPeriodTo: (state, action) => {
       state.currentPayrollPeriod.to = action.payload;
+    },
+    animateTransitions: (state, action) => {
+      state.animateTransitions = action.payload;
     },
   },
 });
@@ -45,5 +49,5 @@ export const getTimeDifference = (start, end) => {
   }
 };
 
-export const { setPayrollPeriodFrom, setPayrollPeriodTo } = slice.actions;
+export const { setPayrollPeriodFrom, setPayrollPeriodTo, animateTransitions } = slice.actions;
 export default slice.reducer;

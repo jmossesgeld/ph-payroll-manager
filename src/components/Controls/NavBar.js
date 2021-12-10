@@ -24,6 +24,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Tab, Tabs } from "@mui/material";
 import SwipeableViews from "react-swipeable-views";
+import { useSelector } from "react-redux";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,6 +44,7 @@ function TabPanel(props) {
 
 export default function NavBar() {
   const navigate = useNavigate();
+  const animateTransitions = useSelector((state) => state.animateTransitions);
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -97,7 +99,11 @@ export default function NavBar() {
         <Tab label="Time Keeping" />
         <Tab label="Payroll" />
       </Tabs>
-      <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
+      <SwipeableViews
+        index={value}
+        onChangeIndex={handleChangeIndex}
+        animateTransitions={animateTransitions}
+      >
         <TabPanel value={value} index={0}>
           <Employees />
         </TabPanel>

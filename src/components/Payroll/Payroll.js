@@ -40,14 +40,15 @@ export default function Payroll() {
     })
   );
 
-  const [toggleDeductions, setToggleDeductions] = useState({
+  const [payrollOptions, setPayrollOptions] = useState({
     sssCont: true,
     phicCont: true,
     hdmfCont: true,
+    enforceDailyRate: false,
   });
 
   const payroll = generatePayrollData(employees, dateList, filteredTimeRecords, holidays, dispatch);
-  const rows = createRows(payroll, previousPayrolls, toggleDeductions);
+  const rows = createRows(payroll, previousPayrolls, payrollOptions);
 
   function onFinalizePayroll() {
     dispatch(createPayroll(rows));
@@ -75,8 +76,8 @@ export default function Payroll() {
           <Paper sx={{ height: "50vh" }}>
             <PayrollTable
               rows={rows}
-              toggleDeductions={toggleDeductions}
-              setToggleDeductions={setToggleDeductions}
+              toggleDeductions={payrollOptions}
+              setToggleDeductions={setPayrollOptions}
             />
           </Paper>
         </Grid>

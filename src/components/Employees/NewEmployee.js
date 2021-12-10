@@ -222,12 +222,6 @@ export default function NewEmployee() {
                 name="radio-buttons-group"
               >
                 <FormControlLabel value="daily" control={<Radio />} label="Daily Rate" />
-                <FormControlLabel value="w-fixed" control={<Radio />} label="Fixed Rate (Weekly)" />
-                <FormControlLabel
-                  value="sm-fixed"
-                  control={<Radio />}
-                  label="Fixed Rate (Semi-Monthly)"
-                />
                 <FormControlLabel
                   value="m-fixed"
                   control={<Radio />}
@@ -241,7 +235,7 @@ export default function NewEmployee() {
               required
               id="salary"
               name="salary"
-              label="Salary Amount"
+              label={salaryType === "daily" ? "Daily Salary" : "Monthly Salary"}
               value={salaryAmount.value}
               onChange={salaryAmount.valueChangeHandler}
               onBlur={salaryAmount.inputBlurHandler}

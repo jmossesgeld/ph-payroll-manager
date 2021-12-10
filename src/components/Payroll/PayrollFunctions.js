@@ -80,39 +80,50 @@ function getPreviousContributions(previousPayrolls, employeeID) {
   );
 }
 
-export function createRows(payrollData, previousPayrolls, toggleDeductions) {
+export function createRows(payrollData, previousPayrolls, payrollOptions) {
   return payrollData.map((data) => {
-    let rate, modifiers, basicPay;
-    if (data.employee.salaryType === "daily") {
-      rate = data.employee.salaryAmount / 8;
-      modifiers = data.grossModifiers;
-      basicPay = rate * modifiers.normalDaysWorked * 8;
-    } else {
-      rate = data.employee.salaryAmount / 8;
-      modifiers = data.grossModifiers;
-      basicPay = rate * modifiers.normalDaysWorked * 8;
-    }
     const dateList = data.dateList;
+
+    let hourlyRate, modifiers, basicPay;
+    if (data.employee.salaryType === "daily") {
+      hourlyRate = data.employee.salaryAmount / 8;
+      modifiers = data.grossModifiers;
+      basicPay = hourlyRate * modifiers.normalDaysWorked * 8;
+    } else {
+      hourlyRate =
+        (data.employee.salaryAmount * 12) / (365 - data.employee.restDays.length * 52) / 8;
+      modifiers = data.grossModifiers;
+      basicPay = payrollOptions.enforceDailyRate
+        ? hourlyRate * modifiers.normalDaysWorked * 8
+        : dateList.length > 17
+        ? data.employee.salaryAmount
+        : dateList.length > 9
+        ? data.employee.salaryAmount / 2
+        : data.employee.salaryAmount / 4;
+    }
+
+    console.log(payrollOptions.enforceDailyRate);
+
     const employeeID = data.employee.id;
     const employeeName = getFullName(data.employee);
-    const overtime = rate * modifiers.overtime;
-    const holiday = rate * (modifiers.regularHoliday + modifiers.specialHoliday);
-    const restDay = rate * modifiers.restDay;
-    const lateUndertime = rate * (modifiers.late + modifiers.undertime);
-    const absences = rate * modifiers.absences;
+    const overtime = hourlyRate * modifiers.overtime;
+    const holiday = hourlyRate * (modifiers.regularHoliday + modifiers.specialHoliday);
+    const restDay = hourlyRate * modifiers.restDay;
+    const lateUndertime = hourlyRate * (modifiers.late + modifiers.undertime);
+    const absences = hourlyRate * modifiers.absences;
     const grossPay = basicPay + overtime + holiday + restDay - lateUndertime - absences;
 
     const { prevSSSConts, prevPHICConts, prevHDMFConts } = getPreviousContributions(
       previousPayrolls,
       employeeID
     );
-    const sssCont = toggleDeductions.sssCont
+    const sssCont = payrollOptions.sssCont
       ? Math.min(computeSSSContribution(grossPay).EE, new SSSthresholds().maxEE - prevSSSConts)
       : 0;
-    const phicCont = toggleDeductions.phicCont
+    const phicCont = payrollOptions.phicCont
       ? Math.min(computePHICContribution(data.employee), new PHICthresholds().maxEE - prevPHICConts)
       : 0;
-    const hdmfCont = toggleDeductions.hdmfCont
+    const hdmfCont = payrollOptions.hdmfCont
       ? Math.min(
           computeHDMFContribution(grossPay).EE,
           new HDMFthresholds().maxEE(grossPay) - prevHDMFConts
