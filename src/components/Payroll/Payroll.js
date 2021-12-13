@@ -74,11 +74,13 @@ export default function Payroll() {
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ height: "50vh" }}>
-            <PayrollTable
-              rows={rows}
-              toggleDeductions={payrollOptions}
-              setToggleDeductions={setPayrollOptions}
-            />
+            {dateList.length > 0 && (
+              <PayrollTable
+                rows={rows}
+                toggleDeductions={payrollOptions}
+                setToggleDeductions={setPayrollOptions}
+              />
+            )}
           </Paper>
         </Grid>
         <Grid

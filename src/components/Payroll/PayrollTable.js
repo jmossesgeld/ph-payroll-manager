@@ -9,7 +9,6 @@ import {
   TableCell,
   Switch,
   Tooltip,
-  TextField,
 } from "@mui/material";
 import React from "react";
 
@@ -99,20 +98,6 @@ export default function PayrollTable(props) {
           currency: "PHP",
         })
         .slice(1);
-    }
-
-    if (column.field === "sssCont" || column.field === "phicCont" || column.field === "hdmfCont") {
-      return (
-        <TableCell key={column.field}>
-          <TextField
-            value={value}
-            variant="standard"
-            size="small"
-            margin="none"
-            inputProps={{ min: 0, style: { textAlign: "right", fontSize: 15 } }}
-          />
-        </TableCell>
-      );
     }
 
     return (

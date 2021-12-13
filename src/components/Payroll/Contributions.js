@@ -9,15 +9,14 @@ export class SSS {
   ERrate = 0.085;
   maxEE = this.EErate * this.maxThreshold;
   maxER = this.EErate * this.maxThreshold;
-  compute(grossPay, prevContribution, noOfDays) {
-    const ratio = Math.round((noOfDays / 30.58333) * 10) / 10;
+  compute(grossPay, prevContribution) {
     const msc = Math.max(
       Math.min(Math.round(grossPay / 500) * 500, this.maxThreshold),
-      this.minThreshold * ratio
+      this.minThreshold
     );
     return {
-      ER: Math.min(msc * this.ERrate, this.maxER - prevContribution),
-      EE: Math.min(msc * this.EErate, this.maxEE - prevContribution),
+      ER: Math.min(msc * this.ERrate, this.maxER) - prevContribution,
+      EE: Math.min(msc * this.EErate, this.maxEE) - prevContribution,
       EC: msc < 15000 ? 10 : 30,
     };
   }
@@ -34,11 +33,10 @@ export class PHIC {
   ERrate = 0.03;
   minEE = this.EErate * this.minThreshold;
   maxEE = this.EErate * this.maxThreshold;
-  compute(basicPay, prevPHICconts, noOfDays) {
-    const ratio = Math.round((noOfDays / 30.58333) * 10) / 10;
+  compute(basicPay, prevPHICconts) {
     const cont = basicPay * this.EErate;
-    const min = Math.max(cont + prevPHICconts, this.minEE * ratio - prevPHICconts);
-    const max = Math.min(min, this.maxEE - prevPHICconts);
+    const min = Math.max(cont, this.minEE);
+    const max = Math.min(min, this.maxEE) - prevPHICconts;
     return Math.round(max * 100) / 100;
   }
 }
@@ -54,12 +52,11 @@ export class HDMF {
   ERrate = 0.02;
   maxEE = (grossPay) => this.EErate(grossPay) * this.maxThreshold;
   maxER = this.ERrate * this.maxThreshold;
-  compute(grossPay, prevContribution, noOfDays) {
-    const ratio = Math.round((noOfDays / 30.58333) * 10) / 10;
+  compute(grossPay, prevContribution) {
     const msc = Math.min(grossPay, this.maxThreshold);
     return {
-      EE: Math.min(msc * this.EErate(grossPay), this.maxEE(grossPay) * ratio - prevContribution),
-      ER: Math.min(msc * this.ERrate, this.maxER * ratio - prevContribution),
+      EE: Math.min(msc * this.EErate(grossPay), this.maxEE(grossPay)) - prevContribution,
+      ER: Math.min(msc * this.ERrate, this.maxER) - prevContribution,
     };
   }
 }
