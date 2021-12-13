@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Employees from "../Employees/Employees";
 import TimeCard from "../Timekeeping/TimeCard";
 import Payroll from "../Payroll/Payroll";
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Button } from "@mui/material";
 
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -117,6 +117,9 @@ export default function NavBar() {
             Payroll System
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Button onClick={() => localStorage.clear()} color="inherit">
+              Clear Local Storage
+            </Button>
             <IconButton
               size="large"
               aria-label="account of current user"
