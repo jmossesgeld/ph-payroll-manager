@@ -1,14 +1,7 @@
 import { getTimeDifference } from "../../store/userprefs";
 import { createRecord } from "../../store/timerecords";
 import { getFullName } from "../../store/employees";
-import {
-  computeHDMFContribution,
-  computePHICContribution,
-  computeSSSContribution,
-  SSSthresholds,
-  PHICthresholds,
-  HDMFthresholds,
-} from "./Contributions";
+import { SSS, PHIC, HDMF } from "./Contributions";
 
 export function computeGrossModifiers(timeRecords) {
   return timeRecords.reduce(
@@ -85,6 +78,7 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
     const dateList = data.dateList;
     const modifiers = data.grossModifiers;
 
+    
     let hourlyRate, basicPay;
     if (data.employee.salaryType === "daily") {
       hourlyRate = data.employee.salaryAmount / 8;
@@ -115,16 +109,13 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
       employeeID
     );
     const sssCont = payrollOptions.sssCont
-      ? Math.min(computeSSSContribution(grossPay).EE, new SSSthresholds().maxEE - prevSSSConts)
+      ? new SSS().compute(grossPay, prevSSSConts, dateList.length).EE
       : 0;
     const phicCont = payrollOptions.phicCont
-      ? Math.min(computePHICContribution(data.employee), new PHICthresholds().maxEE - prevPHICConts)
+      ? new PHIC().compute(basicPay, prevPHICConts, dateList.length)
       : 0;
     const hdmfCont = payrollOptions.hdmfCont
-      ? Math.min(
-          computeHDMFContribution(grossPay).EE,
-          new HDMFthresholds().maxEE(grossPay) - prevHDMFConts
-        )
+      ? new HDMF().compute(grossPay, prevHDMFConts, dateList.length).EE
       : 0;
 
     return {
