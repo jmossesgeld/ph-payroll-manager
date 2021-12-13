@@ -20,6 +20,8 @@ import {
   Typography,
   IconButton,
   Autocomplete,
+  Checkbox,
+  FormGroup,
 } from "@mui/material";
 
 const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
@@ -55,6 +57,7 @@ export default function NewEmployee() {
   const salaryAmount = useInput((value) => value.length > 0);
   const [restDays, setRestDays] = useState([0]);
   const [workingHours, setWorkingHours] = useState({ from: "08:00", to: "17:00" });
+  const [eligibilities, setEligibilities] = useState({ SSS: true, PHIC: true, HDMF: true });
 
   const onSubmit = (event) => {
     if (firstName.isValid && salaryAmount.isValid) {
@@ -71,6 +74,7 @@ export default function NewEmployee() {
           salaryAmount: salaryAmount.value,
           restDays,
           workingHours,
+          eligibilities,
         })
       );
       toggleModal();
@@ -302,6 +306,53 @@ export default function NewEmployee() {
                 shrink: true,
               }}
             />
+          </Grid>
+          <Grid item xs={12}>
+            <FormLabel component="legend">Eligibility for deduction</FormLabel>
+            <FormGroup row>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={eligibilities.SSS}
+                    onChange={() =>
+                      setEligibilities((prev) => {
+                        return { ...prev, SSS: !prev.SSS };
+                      })
+                    }
+                    size="small"
+                  />
+                }
+                label="SSS"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={eligibilities.PHIC}
+                    onChange={() =>
+                      setEligibilities((prev) => {
+                        return { ...prev, PHIC: !prev.PHIC };
+                      })
+                    }
+                    size="small"
+                  />
+                }
+                label="Philhealth"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={eligibilities.HDMF}
+                    onChange={() =>
+                      setEligibilities((prev) => {
+                        return { ...prev, HDMF: !prev.HDMF };
+                      })
+                    }
+                    size="small"
+                  />
+                }
+                label="Pag-ibig"
+              />
+            </FormGroup>
           </Grid>
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>

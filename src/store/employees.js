@@ -13,6 +13,7 @@ const initialState = [
     salaryAmount: 500,
     restDays: [0],
     workingHours: { from: "08:00", to: "17:00" },
+    eligibilities: { SSS: true, PHIC: true, HDMF: true },
   },
   {
     id: 1,
@@ -26,6 +27,7 @@ const initialState = [
     salaryAmount: 650,
     restDays: [0, 6],
     workingHours: { from: "07:00", to: "16:00" },
+    eligibilities: { SSS: true, PHIC: true, HDMF: true },
   },
   {
     id: 2,
@@ -39,6 +41,7 @@ const initialState = [
     salaryAmount: 19650,
     restDays: [0, 6],
     workingHours: { from: "06:00", to: "15:00" },
+    eligibilities: { SSS: true, PHIC: true, HDMF: false },
   },
 ];
 
