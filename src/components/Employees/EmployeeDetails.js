@@ -1,9 +1,9 @@
 import { useState, forwardRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import NumberFormat from "react-number-format";
 import useInput from "../../hooks/useInput";
-import { addEmployees } from "../../store/employees";
+import { addEmployee, updateEmployee } from "../../store/employees";
 import CustomModal from "../Controls/CustomModal";
 
 import {
@@ -43,49 +43,67 @@ const NumberFormatCustom = forwardRef(function NumberFormatCustom(props, ref) {
   );
 });
 
-export default function NewEmployee() {
+export default function EmployeeDetails(props) {
   const dispatch = useDispatch();
-  const employees = useSelector((state) => state.employees);
-  const [open, setOpen] = useState(false);
-  const [salaryType, setSalaryType] = useState("daily");
-  const firstName = useInput((value) => value.length > 4);
-  const lastName = useInput();
-  const middleName = useInput();
-  const suffix = useInput();
-  const address1 = useInput();
-  const address2 = useInput();
-  const salaryAmount = useInput((value) => value.length > 0);
-  const [restDays, setRestDays] = useState([0]);
-  const [workingHours, setWorkingHours] = useState({ from: "08:00", to: "17:00" });
-  const [eligibilities, setEligibilities] = useState({ SSS: true, PHIC: true, HDMF: true });
+  const { open, employee } = props.formState;
+  const { toggle } = props.setFormState;
+  const firstName = useInput(employee?.firstName, (value) => value.length > 1);
+  const lastName = useInput(employee?.lastName);
+  const middleName = useInput(employee?.middleName);
+  const suffix = useInput(employee?.suffix);
+  const address1 = useInput(employee?.address1);
+  const address2 = useInput(employee?.address2);
+  const [salaryType, setSalaryType] = useState(employee?.salaryType ?? "daily");
+  const salaryAmount = useInput(employee?.salaryAmount, (value) => value.length > 0);
+  const [restDays, setRestDays] = useState(employee?.restDays ?? [0]);
+  const [workingHours, setWorkingHours] = useState(
+    employee?.workingHours ?? { from: "08:00", to: "17:00" }
+  );
+  const [eligibilities, setEligibilities] = useState(
+    employee?.eligibilities ?? { SSS: true, PHIC: true, HDMF: true }
+  );
 
   const onSubmit = (event) => {
     if (firstName.isValid && salaryAmount.isValid) {
-      dispatch(
-        addEmployees({
-          id: employees[employees.length - 1].id + 1,
-          firstName: firstName.value,
-          lastName: lastName.value,
-          middleName: middleName.value,
-          suffix: suffix.value,
-          address1: address1.value,
-          address2: address2.value,
-          salaryType,
-          salaryAmount: salaryAmount.value,
-          restDays,
-          workingHours,
-          eligibilities,
-        })
-      );
-      toggleModal();
+      if (employee) {
+        dispatch(
+          updateEmployee({
+            ...employee,
+            firstName: firstName.value,
+            lastName: lastName.value,
+            middleName: middleName.value,
+            suffix: suffix.value,
+            address1: address1.value,
+            address2: address2.value,
+            salaryType,
+            salaryAmount: salaryAmount.value,
+            restDays,
+            workingHours,
+            eligibilities,
+          })
+        );
+      } else {
+        dispatch(
+          addEmployee({
+            firstName: firstName.value,
+            lastName: lastName.value,
+            middleName: middleName.value,
+            suffix: suffix.value,
+            address1: address1.value,
+            address2: address2.value,
+            salaryType,
+            salaryAmount: salaryAmount.value,
+            restDays,
+            workingHours,
+            eligibilities,
+          })
+        );
+      }
+      toggle();
       clearForm();
     } else {
       alert("Please fill up required fields.\n(First Name, Salary Amount)");
     }
-  };
-
-  const toggleModal = (event) => {
-    setOpen((prev) => !prev);
   };
 
   const clearForm = () => {
@@ -102,16 +120,8 @@ export default function NewEmployee() {
     <>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h4">Employees List</Typography>
-        <Button
-          onClick={toggleModal}
-          variant="contained"
-          color="success"
-          sx={{ alignSelf: "flex-end", mb: 1 }}
-        >
-          + New Employee
-        </Button>
       </Box>
-      <CustomModal open={open} onClose={toggleModal}>
+      <CustomModal open={open} onClose={toggle}>
         <Box
           sx={{
             display: "flex",
@@ -122,7 +132,7 @@ export default function NewEmployee() {
           }}
         >
           <Typography variant="h5">New Employee</Typography>
-          <IconButton onClick={toggleModal}>
+          <IconButton onClick={toggle}>
             <CloseIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -226,11 +236,7 @@ export default function NewEmployee() {
                 name="radio-buttons-group"
               >
                 <FormControlLabel value="daily" control={<Radio />} label="Daily Rate" />
-                <FormControlLabel
-                  value="m-fixed"
-                  control={<Radio />}
-                  label="Fixed Rate (Monthly)"
-                />
+                <FormControlLabel value="fixed" control={<Radio />} label="Fixed Rate (Monthly)" />
               </RadioGroup>
             </FormControl>
           </Grid>

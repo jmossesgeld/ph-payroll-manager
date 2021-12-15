@@ -1,21 +1,10 @@
-import { Container, Paper, Typography } from "@mui/material";
+import { Container, Paper, Typography, IconButton, Button } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid } from "@mui/x-data-grid";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFullName } from "../../store/employees";
-import NewEmployee from "./NewEmployee";
-
-const columns = [
-  { field: "fullName", headerName: "Name", width: 250, align: "right", headerAlign: "right" },
-  {
-    field: "salaryType",
-    headerName: "Salary Type",
-    width: 150,
-    align: "right",
-    headerAlign: "right",
-    renderCell: (cell) => <Typography variant="overline">{cell.value}</Typography>,
-  },
-  { field: "salaryAmount", headerName: "Amount", width: 150, align: "right", headerAlign: "right" },
-];
+import EmployeeDetails from "./EmployeeDetails";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -25,7 +14,17 @@ const formatter = new Intl.NumberFormat("en-US", {
 const styles = { display: "flex", flexDirection: "column", padding: 5, mt: 2 };
 
 const Employees = () => {
-  const employees = useSelector((state) => state.employees).map((employee) => {
+  const [formState, setFormState] = useState({ open: false, employee: null });
+  const controlForm = {
+    toggle: () =>
+      setFormState((prev) => {
+        return { ...prev, open: !prev.open };
+      }),
+    newEmployee: () => setFormState({ open: true, employee: null }),
+    setEmployees: (employee) => setFormState({ open: true, employee }),
+  };
+
+  const rows = useSelector((state) => state.employees).map((employee) => {
     return {
       ...employee,
       fullName: getFullName(employee),
@@ -33,11 +32,50 @@ const Employees = () => {
     };
   });
 
+  const columns = [
+    { field: "fullName", headerName: "Name", width: 250, align: "right", headerAlign: "right" },
+    {
+      field: "salaryType",
+      headerName: "Salary Type",
+      width: 150,
+      align: "right",
+      headerAlign: "right",
+      renderCell: (cell) => <Typography variant="overline">{cell.value}</Typography>,
+    },
+    {
+      field: "salaryAmount",
+      headerName: "Amount",
+      width: 150,
+      align: "right",
+      headerAlign: "right",
+    },
+    {
+      field: "edit",
+      headerName: "Edit",
+      width: 100,
+      align: "right",
+      headerAlign: "right",
+      renderCell: (cell) => (
+        <IconButton onClick={controlForm.setEmployees.bind(null, cell.row)}>
+          <EditIcon />
+        </IconButton>
+      ),
+    },
+  ];
+
   return (
     <Container>
       <Paper elevation={5} sx={styles}>
-        <NewEmployee />
-        <DataGrid rows={employees} columns={columns} autoHeight checkboxSelection />
+        <Button
+          onClick={controlForm.newEmployee}
+          variant="contained"
+          color="success"
+          sx={{ alignSelf: "flex-end", mb: 1 }}
+        >
+          + New Employee
+        </Button>
+        {formState.open && <EmployeeDetails formState={formState} setFormState={controlForm} />}
+        <DataGrid rows={rows} columns={columns} autoHeight checkboxSelection />
       </Paper>
     </Container>
   );

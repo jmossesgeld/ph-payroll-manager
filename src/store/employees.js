@@ -49,10 +49,17 @@ const slice = createSlice({
   name: "employees",
   initialState,
   reducers: {
-    addEmployees: (state, action) => {
+    addEmployee: (state, action) => {
+      console.log(action.payload);
       const newEmployee = action.payload;
       newEmployee.id = `${new Date().getTime().toString()}no${state.length.toString()}`;
       state.push(action.payload);
+    },
+    updateEmployee: (state, action) => {
+      console.log(action.payload);
+      const { id, ...rest } = action.payload;
+      const employee = state.find((employee) => employee.id === id);
+      Object.assign(employee, rest);
     },
   },
 });
@@ -61,5 +68,5 @@ export function getFullName(employee) {
   return `${employee.firstName} ${employee.middleName} ${employee.lastName} ${employee.suffix}`;
 }
 
-export const { addEmployees } = slice.actions;
+export const { addEmployee, updateEmployee } = slice.actions;
 export default slice.reducer;
