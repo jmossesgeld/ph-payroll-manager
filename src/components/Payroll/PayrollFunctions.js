@@ -108,7 +108,6 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
     const { prevSSSConts, prevPHICConts, prevHDMFConts, accumGrossPay, accumBasicPay } =
       getPreviousContributions(previousPayrolls, employeeID);
 
-    console.log(employee);
     const sssCont =
       payrollOptions.sssCont && employee.eligibilities.SSS
         ? new SSS().compute(accumGrossPay + grossPay, prevSSSConts).EE

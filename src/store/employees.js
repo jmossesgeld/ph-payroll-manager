@@ -50,6 +50,8 @@ const slice = createSlice({
   initialState,
   reducers: {
     addEmployees: (state, action) => {
+      const newEmployee = action.payload;
+      newEmployee.id = `${new Date().getTime().toString()}no${state.length.toString()}`;
       state.push(action.payload);
     },
   },

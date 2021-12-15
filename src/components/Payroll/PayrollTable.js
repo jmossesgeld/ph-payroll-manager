@@ -125,7 +125,15 @@ export default function PayrollTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={() => {}}>Save</Button>
+      <Button
+        onClick={() => {
+          for (let i = 0; i < 1000; i++) {
+            console.log(new Date().getTime());
+          }
+        }}
+      >
+        Save
+      </Button>
     </>
   );
 }
