@@ -4,6 +4,7 @@ import timerecordsReducer from "./timerecords";
 import holidayReducer from "./holidays";
 import userprefsReducer from "./userprefs";
 import payrollsReducer from "./payrolls";
+import otherdeductionsReducer from "./otherdeductions";
 
 class StateLoader {
   loadState() {
@@ -36,6 +37,7 @@ export const store = configureStore({
     holidays: holidayReducer,
     userprefs: userprefsReducer,
     payrolls: payrollsReducer,
+    otherdeductions: otherdeductionsReducer,
   },
   preloadedState: stateLoader.loadState(),
 });

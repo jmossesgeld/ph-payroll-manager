@@ -21,6 +21,7 @@ export default function Payroll() {
   const employees = useSelector((state) => state.employees, shallowEqual);
   const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod, shallowEqual);
   const holidays = useSelector((state) => state.holidays);
+  const otherDeductions = useSelector((state) => state.otherdeductions);
 
   const dateList = getDaysInBetween(currentPeriod.from, currentPeriod.to).map((date) =>
     date.getTime()
@@ -45,10 +46,17 @@ export default function Payroll() {
     phicCont: true,
     hdmfCont: true,
     enforceDailyRate: false,
+    tax: true,
   });
 
-  const payroll = generatePayrollData(employees, dateList, filteredTimeRecords, holidays, dispatch);
-  const rows = createRows(payroll, previousPayrolls, payrollOptions);
+  const payrollData = generatePayrollData(
+    employees,
+    dateList,
+    filteredTimeRecords,
+    holidays,
+    dispatch
+  );
+  const rows = createRows(payrollData, previousPayrolls, payrollOptions);
 
   function onFinalizePayroll() {
     dispatch(createPayroll(rows));
@@ -77,8 +85,8 @@ export default function Payroll() {
             {dateList.length > 0 && (
               <PayrollTable
                 rows={rows}
-                toggleDeductions={payrollOptions}
-                setToggleDeductions={setPayrollOptions}
+                payrollOptions={payrollOptions}
+                setPayrollOptions={setPayrollOptions}
               />
             )}
           </Paper>

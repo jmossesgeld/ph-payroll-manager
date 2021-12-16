@@ -60,3 +60,27 @@ export class HDMF {
     };
   }
 }
+
+//----------------------------WTX----------------------------
+export function TAX(netTaxableIncome, prevWTX) {
+  const annualTaxableIncome = netTaxableIncome * 12;
+  const taxBracket = [
+    { base: 0, rate: 0 },
+    { base: 250000, rate: 0.2 },
+    { base: 400000, rate: 0.25 },
+    { base: 800000, rate: 0.3 },
+    { base: 2000000, rate: 0.32 },
+    { base: 8000000, rate: 0.35 },
+  ];
+
+  let tax = 0;
+  for (let i = 0; i < taxBracket.length; i++) {
+    if (annualTaxableIncome > taxBracket[i].base) {
+      tax += (annualTaxableIncome - taxBracket[i].base) * taxBracket[i].rate;
+    } else {
+      break;
+    }
+  }
+
+  return tax / 12 - prevWTX;
+}

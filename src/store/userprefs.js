@@ -11,6 +11,12 @@ const slice = createSlice({
   reducers: {
     setPayrollPeriodFrom: (state, action) => {
       state.currentPayrollPeriod.from = action.payload;
+      const fromDate = new Date(action.payload);
+      const toDate = new Date(state.currentPayrollPeriod.to);
+      console.log(fromDate, toDate);
+      state.currentPayrollPeriod.to = new Date(fromDate.getFullYear(), fromDate.getMonth() + 1, 1)
+        .toISOString()
+        .substring(0, 10);
     },
     setPayrollPeriodTo: (state, action) => {
       state.currentPayrollPeriod.to = action.payload;
