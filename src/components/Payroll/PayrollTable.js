@@ -15,7 +15,7 @@ import React from "react";
 export default function PayrollTable(props) {
   const columns = [
     { field: "employeeName", headerName: "Employee", width: 300 },
-    { field: "basicPay", headerName: "Basic Pay", type: "number" },
+    { field: "basicPay", headerName: "Basic Pay", type: "number", width: 200 },
     { field: "overtime", headerName: "Overtime", type: "number" },
     { field: "holiday", headerName: "Holiday", type: "number" },
     { field: "restDay", headerName: "Rest Day", type: "number" },
@@ -25,19 +25,24 @@ export default function PayrollTable(props) {
     { field: "sssCont", headerName: "SSS", type: "number" },
     { field: "phicCont", headerName: "Philhealth", type: "number" },
     { field: "hdmfCont", headerName: "Pag-ibig", type: "number" },
+    { field: "tax", headerName: "Tax", type: "number" },
   ];
 
   function renderHeader(column) {
-    function clearButton(deduction, onMessage = "Disable", offMessage = "Enable") {
-      const isOn = props.toggleDeductions[deduction];
+    function clearButton(
+      deduction,
+      onMessage = "Defer the deduction to the next payroll within the same month",
+      offMessage = "Enable"
+    ) {
+      const isOn = props.payrollOptions[deduction];
       return (
         <Tooltip title={isOn ? onMessage : offMessage}>
           <Switch
             size="small"
             checked={isOn}
             onChange={() =>
-              props.setToggleDeductions((prev) => {
-                console.log(props.toggleDeductions);
+              props.setPayrollOptions((prev) => {
+                console.log(props.payrollOptions);
                 return { ...prev, [deduction]: !prev[deduction] };
               })
             }

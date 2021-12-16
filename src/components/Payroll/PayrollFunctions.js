@@ -1,7 +1,7 @@
 import { getTimeDifference } from "../../store/userprefs";
 import { createRecord } from "../../store/timerecords";
 import { getFullName } from "../../store/employees";
-import { SSS, PHIC, HDMF } from "./Contributions";
+import { SSS, PHIC, HDMF, TAX } from "./Deductions";
 
 export function computeGrossModifiers(timeRecords) {
   return timeRecords.reduce(
@@ -69,9 +69,17 @@ function getPreviousContributions(previousPayrolls, employeeID) {
         prevSSSConts: prev.prevSSSConts + employeePay?.sssCont ?? 0,
         prevPHICConts: prev.prevPHICConts + employeePay?.phicCont ?? 0,
         prevHDMFConts: prev.prevHDMFConts + employeePay?.hdmfCont ?? 0,
+        prevTAX: prev.prevTAX + employeePay?.tax ?? 0,
       };
     },
-    { prevSSSConts: 0, prevPHICConts: 0, prevHDMFConts: 0, accumBasicPay: 0, accumGrossPay: 0 } //initial value
+    {
+      prevSSSConts: 0,
+      prevPHICConts: 0,
+      prevHDMFConts: 0,
+      accumBasicPay: 0,
+      accumGrossPay: 0,
+      prevTAX: 0,
+    } //initial value
   );
 }
 
@@ -105,7 +113,7 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
     const absences = hourlyRate * modifiers.absences;
     const grossPay = basicPay + overtime + holiday + restDay - lateUndertime - absences;
 
-    const { prevSSSConts, prevPHICConts, prevHDMFConts, accumGrossPay, accumBasicPay } =
+    const { prevSSSConts, prevPHICConts, prevHDMFConts, accumGrossPay, accumBasicPay, prevTAX } =
       getPreviousContributions(previousPayrolls, employeeID);
 
     const sssCont =
@@ -121,6 +129,19 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
         ? new HDMF().compute(accumGrossPay + grossPay, prevHDMFConts).EE
         : 0;
 
+    const netTaxableIncome =
+      accumGrossPay +
+      grossPay -
+      sssCont -
+      phicCont -
+      hdmfCont -
+      prevSSSConts -
+      prevPHICConts -
+      prevHDMFConts;
+    console.log(netTaxableIncome);
+    const tax = netTaxableIncome > 0 ? TAX(netTaxableIncome, prevTAX) : 0;
+    
+
     return {
       id: employeeID,
       employeeID,
@@ -135,6 +156,7 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
       sssCont,
       phicCont,
       hdmfCont,
+      tax,
       dateList,
     };
   });
@@ -173,7 +195,6 @@ export function generatePayrollData(employees, dateList, filteredTimeRecords, ho
     return {
       employee,
       dateList,
-      timeRecords,
       grossModifiers: computeGrossModifiers(timeRecords),
     };
   });
