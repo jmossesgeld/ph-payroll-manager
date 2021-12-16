@@ -14,8 +14,8 @@ import React from "react";
 
 export default function PayrollTable(props) {
   const columns = [
-    { field: "employeeName", headerName: "Employee", width: 300 },
-    { field: "basicPay", headerName: "Basic Pay", type: "number", width: 200 },
+    { field: "employeeName", headerName: "Employee", width: 200 },
+    { field: "basicPay", headerName: "Basic Pay", type: "number", width: 150 },
     { field: "overtime", headerName: "Overtime", type: "number" },
     { field: "holiday", headerName: "Holiday", type: "number" },
     { field: "restDay", headerName: "Rest Day", type: "number" },
@@ -25,7 +25,7 @@ export default function PayrollTable(props) {
     { field: "sssCont", headerName: "SSS", type: "number" },
     { field: "phicCont", headerName: "Philhealth", type: "number" },
     { field: "hdmfCont", headerName: "Pag-ibig", type: "number" },
-    { field: "tax", headerName: "Tax", type: "number" },
+    { field: "tax", headerName: "WTax", type: "number" },
   ];
 
   function renderHeader(column) {
@@ -117,7 +117,7 @@ export default function PayrollTable(props) {
   return (
     <>
       <TableContainer>
-        <Table sx={{ minWidth: "1200px" }}>
+        <Table sx={{ minWidth: "1600px" }}>
           <TableHead>
             <TableRow>{columns.map((column) => renderHeader(column))}</TableRow>
           </TableHead>
