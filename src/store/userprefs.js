@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentPayrollPeriod: { from: "", to: "" },
-  animateTransitions: true,
+  animateTransitions: false,
 };
 
 const slice = createSlice({

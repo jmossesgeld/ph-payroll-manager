@@ -14,14 +14,11 @@ const slice = createSlice({
     },
     updateRecord: (state, action) => {
       const { key, index, newValue } = action.payload;
-      state[index][key] = newValue;
-    },
-    replaceRecord: (state, action) => {
-      const { index, newRecord } = action.payload;
-      state[index] = newRecord;
+      const record = state.find((record) => record.id === index);
+      record[key] = newValue;
     },
   },
 });
 
-export const { createRecord, updateRecord, replaceRecord } = slice.actions;
+export const { createRecord, updateRecord } = slice.actions;
 export default slice.reducer;

@@ -140,7 +140,8 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
       prevHDMFConts;
     console.log(netTaxableIncome);
     const tax = netTaxableIncome > 0 ? TAX(netTaxableIncome, prevTAX) : 0;
-    
+
+    const others = payrollOptions.others;
 
     return {
       id: employeeID,
@@ -158,6 +159,7 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
       hdmfCont,
       tax,
       dateList,
+      ...others,
     };
   });
 }

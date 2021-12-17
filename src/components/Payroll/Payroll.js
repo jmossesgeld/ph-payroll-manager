@@ -3,6 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { getDaysInBetween } from "../../store/userprefs";
 import { createPayroll } from "../../store/payrolls";
 import { createRows, generatePayrollData } from "./PayrollFunctions";
+import OtherPayrollItems from "./OtherPayrollItems";
 import ChoosePeriod from "../Controls/ChoosePeriod";
 import PayrollTable from "./PayrollTable";
 import { useState } from "react";
@@ -21,7 +22,6 @@ export default function Payroll() {
   const employees = useSelector((state) => state.employees, shallowEqual);
   const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod, shallowEqual);
   const holidays = useSelector((state) => state.holidays);
-  const otherDeductions = useSelector((state) => state.otherdeductions);
 
   const dateList = getDaysInBetween(currentPeriod.from, currentPeriod.to).map((date) =>
     date.getTime()
@@ -76,9 +76,10 @@ export default function Payroll() {
           <Button variant="contained" onClick={() => {}} sx={{ mr: 2 }}>
             Generate Payroll
           </Button>
-          <Button variant="contained" onClick={() => console.log(rows)}>
+          <Button variant="contained" onClick={() => console.log(rows)} sx={{ mr: 2 }}>
             Check Values
           </Button>
+          <OtherPayrollItems />
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ height: "50vh" }}>
