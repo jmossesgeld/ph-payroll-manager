@@ -203,3 +203,4 @@ export function generatePayrollData(employees, dateList, filteredTimeRecords, ho
 
   return payrollData;
 }
+

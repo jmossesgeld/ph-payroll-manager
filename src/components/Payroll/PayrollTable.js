@@ -13,6 +13,7 @@ import {
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+
 export default function PayrollTable(props) {
   const dispatch = useDispatch();
   const otherItemsList = useSelector((state) => state.otherpayrollitems);
@@ -115,7 +116,7 @@ export default function PayrollTable(props) {
   }
 
   function renderCell(row, column) {
-    let value = row[column.field];
+    let value = row[column.field] ?? 0;
     const isEmployeeName = column.field === "employeeName";
 
     if (!isEmployeeName) {
