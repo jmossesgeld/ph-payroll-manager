@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import { useState } from "react";
 import CustomModal from "../Controls/CustomModal";
 
-export default function OtherPayrollItems() {
+export default function OtherPayrollItems(props) {
   const [open, setOpen] = useState(false);
 
   const toggleModal = () => {
@@ -15,7 +15,9 @@ export default function OtherPayrollItems() {
         Other Items
       </Button>
       <CustomModal open={open} onClose={toggleModal}>
-        <Typography variant="h6">Other Items</Typography>
+        {props.items.map((item) => (
+          <Typography key={item.name}>{item.name}</Typography>
+        ))}
       </CustomModal>
     </>
   );

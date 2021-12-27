@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = [
-  { name: "sssLoan", isActive: true, header: "SSS Loan" },
-  { name: "phicLoan", isActive: true, header: "PHIC Loan" },
-  { name: "hdmfLoan", isActive: true, header: "HDMF Loan" },
-  { name: "cashAdvance", isActive: true, header: "Cash Advance" },
+  { name: "sssLoan", isActive: false, header: "SSS Loan" },
+  { name: "phicLoan", isActive: false, header: "PHIC Loan" },
+  { name: "hdmfLoan", isActive: false, header: "HDMF Loan" },
+  { name: "cashAdvance", isActive: true, header: "Cash Adv." },
 ];
 
 const slice = createSlice({

@@ -58,6 +58,24 @@ export default function Payroll() {
   );
   const rows = createRows(payrollData, previousPayrolls, payrollOptions);
 
+  const otherItemsList = useSelector((state) => state.otherpayrollitems);
+  const activeItems = otherItemsList
+    .filter((item) => item.isActive)
+    .map((item) => ({
+      field: item.name,
+      headerName: item.header,
+      type: "number",
+    }));
+  const [otherItemsData, setOtherItemsData] = useState([{ id: 0, cashAdvance: 500 }]);
+
+  otherItemsData.forEach((item) => {
+    const row = rows.find((row) => row.id === item.id);
+    console.log(row);
+    if (row) {
+      Object.assign(row, item);
+    }
+  });
+
   function onFinalizePayroll() {
     dispatch(createPayroll(rows));
   }
@@ -79,7 +97,7 @@ export default function Payroll() {
           <Button variant="contained" onClick={() => console.log(rows)} sx={{ mr: 2 }}>
             Check Values
           </Button>
-          <OtherPayrollItems />
+          <OtherPayrollItems items={otherItemsList} setOtherItemsData={setOtherItemsData} />
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ height: "50vh" }}>
@@ -88,6 +106,7 @@ export default function Payroll() {
                 rows={rows}
                 payrollOptions={payrollOptions}
                 setPayrollOptions={setPayrollOptions}
+                otherItemsList={activeItems}
               />
             )}
           </Paper>

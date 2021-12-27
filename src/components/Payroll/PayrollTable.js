@@ -10,23 +10,10 @@ import {
   Switch,
   Tooltip,
 } from "@mui/material";
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
 
 export default function PayrollTable(props) {
-  const dispatch = useDispatch();
-  const otherItemsList = useSelector((state) => state.otherpayrollitems);
-  const [otherItemsData, setOtherItemsData] = useState([{ id: 0, cashAdvance: 500 }]);
   const rows = props.rows ?? [];
-
-  otherItemsData.forEach((item) => {
-    const row = rows.find((row) => row.id === item.id);
-    console.log(row);
-    if (row) {
-      Object.assign(row, item);
-    }
-  });
+  
 
   console.log(rows);
   const columns = [
@@ -42,13 +29,7 @@ export default function PayrollTable(props) {
     { field: "phicCont", headerName: "Philhealth", type: "number" },
     { field: "hdmfCont", headerName: "Pag-ibig", type: "number" },
     { field: "tax", headerName: "WTax", type: "number" },
-    ...otherItemsList
-      .filter((item) => item.isActive)
-      .map((item) => ({
-        field: item.name,
-        headerName: item.header,
-        type: "number",
-      })),
+    ...props.otherItemsList,
   ];
 
   function renderHeader(column) {
