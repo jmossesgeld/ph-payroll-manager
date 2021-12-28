@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   currentPayrollPeriod: { from: "", to: "" },
   animateTransitions: false,
+  selectedEmployee: {},
 };
 
 const slice = createSlice({
@@ -12,8 +13,6 @@ const slice = createSlice({
     setPayrollPeriodFrom: (state, action) => {
       state.currentPayrollPeriod.from = action.payload;
       const fromDate = new Date(action.payload);
-      const toDate = new Date(state.currentPayrollPeriod.to);
-      console.log(fromDate, toDate);
       state.currentPayrollPeriod.to = new Date(fromDate.getFullYear(), fromDate.getMonth() + 1, 1)
         .toISOString()
         .substring(0, 10);
@@ -23,6 +22,9 @@ const slice = createSlice({
     },
     animateTransitions: (state, action) => {
       state.animateTransitions = action.payload;
+    },
+    setSelectedEmployee: (state, action) => {
+      state.selectedEmployee = action.payload;
     },
   },
 });
@@ -55,5 +57,6 @@ export const getTimeDifference = (start, end) => {
   }
 };
 
-export const { setPayrollPeriodFrom, setPayrollPeriodTo, animateTransitions } = slice.actions;
+export const { setPayrollPeriodFrom, setPayrollPeriodTo, animateTransitions, setSelectedEmployee } =
+  slice.actions;
 export default slice.reducer;

@@ -18,6 +18,7 @@ export default function ChoosePeriod(props) {
           value={startDate}
           onChange={(e) => {
             dispatch(setPayrollPeriodFrom(e.target.value));
+            props.onChange();
           }}
           InputLabelProps={{
             shrink: true,

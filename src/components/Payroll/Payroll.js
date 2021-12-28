@@ -70,7 +70,6 @@ export default function Payroll() {
 
   otherItemsData.forEach((item) => {
     const row = rows.find((row) => row.id === item.id);
-    console.log(row);
     if (row) {
       Object.assign(row, item);
     }

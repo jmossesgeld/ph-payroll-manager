@@ -13,9 +13,7 @@ import {
 
 export default function PayrollTable(props) {
   const rows = props.rows ?? [];
-  
 
-  console.log(rows);
   const columns = [
     { field: "employeeName", headerName: "Employee", width: 200 },
     { field: "basicPay", headerName: "Basic Pay", type: "number", width: 150 },
@@ -46,7 +44,6 @@ export default function PayrollTable(props) {
             checked={isOn}
             onChange={() =>
               props.setPayrollOptions((prev) => {
-                console.log(props.payrollOptions);
                 return { ...prev, [deduction]: !prev[deduction] };
               })
             }
@@ -126,7 +123,7 @@ export default function PayrollTable(props) {
             <TableRow>{columns.map((column) => renderHeader(column))}</TableRow>
           </TableHead>
           <TableBody>
-            {props.rows.map((row) => (
+            {rows.map((row) => (
               <TableRow key={row.employeeName}>
                 {columns.map((column) => renderCell(row, column))}
               </TableRow>
@@ -134,15 +131,7 @@ export default function PayrollTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button
-        onClick={() => {
-          for (let i = 0; i < 1000; i++) {
-            console.log(new Date().getTime());
-          }
-        }}
-      >
-        Save
-      </Button>
+      <Button onClick={() => {}}>Save</Button>
     </>
   );
 }

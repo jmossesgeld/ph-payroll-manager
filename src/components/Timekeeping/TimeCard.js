@@ -1,20 +1,11 @@
-import {
-  Grid,
-  Divider,
-  Autocomplete,
-  TextField,
-  Paper,
-  Stack,
-  Button,
-  Skeleton,
-} from "@mui/material";
+import { Grid, Divider, Paper, Stack, Button, Skeleton } from "@mui/material";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
 import React, { useState, Suspense, useCallback, useMemo } from "react";
-import { getFullName } from "../../store/employees";
 import { getDaysInBetween } from "../../store/userprefs";
 import Holidays from "./Holidays";
 import ChoosePeriod from "../Controls/ChoosePeriod";
+import ChooseEmployee from "../Controls/ChooseEmployee";
 
 const paperStyle = {
   display: "flex",
@@ -28,10 +19,9 @@ const paperStyle = {
 };
 
 export default function TimeKeeping() {
-  const employees = useSelector((state) => state.employees);
   const current = useSelector((state) => state.userprefs.currentPayrollPeriod);
   const dateList = useMemo(() => getDaysInBetween(current.from, current.to), [current]);
-  const [selectedEmployee, setSelectedEmployee] = useState(employees[0]);
+  const selectedEmployee = useSelector((state) => state.userprefs.selectedEmployee);
   const [timeRecords, setTimeRecords] = useState("");
   const TimeRecord = React.lazy(() => import("./TimeRecord"));
 
@@ -65,26 +55,14 @@ export default function TimeKeeping() {
       <Paper sx={paperStyle} elevation={5}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={5}>
-            <Autocomplete
-              options={employees}
-              getOptionLabel={(option) => getFullName(option)}
-              id="auto-highlight"
-              autoHighlight
-              value={selectedEmployee}
-              onChange={(e, newValue) => {
-                setSelectedEmployee(newValue);
-              }}
-              renderInput={(params) => (
-                <TextField {...params} label="Choose Employee" variant="standard" />
-              )}
-            />
+            <ChooseEmployee onChange={() => setTimeRecords("")} />
           </Grid>
           <Grid item xs={12} sm={12} md={7} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <ChoosePeriod />
+            <ChoosePeriod onChange={() => setTimeRecords("")} />
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Holidays dateList={dateList} />
-            <Button variant="contained"  onClick={generateTimeRecords}>
+            <Button variant="contained" onClick={generateTimeRecords}>
               Generate Time Card
             </Button>
           </Grid>

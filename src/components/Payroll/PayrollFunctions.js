@@ -138,7 +138,6 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
       prevSSSConts -
       prevPHICConts -
       prevHDMFConts;
-    console.log(netTaxableIncome);
     const tax = netTaxableIncome > 0 ? TAX(netTaxableIncome, prevTAX) : 0;
 
     const others = payrollOptions.others;
