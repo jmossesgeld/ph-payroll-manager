@@ -2,6 +2,27 @@ import xlsx from "xlsx-js-style";
 import { TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
+function downloadFile(data, fileName) {
+  const ws = xlsx.utils.json_to_sheet(data);
+  const wb = xlsx.utils.book_new();
+  xlsx.utils.book_append_sheet(wb, ws, "Sheet1");
+  xlsx.writeFile(wb, fileName);
+}
+
+function readExcel(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const data = e.target.result;
+    const workbook = xlsx.read(data, { type: "binary" });
+    const first_sheet_name = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[first_sheet_name];
+    const data_json = xlsx.utils.sheet_to_json(worksheet);
+    console.log(data_json);
+  };
+  reader.readAsBinaryString(file);
+}
+
+
 export default function ExportToExcel() {
   const [output, setOutput] = useState("");
 

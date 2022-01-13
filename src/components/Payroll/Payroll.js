@@ -83,7 +83,7 @@ export default function Payroll() {
     <Paper elevation={5} sx={styles.paper}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <ChoosePeriod />
+          <ChoosePeriod/>
         </Grid>
         <Grid
           item
