@@ -11,9 +11,9 @@ const slice = createSlice({
   name: "payrollitems",
   initialState,
   reducers: {
-    addDeductionItem(state, action) {
-      const { item } = action.payload;
-      state[item] = { ...state[item], isActive: true };
+    updateDeductionItem(state, action) {
+      const { item, isActive } = action.payload;
+      state[item] = { ...state[item], isActive };
     },
     disableDeductionItem(state, action) {
       const { item } = action.payload;
@@ -22,6 +22,5 @@ const slice = createSlice({
   },
 });
 
-export const { addDeductionItem, disableDeductionItem } = slice.actions;
+export const { updateDeductionItem, disableDeductionItem } = slice.actions;
 export default slice.reducer;
- 
