@@ -83,7 +83,7 @@ export default function Payroll() {
     <Paper elevation={5} sx={styles.paper}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <ChoosePeriod/>
+          <ChoosePeriod />
         </Grid>
         <Grid
           item
@@ -96,7 +96,11 @@ export default function Payroll() {
           <Button variant="contained" onClick={() => console.log(rows)} sx={{ mr: 2 }}>
             Check Values
           </Button>
-          <OtherPayrollItems items={otherItemsList} setOtherItemsData={setOtherItemsData} />
+          <OtherPayrollItems
+            items={otherItemsList}
+            setOtherItemsData={setOtherItemsData}
+            otherItemsData={otherItemsData}
+          />
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ height: "50vh" }}>

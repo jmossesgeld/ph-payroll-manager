@@ -22,7 +22,9 @@ export default function ChooseEmployee(props) {
       value={selectedEmployee}
       onChange={(e, newValue) => {
         dispatch(setSelectedEmployee(newValue));
-        props.onChange();
+        if (props.onChange) {
+          props.onChange();
+        }
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       renderInput={(params) => <TextField {...params} label="Choose Employee" variant="standard" />}
