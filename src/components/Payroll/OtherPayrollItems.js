@@ -1,15 +1,19 @@
-import { Button, Grid, FormControlLabel, Checkbox, TextField } from "@mui/material";
 import { useState } from "react";
-import CustomModal from "../Controls/CustomModal";
+import { Button, Grid, FormControlLabel, Checkbox, TextField } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { updateDeductionItem } from "../../store/otherpayrollitems";
+import { addDeductionItem, updateDeductionItem } from "../../store/otherpayrollitems";
+import { setOtherItemsData } from "../../store/userprefs";
+import CustomModal from "../Controls/CustomModal";
 import ChooseEmployee from "../Controls/ChooseEmployee";
-import { setSelectedEmployee } from "../../store/userprefs";
 
-export default function OtherPayrollItems(props) {
+export default function OtherPayrollItems() {
   const dispatch = useDispatch();
   const selectedEmployee = useSelector((state) => state.userprefs.selectedEmployee);
+  const otherItemsList = useSelector((state) => state.otherpayrollitems);
+  const otherItemsData = useSelector((state) => state.userprefs.otherItemsData);
+
   const [open, setOpen] = useState(false);
+  const [newItem, setNewItem] = useState("");
 
   const toggleModal = () => {
     setOpen((prev) => !prev);
@@ -25,7 +29,7 @@ export default function OtherPayrollItems(props) {
           <Grid item xs={12}>
             <ChooseEmployee />
           </Grid>
-          {props.items.map((item, idx) => (
+          {otherItemsList.map((item, idx) => (
             <>
               <Grid item xs={7} key={idx}>
                 <FormControlLabel
@@ -48,26 +52,55 @@ export default function OtherPayrollItems(props) {
                     shrink: true,
                   }}
                   value={
-                    props.otherItemsData.find((data) => data.id === selectedEmployee.id)?.[
-                      item.name
-                    ] ?? 0
+                    otherItemsData.find((data) => data.id === selectedEmployee.id)?.[item.name] ?? 0
                   }
                   onChange={(e) => {
-                    props.setOtherItemsData((prev) => {
-                      return [
-                        ...prev.filter((data) => data.id !== selectedEmployee.id),
+                    dispatch(
+                      setOtherItemsData([
+                        ...otherItemsData.filter((data) => data.id !== selectedEmployee.id),
                         {
-                          ...prev.find((data) => data.id === selectedEmployee.id),
+                          ...otherItemsData.find((data) => data.id === selectedEmployee.id),
                           id: selectedEmployee.id,
                           [item.name]: e.target.value,
                         },
-                      ];
-                    });
+                      ])
+                    );
                   }}
                 />
               </Grid>
             </>
           ))}
+          <Grid item xs={4}>
+            <TextField
+              placeholder="New Custom Item"
+              variant="standard"
+              value={newItem}
+              onChange={(e) => {
+                setNewItem(e.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                dispatch(
+                  addDeductionItem({
+                    name: newItem
+                      .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+                        return index === 0 ? word.toLowerCase() : word.toUpperCase();
+                      })
+                      .replace(/\s+/g, ""),
+                    isActive: true,
+                    header: newItem,
+                  })
+                );
+                setNewItem("");
+              }}
+            >
+              Add
+            </Button>
+          </Grid>
         </Grid>
       </CustomModal>
     </>

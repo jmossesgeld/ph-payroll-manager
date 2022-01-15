@@ -66,7 +66,7 @@ export default function Payroll() {
       headerName: item.header,
       type: "number",
     }));
-  const [otherItemsData, setOtherItemsData] = useState([{ id: 0, cashAdvance: 500 }]);
+  const otherItemsData = useSelector((state) => state.userprefs.otherItemsData);
 
   otherItemsData.forEach((item) => {
     const row = rows.find((row) => row.id === item.id);
@@ -96,11 +96,7 @@ export default function Payroll() {
           <Button variant="contained" onClick={() => console.log(rows)} sx={{ mr: 2 }}>
             Check Values
           </Button>
-          <OtherPayrollItems
-            items={otherItemsList}
-            setOtherItemsData={setOtherItemsData}
-            otherItemsData={otherItemsData}
-          />
+          <OtherPayrollItems/>
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ height: "50vh" }}>

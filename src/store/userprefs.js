@@ -4,6 +4,7 @@ const initialState = {
   currentPayrollPeriod: { from: "", to: "" },
   animateTransitions: false,
   selectedEmployee: {},
+  otherItemsData: [],
 };
 
 const slice = createSlice({
@@ -25,6 +26,9 @@ const slice = createSlice({
     },
     setSelectedEmployee: (state, action) => {
       state.selectedEmployee = action.payload;
+    },
+    setOtherItemsData: (state, action) => {
+      state.otherItemsData = action.payload;
     },
   },
 });
@@ -57,6 +61,11 @@ export const getTimeDifference = (start, end) => {
   }
 };
 
-export const { setPayrollPeriodFrom, setPayrollPeriodTo, animateTransitions, setSelectedEmployee } =
-  slice.actions;
+export const {
+  setPayrollPeriodFrom,
+  setPayrollPeriodTo,
+  animateTransitions,
+  setSelectedEmployee,
+  setOtherItemsData,
+} = slice.actions;
 export default slice.reducer;
