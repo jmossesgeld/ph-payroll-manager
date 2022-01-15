@@ -21,13 +21,15 @@ export default function ChooseEmployee(props) {
       autoHighlight
       value={selectedEmployee}
       onChange={(e, newValue) => {
-        dispatch(setSelectedEmployee(newValue));
+        if (newValue) {
+          dispatch(setSelectedEmployee(newValue));
+        }
         if (props.onChange) {
           props.onChange();
         }
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}
-      renderInput={(params) => <TextField {...params} label="Choose Employee" variant="standard" />}
+      renderInput={(params) => <TextField {...params} label="Employee" variant="standard" />}
     />
   );
 }

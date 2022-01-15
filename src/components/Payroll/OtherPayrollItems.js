@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { Button, Grid, FormControlLabel, Checkbox, TextField } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
-import { addDeductionItem, updateDeductionItem } from "../../store/otherpayrollitems";
+import { Button, Grid, FormControlLabel, Checkbox, TextField, Typography } from "@mui/material";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import {
+  addDeductionItem,
+  updateDeductionItem,
+  removeDeductionItem,
+} from "../../store/otherpayrollitems";
 import { setOtherItemsData } from "../../store/userprefs";
 import CustomModal from "../Controls/CustomModal";
 import ChooseEmployee from "../Controls/ChooseEmployee";
@@ -10,7 +14,7 @@ export default function OtherPayrollItems() {
   const dispatch = useDispatch();
   const selectedEmployee = useSelector((state) => state.userprefs.selectedEmployee);
   const otherItemsList = useSelector((state) => state.otherpayrollitems);
-  const otherItemsData = useSelector((state) => state.userprefs.otherItemsData);
+  const otherItemsData = useSelector((state) => state.userprefs.otherItemsData, shallowEqual);
 
   const [open, setOpen] = useState(false);
   const [newItem, setNewItem] = useState("");
@@ -29,9 +33,12 @@ export default function OtherPayrollItems() {
           <Grid item xs={12}>
             <ChooseEmployee />
           </Grid>
+          <Grid item xs={12}>
+            <Typography variant="caption">Show in Table</Typography>
+          </Grid>
           {otherItemsList.map((item, idx) => (
             <>
-              <Grid item xs={7} key={idx}>
+              <Grid item xs={6} key={idx}>
                 <FormControlLabel
                   label={item.header}
                   control={
@@ -44,7 +51,7 @@ export default function OtherPayrollItems() {
                   }
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={3}>
                 <TextField
                   label="Amount"
                   variant="standard"
@@ -67,6 +74,11 @@ export default function OtherPayrollItems() {
                     );
                   }}
                 />
+              </Grid>
+              <Grid item xs={3}>
+                <Button color="error" onClick={() => dispatch(removeDeductionItem(item))}>
+                  Remove
+                </Button>
               </Grid>
             </>
           ))}

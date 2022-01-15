@@ -22,8 +22,13 @@ const slice = createSlice({
       const { item } = action.payload;
       state[item] = { ...state[item], isActive: false };
     },
+    removeDeductionItem(state, action) {
+      const index = state.findIndex((item) => item.name === action.payload.name);
+      state.splice(index, 1);
+    },
   },
 });
 
-export const { addDeductionItem, updateDeductionItem, disableDeductionItem } = slice.actions;
+export const { addDeductionItem, updateDeductionItem, disableDeductionItem, removeDeductionItem } =
+  slice.actions;
 export default slice.reducer;
