@@ -13,6 +13,7 @@ const styles = {
     width: "90vw",
     margin: "auto",
     mt: 2,
+    ml:2,
     padding: 4,
   },
 };
@@ -33,7 +34,7 @@ export default function Payroll() {
 
   const previousPayrolls = useSelector((state) =>
     state.payrolls.filter((payroll) => {
-      const prev = new Date(payroll[0]?.dateList?.at(-1) ?? 0);
+      const prev = new Date(payroll.payroll[0]?.dateList?.at(-1) ?? 0);
       const current = new Date(currentPeriod.to);
       const a = new Date(prev.getFullYear(), prev.getMonth() + 1, 0).getTime();
       const b = new Date(current.getFullYear(), current.getMonth() + 1, 0).getTime();
@@ -76,7 +77,8 @@ export default function Payroll() {
   });
 
   function onFinalizePayroll() {
-    dispatch(createPayroll(rows));
+    console.log(previousPayrolls);
+    dispatch(createPayroll({ dateCreated: Date.now(), payroll: rows }));
   }
 
   return (

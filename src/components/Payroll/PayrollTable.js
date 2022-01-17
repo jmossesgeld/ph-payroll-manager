@@ -119,7 +119,7 @@ export default function PayrollTable(props) {
   return (
     <>
       <TableContainer>
-        <Table sx={{ minWidth: "1600px", maxWidth: "2000px" }}>
+        <Table >
           <TableHead>
             <TableRow>{columns.map((column) => renderHeader(column))}</TableRow>
           </TableHead>

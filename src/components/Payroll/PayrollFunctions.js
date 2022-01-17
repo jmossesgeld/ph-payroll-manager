@@ -62,7 +62,7 @@ export function computeGrossModifiers(timeRecords) {
 function getPreviousContributions(previousPayrolls, employeeID) {
   return previousPayrolls.reduce(
     (prev, curr) => {
-      const employeePay = curr.find((payroll) => payroll.employeeID === employeeID);
+      const employeePay = curr.payroll.find((payroll) => payroll.employeeID === employeeID);
       return {
         accumBasicPay: prev.accumBasicPay + employeePay?.basicPay ?? 0,
         accumGrossPay: prev.accumGrossPay + employeePay?.grossPay ?? 0,

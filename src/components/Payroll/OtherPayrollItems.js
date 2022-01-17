@@ -37,8 +37,8 @@ export default function OtherPayrollItems() {
             <Typography variant="caption">Show in Table</Typography>
           </Grid>
           {otherItemsList.map((item, idx) => (
-            <>
-              <Grid item xs={6} key={idx}>
+            <div key={idx}>
+              <Grid item xs={6}>
                 <FormControlLabel
                   label={item.header}
                   control={
@@ -80,7 +80,7 @@ export default function OtherPayrollItems() {
                   Remove
                 </Button>
               </Grid>
-            </>
+            </div>
           ))}
           <Grid item xs={4}>
             <TextField
