@@ -1,6 +1,7 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import PayrollListItem from "./PayrollListItem";
 
 const paperStyle = {
   display: "flex",
@@ -19,13 +20,13 @@ export default function PayrollList() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", margin: "auto" }}>
       <Paper sx={paperStyle} elevation={5}>
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography>Payroll List</Typography>
           </Grid>
           {payrollList.map((pay, idx) => (
             <Grid item xs={12} key={idx}>
-              <Typography>{new Date(pay.dateCreated).toLocaleDateString()}</Typography>
+              <PayrollListItem date={pay.dateCreated} />
             </Grid>
           ))}
           <Grid item xs={12}>
