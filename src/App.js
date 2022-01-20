@@ -5,7 +5,6 @@ import { Route, Routes } from "react-router-dom";
 import Employees from "./components/Employees/Employees";
 import Payroll from "./components/Payroll/Payroll";
 import TimeCard from "./components/Timekeeping/TimeCard";
-import TabPanels from "./components/Controls/TabPanels";
 import PayrollList from "./components/Payroll/PayrollList";
 import { Box } from "@mui/material";
 import NavDrawer from "./components/Controls/NavDrawer";
@@ -30,11 +29,11 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-        <NavBar />
+      <NavBar />
       <Box sx={{ display: "flex" }}>
         <NavDrawer />
         <Routes>
-          <Route path="/" element={<TabPanels />} />
+          <Route path="/" element={<Employees />} />
           <Route path="employees" element={<Employees />} />
           <Route path="timekeeping" element={<TimeCard />} />
           <Route path="payroll" element={<PayrollList />} />
