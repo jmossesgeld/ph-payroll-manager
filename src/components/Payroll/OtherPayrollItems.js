@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from "react";
 import { Button, Grid, FormControlLabel, Checkbox, TextField, Typography } from "@mui/material";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
@@ -37,7 +38,7 @@ export default function OtherPayrollItems() {
             <Typography variant="caption">Show in Table</Typography>
           </Grid>
           {otherItemsList.map((item, idx) => (
-            <div key={idx}>
+            <React.Fragment key={idx}>
               <Grid item xs={6}>
                 <FormControlLabel
                   label={item.header}
@@ -53,6 +54,7 @@ export default function OtherPayrollItems() {
               </Grid>
               <Grid item xs={3}>
                 <TextField
+                  type="number"
                   label="Amount"
                   variant="standard"
                   InputLabelProps={{
@@ -68,7 +70,7 @@ export default function OtherPayrollItems() {
                         {
                           ...otherItemsData.find((data) => data.id === selectedEmployee.id),
                           id: selectedEmployee.id,
-                          [item.name]: e.target.value,
+                          [item.name]: Number(e.target.value),
                         },
                       ])
                     );
@@ -80,7 +82,7 @@ export default function OtherPayrollItems() {
                   Remove
                 </Button>
               </Grid>
-            </div>
+            </React.Fragment>
           ))}
           <Grid item xs={4}>
             <TextField

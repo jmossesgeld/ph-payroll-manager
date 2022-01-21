@@ -28,6 +28,7 @@ export default function PayrollTable(props) {
     { field: "hdmfCont", headerName: "Pag-ibig", type: "number" },
     { field: "tax", headerName: "WTax", type: "number" },
     ...props.otherItemsList,
+    { field: "netPay", headerName: "Net Pay", type: "number" },
   ];
 
   function renderHeader(column) {
@@ -103,8 +104,7 @@ export default function PayrollTable(props) {
         .toLocaleString("en-US", {
           style: "currency",
           currency: "PHP",
-        })
-        .slice(1);
+        });
     }
 
     return (
@@ -119,7 +119,7 @@ export default function PayrollTable(props) {
   return (
     <>
       <TableContainer>
-        <Table >
+        <Table sx={{ width: columns.length * 120 }}>
           <TableHead>
             <TableRow>{columns.map((column) => renderHeader(column))}</TableRow>
           </TableHead>

@@ -7,18 +7,20 @@ import OtherPayrollItems from "./OtherPayrollItems";
 import ChoosePeriod from "../Controls/ChoosePeriod";
 import PayrollTable from "./PayrollTable";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
   paper: {
-    width: "90vw",
+    width: "80vw",
     margin: "auto",
     mt: 2,
-    ml:2,
+    ml: 2,
     padding: 4,
   },
 };
 
 export default function Payroll() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees, shallowEqual);
   const currentPeriod = useSelector((state) => state.userprefs.currentPayrollPeriod, shallowEqual);
@@ -76,9 +78,14 @@ export default function Payroll() {
     }
   });
 
+  rows.forEach((row) => {
+    const netOtherItems = otherItemsList.reduce((prev, curr) => prev + (row[curr.name] ?? 0), 0);
+    row.netPay = row.grossPay - row.sssCont - row.phicCont - row.hdmfCont - row.tax - netOtherItems;
+  });
+
   function onFinalizePayroll() {
-    console.log(previousPayrolls);
     dispatch(createPayroll({ dateCreated: Date.now(), payroll: rows }));
+    navigate("/payroll");
   }
 
   return (

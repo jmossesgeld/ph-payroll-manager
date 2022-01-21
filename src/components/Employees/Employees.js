@@ -5,13 +5,20 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFullName } from "../../store/employees";
 import EmployeeDetails from "./EmployeeDetails";
+import { Box } from "@mui/system";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "PHP",
 });
 
-const styles = { display: "flex", flexDirection: "column", padding: 5, mt: 2 };
+const styles = {
+  display: "flex",
+  flexDirection: "column",
+  backgroundColor: "#FEF5ED",
+  padding: 5,
+  mt: 5,
+};
 
 const Employees = () => {
   const [formState, setFormState] = useState({ open: false, employee: null });
@@ -66,14 +73,12 @@ const Employees = () => {
   return (
     <Container>
       <Paper elevation={5} sx={styles}>
-        <Button
-          onClick={controlForm.newEmployee}
-          variant="contained"
-          color="success"
-          sx={{ alignSelf: "flex-end", mb: 1 }}
-        >
-          + New Employee
-        </Button>
+        <Box sx={{ mb: 2, display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h5">Employees</Typography>
+          <Button onClick={controlForm.newEmployee} variant="contained" color="success">
+            + New Employee
+          </Button>
+        </Box>
         {formState.open && <EmployeeDetails formState={formState} setFormState={controlForm} />}
         <DataGrid rows={rows} columns={columns} autoHeight checkboxSelection />
       </Paper>

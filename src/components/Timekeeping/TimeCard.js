@@ -14,7 +14,7 @@ const paperStyle = {
   width: 800,
   maxWidth: "80vw",
   padding: 2,
-  // backgroundColor: "#FEF5ED",
+  backgroundColor: "#FEF5ED",
   mt: 2,
 };
 
