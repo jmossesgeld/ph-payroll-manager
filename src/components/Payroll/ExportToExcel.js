@@ -1,56 +1,64 @@
 import xlsx from "xlsx-js-style";
-import { TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
-function downloadFile(data, fileName) {
-  const ws = xlsx.utils.json_to_sheet(data);
-  const wb = xlsx.utils.book_new();
-  xlsx.utils.book_append_sheet(wb, ws, "Sheet1");
-  xlsx.writeFile(wb, fileName);
-}
-
-function readExcel(file) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const data = e.target.result;
-    const workbook = xlsx.read(data, { type: "binary" });
-    const first_sheet_name = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[first_sheet_name];
-    const data_json = xlsx.utils.sheet_to_json(worksheet);
-    console.log(data_json);
-  };
-  reader.readAsBinaryString(file);
-}
-
-
-export default function ExportToExcel() {
+export default function ExportToExcel(props) {
   const [output, setOutput] = useState("");
 
-  const onFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const data = await file.arrayBuffer();
-    const workbook = xlsx.read(data, { type: "buffer" });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const cell = worksheet["A1"];
-    setOutput(cell?.v ?? "undefined");
-    cell.s = {
-      font: {
-        name: "Calibri",
-        sz: 24,
-        bold: true,
-        color: { rgb: "FFFFAA00" },
-      },
-    };
-    cell.v = "SAMPLE";
-    xlsx.writeFile(workbook, "out.xlsx");
+  const cleanData = (data) => {
+    const clean = data.map((row) => {
+      const cleanRow = {};
+      Object.keys(row).forEach((key) => {
+        if (key !== "id" && key !== "payrollId") {
+          cleanRow[key] = row[key];
+        }
+      });
+      return cleanRow;
+    });
+    return clean;
+  };
+
+  const exportFile = () => {
+    const data = props.pay.rows.map((row) => {
+      const newRow = {};
+      props.pay.columns.forEach((col) => {
+        newRow[col.headerName] = row[col.field] ?? 0;
+      });
+      return newRow;
+    });
+
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(data);
+    ws["!rows"] = [{ hpt: 30 }];
+    ws["!cols"] = [{ wch: 30 }, ...props.pay.columns.map((col) => ({ wch: 10 }))];
+    const originalHeader = ws["!ref"];
+    console.log(xlsx.utils.decode_range(originalHeader));
+    for (let i = 0; i < 100; i++) {
+      try {
+        ws[xlsx.utils.encode_cell({ c: i, r: 0 })].s = {
+          font: {
+            bold: true,
+          },
+        };
+      } catch (error) {
+        break;
+      }
+    }
+
+    ws["!ref"] = originalHeader;
+    xlsx.utils.book_append_sheet(wb, ws, "Payroll");
+    xlsx.writeFile(wb, "payroll.xlsx");
   };
 
   return (
-    <>
-      <TextField type="file" onChange={onFileUpload}>
-        Sample Upload Excel
-      </TextField>
-      <Typography>{output}</Typography>
-    </>
+    <Button onClick={exportFile}>
+      Export
+      <img
+        src="https://img.icons8.com/ios/24/000000/ms-excel.png"
+        width={20}
+        alt="Excel Icon"
+        style={{ marginLeft: 5 }}
+      />
+    </Button>
   );
 }

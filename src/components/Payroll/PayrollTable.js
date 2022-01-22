@@ -13,23 +13,7 @@ import {
 
 export default function PayrollTable(props) {
   const rows = props.rows ?? [];
-
-  const columns = [
-    { field: "employeeName", headerName: "Employee" },
-    { field: "basicPay", headerName: "Basic Pay", type: "number" },
-    { field: "overtime", headerName: "Overtime", type: "number" },
-    { field: "holiday", headerName: "Holiday", type: "number" },
-    { field: "restDay", headerName: "Rest Day", type: "number" },
-    { field: "lateUndertime", headerName: "Late / UT", type: "number" },
-    { field: "absences", headerName: "Absences", type: "number" },
-    { field: "grossPay", headerName: "Gross Pay", type: "number" },
-    { field: "sssCont", headerName: "SSS", type: "number" },
-    { field: "phicCont", headerName: "Philhealth", type: "number" },
-    { field: "hdmfCont", headerName: "Pag-ibig", type: "number" },
-    { field: "tax", headerName: "WTax", type: "number" },
-    ...props.otherItemsList,
-    { field: "netPay", headerName: "Net Pay", type: "number" },
-  ];
+  const columns = props.columns;
 
   function renderHeader(column) {
     function clearButton(
@@ -100,11 +84,10 @@ export default function PayrollTable(props) {
     const isEmployeeName = column.field === "employeeName";
 
     if (!isEmployeeName) {
-      value = (Math.round(Number(value) * 100) / 100)
-        .toLocaleString("en-US", {
-          style: "currency",
-          currency: "PHP",
-        });
+      value = (Math.round(Number(value) * 100) / 100).toLocaleString("en-US", {
+        style: "currency",
+        currency: "PHP",
+      });
     }
 
     return (

@@ -36,7 +36,7 @@ export default function Payroll() {
 
   const previousPayrolls = useSelector((state) =>
     state.payrolls.filter((payroll) => {
-      const prev = new Date(payroll.payroll[0]?.dateList?.at(-1) ?? 0);
+      const prev = new Date(payroll.rows[0]?.dateList?.at(-1) ?? 0);
       const current = new Date(currentPeriod.to);
       const a = new Date(prev.getFullYear(), prev.getMonth() + 1, 0).getTime();
       const b = new Date(current.getFullYear(), current.getMonth() + 1, 0).getTime();
@@ -83,8 +83,25 @@ export default function Payroll() {
     row.netPay = row.grossPay - row.sssCont - row.phicCont - row.hdmfCont - row.tax - netOtherItems;
   });
 
+  const columns = [
+    { field: "employeeName", headerName: "Employee" },
+    { field: "basicPay", headerName: "Basic Pay", type: "number" },
+    { field: "overtime", headerName: "Overtime", type: "number" },
+    { field: "holiday", headerName: "Holiday", type: "number" },
+    { field: "restDay", headerName: "Rest Day", type: "number" },
+    { field: "lateUndertime", headerName: "Late / UT", type: "number" },
+    { field: "absences", headerName: "Absences", type: "number" },
+    { field: "grossPay", headerName: "Gross Pay", type: "number" },
+    { field: "sssCont", headerName: "SSS", type: "number" },
+    { field: "phicCont", headerName: "Philhealth", type: "number" },
+    { field: "hdmfCont", headerName: "Pag-ibig", type: "number" },
+    { field: "tax", headerName: "WTax", type: "number" },
+    ...activeItems,
+    { field: "netPay", headerName: "Net Pay", type: "number" },
+  ];
+
   function onFinalizePayroll() {
-    dispatch(createPayroll({ dateCreated: Date.now(), payroll: rows }));
+    dispatch(createPayroll({ dateCreated: Date.now(), rows, columns }));
     navigate("/payroll");
   }
 
@@ -112,9 +129,9 @@ export default function Payroll() {
             {dateList.length > 0 && (
               <PayrollTable
                 rows={rows}
+                columns={columns}
                 payrollOptions={payrollOptions}
                 setPayrollOptions={setPayrollOptions}
-                otherItemsList={activeItems}
               />
             )}
           </Paper>

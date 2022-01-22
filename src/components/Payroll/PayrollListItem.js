@@ -1,6 +1,7 @@
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, Grid, Typography } from "@mui/material";
+import ExportToExcel from "./ExportToExcel";
 
 export default function PayrollListItem(props) {
   const CustomGrid = (props) => (
@@ -17,12 +18,12 @@ export default function PayrollListItem(props) {
         </Typography>
       </CustomGrid>
       <CustomGrid xs={2.5}>
-        <Typography variant="caption">No. of Employees: {props.pay.payroll.length}</Typography>
+        <Typography variant="caption">No. of Employees: {props.pay.rows.length}</Typography>
       </CustomGrid>
       <CustomGrid xs={2.5}>
         <Typography variant="caption">
           Net Pay:{" "}
-          {props.pay.payroll
+          {props.pay.rows
             .reduce((prev, curr) => prev + curr.netPay, 0)
             .toLocaleString("en-US", {
               style: "currency",
@@ -31,15 +32,7 @@ export default function PayrollListItem(props) {
         </Typography>
       </CustomGrid>
       <Grid item xs={1.5}>
-        <Button>
-          Export
-          <img
-            src="https://img.icons8.com/ios/24/000000/ms-excel.png"
-            width={20}
-            alt="Excel Icon"
-            style={{ marginLeft: 5 }}
-          />
-        </Button>
+        <ExportToExcel pay={props.pay} />
       </Grid>
       <Grid item xs={0.75}>
         <Button>
