@@ -18,6 +18,8 @@ import { useNavigate } from "react-router-dom";
 import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
+import SettingsIcon from "@mui/icons-material/Settings";
+
 
 const drawerWidth = 240;
 
@@ -26,6 +28,7 @@ const StyledDrawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== "ope
     "& .MuiDrawer-paper": {
       position: "relative",
       whiteSpace: "nowrap",
+      zIndex: 0,
       width: drawerWidth,
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
@@ -95,13 +98,13 @@ export default function NavDrawer() {
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="Dashboard" />
+          <ListItemText primary="Tutorial" />
         </ListItem>
         <ListItem button>
           <ListItemIcon>
-            <MailIcon />
+            <SettingsIcon />
           </ListItemIcon>
-          <ListItemText primary="Orders" />
+          <ListItemText primary="Settings" />
         </ListItem>
       </List>
       <Divider />
