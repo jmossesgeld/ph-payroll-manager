@@ -37,7 +37,12 @@ export default function ExportToExcel(props) {
         const cell = ws[xlsx.utils.encode_cell({ c: col, r: row })];
         if (cell) {
           if (row === 0) {
-            cell.s = { ...cell.s, font: { bold: true, sz: 14 } };
+            cell.s = {
+              ...cell.s,
+              font: { bold: true },
+              alignment: { horizontal: "center", vertical: "center", wrapText: true },
+              border: { bottom: { style: "medium" } },
+            };
           }
           cell.z = '_(* #,##0.00_);_(* (#,##0.00);_(* " - "??_);_(@_)';
         }
