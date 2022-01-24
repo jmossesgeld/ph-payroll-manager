@@ -29,21 +29,23 @@ export default function ExportToExcel(props) {
 
     const wb = xlsx.utils.book_new();
     const ws = xlsx.utils.json_to_sheet(data);
-    ws["!rows"] = [{ hpt: 30 }];
-    ws["!cols"] = [{ wch: 30 }, ...props.pay.columns.map((col) => ({ wch: 10 }))];
     const originalHeader = ws["!ref"];
-    console.log(xlsx.utils.decode_range(originalHeader));
-    for (let i = 0; i < 100; i++) {
-      try {
-        ws[xlsx.utils.encode_cell({ c: i, r: 0 })].s = {
-          font: {
-            bold: true,
-          },
-        };
-      } catch (error) {
-        break;
+    const range = xlsx.utils.decode_range(originalHeader); // {s: {c: 0, r: 0}, e: {c: 1, r: 1}} zero-based
+
+    for (let col = range.s.c; col <= range.e.c; col++) {
+      for (let row = range.s.r; row <= range.e.r; row++) {
+        const cell = ws[xlsx.utils.encode_cell({ c: col, r: row })];
+        if (cell) {
+          if (row === 0) {
+            cell.s = { ...cell.s, font: { bold: true, sz: 14 } };
+          }
+          cell.z = '_(* #,##0.00_);_(* (#,##0.00);_(* " - "??_);_(@_)';
+        }
       }
     }
+
+    ws["!rows"] = [{ hpt: 30 }];
+    ws["!cols"] = [{ wch: 30 }, ...props.pay.columns.map((col) => ({ wch: 10 }))];
 
     ws["!ref"] = originalHeader;
     xlsx.utils.book_append_sheet(wb, ws, "Payroll");
