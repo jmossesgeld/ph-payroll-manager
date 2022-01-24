@@ -1,22 +1,7 @@
 import xlsx from "xlsx-js-style";
-import { Button, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { Button,  } from "@mui/material";
 
 export default function ExportToExcel(props) {
-  const [output, setOutput] = useState("");
-
-  const cleanData = (data) => {
-    const clean = data.map((row) => {
-      const cleanRow = {};
-      Object.keys(row).forEach((key) => {
-        if (key !== "id" && key !== "payrollId") {
-          cleanRow[key] = row[key];
-        }
-      });
-      return cleanRow;
-    });
-    return clean;
-  };
 
   const exportFile = () => {
     const data = props.pay.rows.map((row) => {
@@ -37,6 +22,7 @@ export default function ExportToExcel(props) {
         const cell = ws[xlsx.utils.encode_cell({ c: col, r: row })];
         if (cell) {
           if (row === 0) {
+            //header row
             cell.s = {
               ...cell.s,
               font: { bold: true },

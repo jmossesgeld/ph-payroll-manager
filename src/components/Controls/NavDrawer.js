@@ -20,7 +20,6 @@ import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-
 const drawerWidth = 240;
 
 const StyledDrawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== "open" })(
@@ -105,6 +104,12 @@ export default function NavDrawer() {
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary="Settings" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <MailIcon />
+          </ListItemIcon>
+          <ListItemText primary="Contact Us" />
         </ListItem>
       </List>
       <Divider />
