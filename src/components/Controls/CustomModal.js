@@ -1,3 +1,4 @@
+import { BorderAll } from "@mui/icons-material";
 import { Modal } from "@mui/material";
 import { Box } from "@mui/system";
 
@@ -15,7 +16,8 @@ const style = {
   "& input": { margin: "2px" },
   display: "flex",
   flexWrap: "wrap",
-  overflow:"auto"
+  overflow: "auto",
+  borderRadius: 2,
 };
 
 export default function CustomModal(props) {

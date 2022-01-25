@@ -11,7 +11,6 @@ import {
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { useNavigate } from "react-router-dom";
 
@@ -19,6 +18,7 @@ import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ContactUs from "../Company/ContactUs";
 
 const drawerWidth = 240;
 
@@ -105,12 +105,7 @@ export default function NavDrawer() {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <MailIcon />
-          </ListItemIcon>
-          <ListItemText primary="Contact Us" />
-        </ListItem>
+        <ContactUs/>
       </List>
       <Divider />
     </StyledDrawer>
