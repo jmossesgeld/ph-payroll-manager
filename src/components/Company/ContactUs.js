@@ -29,7 +29,9 @@ export default function ContactUs() {
       <CustomModal open={open} onClose={toggleModal}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h5" textAlign="center">Contact Us</Typography>
+            <Typography variant="h5" textAlign="center">
+              Contact Us
+            </Typography>
           </Grid>
           <Grid item xs={6}>
             <TextField label="Your Name" variant="outlined" fullWidth />
