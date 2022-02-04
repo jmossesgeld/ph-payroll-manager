@@ -16,7 +16,6 @@ const styles = {
     mt: 2,
     ml: 2,
     padding: 4,
-    backgroundColor: "#FBF8F1",
   },
 };
 

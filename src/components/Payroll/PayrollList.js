@@ -10,7 +10,6 @@ const paperStyle = {
   width: 800,
   maxWidth: "80vw",
   padding: 4,
-  backgroundColor: "#FBF8F1",
   mt: 5,
 };
 

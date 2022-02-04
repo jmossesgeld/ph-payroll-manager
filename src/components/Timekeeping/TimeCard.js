@@ -10,12 +10,10 @@ import ChooseEmployee from "../Controls/ChooseEmployee";
 const paperStyle = {
   display: "flex",
   justifyContent: "center",
-  margin: "auto",
-  width: 800,
-  maxWidth: "80vw",
-  padding: 2,
-  backgroundColor: "#FBF8F1",
-  mt: 2,
+  width: "100%",
+  maxWidth: "800px",
+  margin: "3rem 0",
+  padding: 5,
 };
 
 export default function TimeKeeping() {

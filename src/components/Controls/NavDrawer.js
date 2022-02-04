@@ -27,6 +27,7 @@ const StyledDrawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== "ope
     "& .MuiDrawer-paper": {
       position: "relative",
       whiteSpace: "nowrap",
+      height: "100%",
       zIndex: 0,
       width: drawerWidth,
       transition: theme.transitions.create("width", {
@@ -105,7 +106,7 @@ export default function NavDrawer() {
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </ListItem>
-        <ContactUs/>
+        <ContactUs />
       </List>
       <Divider />
     </StyledDrawer>

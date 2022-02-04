@@ -1,11 +1,10 @@
-import { Container, Paper, Typography, IconButton, Button } from "@mui/material";
+import { Container, Paper, Typography, IconButton, Button, Grid } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFullName } from "../../store/employees";
 import EmployeeDetails from "./EmployeeForm";
-import { Box } from "@mui/system";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -15,9 +14,10 @@ const formatter = new Intl.NumberFormat("en-US", {
 const styles = {
   display: "flex",
   flexDirection: "column",
-  backgroundColor: "#FBF8F1",
   padding: 5,
-  mt: 5,
+  width: "100%",
+  maxWidth: "800px",
+  margin: "3rem 0",
 };
 
 const Employees = () => {
@@ -71,14 +71,18 @@ const Employees = () => {
   ];
 
   return (
-    <Container>
+    <Container sx={{ display: "flex", justifyContent: "center" }}>
       <Paper elevation={5} sx={styles}>
-        <Box sx={{ mb: 2, display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h5">Employees</Typography>
-          <Button onClick={controlForm.newEmployee} variant="contained" color="success">
-            + New Employee
-          </Button>
-        </Box>
+        <Grid container sx={{ mb: 2 }}>
+          <Grid item xs={12} sm={12} md={6}>
+            <Typography variant="h5">Employees</Typography>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6} sx={{textAlign:"right"}}>
+            <Button onClick={controlForm.newEmployee} variant="contained" color="success">
+              + New Employee
+            </Button>
+          </Grid>
+        </Grid>
         {formState.open && <EmployeeDetails formState={formState} setFormState={controlForm} />}
         <DataGrid rows={rows} columns={columns} autoHeight checkboxSelection />
       </Paper>
