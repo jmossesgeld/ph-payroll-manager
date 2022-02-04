@@ -16,6 +16,7 @@ const styles = {
     mt: 2,
     ml: 2,
     padding: 4,
+    backgroundColor: "#FBF8F1",
   },
 };
 
@@ -116,12 +117,6 @@ export default function Payroll() {
           xs={6}
           sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}
         >
-          <Button variant="contained" onClick={() => {}} sx={{ mr: 2 }}>
-            Generate Payroll
-          </Button>
-          <Button variant="contained" onClick={() => console.log(rows)} sx={{ mr: 2 }}>
-            Check Values
-          </Button>
           <OtherPayrollItems />
         </Grid>
         <Grid item xs={12}>

@@ -1,5 +1,4 @@
 import {
-  Button,
   Typography,
   TableContainer,
   Table,
@@ -101,8 +100,8 @@ export default function PayrollTable(props) {
 
   return (
     <>
-      <TableContainer>
-        <Table sx={{ width: columns.length * 120 }}>
+      <TableContainer sx={{height:"100%"}}>
+        <Table sx={{ width: columns.length * 120, overflow:"scroll"}}>
           <TableHead>
             <TableRow>{columns.map((column) => renderHeader(column))}</TableRow>
           </TableHead>
@@ -115,7 +114,6 @@ export default function PayrollTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={() => {}}>Save</Button>
     </>
   );
 }

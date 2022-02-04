@@ -12,16 +12,10 @@ import NavDrawer from "./components/Controls/NavDrawer";
 const theme = createTheme({
   palette: {
     primary: {
-      light: "#757ce8",
-      main: "#3f50b5",
-      dark: "#002884",
-      contrastText: "#fff",
+      main: "#2f2f2f",
     },
     secondary: {
-      light: "#ff7961",
-      main: "#f44336",
-      dark: "#ba000d",
-      contrastText: "#000",
+      main: "#f9f9f9",
     },
   },
 });

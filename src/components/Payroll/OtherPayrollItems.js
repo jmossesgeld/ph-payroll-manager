@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { useState } from "react";
 import { Button, Grid, FormControlLabel, Checkbox, TextField, Typography } from "@mui/material";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
@@ -10,6 +10,8 @@ import {
 import { setOtherItemsData } from "../../store/userprefs";
 import CustomModal from "../Controls/CustomModal";
 import ChooseEmployee from "../Controls/ChooseEmployee";
+
+const borderStyle = "1px solid #ddd";
 
 export default function OtherPayrollItems() {
   const dispatch = useDispatch();
@@ -39,7 +41,7 @@ export default function OtherPayrollItems() {
           </Grid>
           {otherItemsList.map((item, idx) => (
             <React.Fragment key={idx}>
-              <Grid item xs={6}>
+              <Grid item xs={6} sx={{ border: borderStyle }}>
                 <FormControlLabel
                   label={item.header}
                   control={
@@ -52,7 +54,7 @@ export default function OtherPayrollItems() {
                   }
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={3} sx={{ border: borderStyle, padding: 1 }}>
                 <TextField
                   type="number"
                   label="Amount"
@@ -77,7 +79,7 @@ export default function OtherPayrollItems() {
                   }}
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={3} sx={{ border: borderStyle }}>
                 <Button color="error" onClick={() => dispatch(removeDeductionItem(item))}>
                   Remove
                 </Button>

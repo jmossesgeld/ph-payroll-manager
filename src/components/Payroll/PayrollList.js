@@ -10,7 +10,7 @@ const paperStyle = {
   width: 800,
   maxWidth: "80vw",
   padding: 4,
-  backgroundColor: "#FEF5ED",
+  backgroundColor: "#FBF8F1",
   mt: 5,
 };
 
@@ -26,11 +26,27 @@ export default function PayrollList() {
           <Grid item xs={12}>
             <Typography variant="h5">Payroll History</Typography>
           </Grid>
-          {sortedPayroll.map((pay, idx) => (
-            <Grid item xs={12} key={idx}>
-              <PayrollListItem pay={pay} />
-            </Grid>
-          ))}
+          {sortedPayroll.length === 0 ? (
+            <Box
+              sx={{
+                width: "95%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "5rem",
+                border: "1px solid #cfcfcf",
+                margin: "1rem auto",
+              }}
+            >
+              <Typography>No Payroll Created Yet</Typography>
+            </Box>
+          ) : (
+            sortedPayroll.map((pay, idx) => (
+              <Grid item xs={12} key={idx}>
+                <PayrollListItem pay={pay} />
+              </Grid>
+            ))
+          )}
           <Grid item xs={12}>
             <Button variant="contained" onClick={() => navigate("/new")}>
               Create New Payroll
