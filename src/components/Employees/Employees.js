@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFullName } from "../../store/employees";
-import EmployeeDetails from "./EmployeeDetails";
+import EmployeeDetails from "./EmployeeForm";
 import { Box } from "@mui/system";
 
 const formatter = new Intl.NumberFormat("en-US", {
@@ -15,7 +15,7 @@ const formatter = new Intl.NumberFormat("en-US", {
 const styles = {
   display: "flex",
   flexDirection: "column",
-  backgroundColor: "#FEF5ED",
+  backgroundColor: "#FBF8F1",
   padding: 5,
   mt: 5,
 };
@@ -28,7 +28,7 @@ const Employees = () => {
         return { ...prev, open: !prev.open };
       }),
     newEmployee: () => setFormState({ open: true, employee: null }),
-    setEmployees: (employee) => setFormState({ open: true, employee }),
+    editEmployee: (employee) => setFormState({ open: true, employee }),
   };
 
   const rows = useSelector((state) => state.employees).map((employee) => {
@@ -63,7 +63,7 @@ const Employees = () => {
       align: "right",
       headerAlign: "right",
       renderCell: (cell) => (
-        <IconButton onClick={controlForm.setEmployees.bind(null, cell.row)}>
+        <IconButton onClick={controlForm.editEmployee.bind(null, cell.row)}>
           <EditIcon />
         </IconButton>
       ),
