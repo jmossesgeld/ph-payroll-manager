@@ -4,9 +4,9 @@ const initialState = [
   {
     id: 0,
     firstName: "Juan",
-    lastName: "Dela Cruz",
-    middleName: "Antonio",
-    suffix: "Jr.",
+    lastName: "",
+    middleName: "",
+    suffix: "",
     address1: "Brgy. Sto. Nino",
     address2: "Calumpit, Bulacan",
     salaryType: "daily",
@@ -18,8 +18,8 @@ const initialState = [
   {
     id: 1,
     firstName: "Pedro",
-    lastName: "Penduko",
-    middleName: "Santos",
+    lastName: "",
+    middleName: "",
     suffix: "Sr.",
     address1: "Brgy. Sto. Nino",
     address2: "Calumpit, Bulacan",
@@ -32,8 +32,8 @@ const initialState = [
   {
     id: 2,
     firstName: "Diego",
-    lastName: "Aguinaldo",
-    middleName: "Manalo",
+    lastName: "",
+    middleName: "",
     suffix: "",
     address1: "Brgy. Sto. Nino",
     address2: "Calumpit, Bulacan",
@@ -46,7 +46,7 @@ const initialState = [
   {
     id: 3,
     firstName: "Pablo",
-    lastName: "Escobar",
+    lastName: "",
     middleName: "",
     suffix: "",
     address1: "Brgy. Sto. Nino",
@@ -60,8 +60,8 @@ const initialState = [
   {
     id: 4,
     firstName: "Jose",
-    lastName: "Rizal",
-    middleName: "Antonio",
+    lastName: "",
+    middleName: "",
     suffix: "",
     address1: "Brgy. Sto. Nino",
     address2: "Calumpit, Bulacan",
@@ -74,8 +74,8 @@ const initialState = [
   {
     id: 5,
     firstName: "Ferdinand",
-    lastName: "Marcos",
-    middleName: "R.",
+    lastName: "",
+    middleName: "",
     suffix: "",
     address1: "Brgy. Sto. Nino",
     address2: "Calumpit, Bulacan",
@@ -88,7 +88,7 @@ const initialState = [
   {
     id: 6,
     firstName: "Richard",
-    lastName: "Gutierrez",
+    lastName: "",
     middleName: "",
     suffix: "",
     address1: "Brgy. Sto. Nino",
@@ -102,7 +102,7 @@ const initialState = [
   {
     id: 7,
     firstName: "Victor",
-    lastName: "Sotto",
+    lastName: "",
     middleName: "",
     suffix: "",
     address1: "Brgy. Sto. Nino",

@@ -24,28 +24,32 @@ export default function TimeKeeping() {
   const TimeRecord = React.lazy(() => import("./TimeRecord"));
 
   const generateTimeRecords = useCallback(() => {
-    setTimeout(() => {
-      setTimeRecords(
-        <Stack spacing={1} divider={<Divider />}>
-          {dateList.map((date) => {
-            return (
-              <Suspense
-                key={date}
-                fallback={
-                  <Skeleton sx={{ bgcolor: "grey.100" }} variant="rectangular" height={120} />
-                }
-              >
-                <TimeRecord
-                  key={date.toString().concat(selectedEmployee.id)}
-                  date={date.getTime()}
-                  employee={selectedEmployee}
-                />
-              </Suspense>
-            );
-          })}
-        </Stack>
-      );
-    }, 0);
+    if (dateList.length > 0) {
+      setTimeout(() => {
+        setTimeRecords(
+          <Stack spacing={1} divider={<Divider />}>
+            {dateList.map((date) => {
+              return (
+                <Suspense
+                  key={date}
+                  fallback={
+                    <Skeleton sx={{ bgcolor: "grey.100" }} variant="rectangular" height={120} />
+                  }
+                >
+                  <TimeRecord
+                    key={date.toString().concat(selectedEmployee.id)}
+                    date={date.getTime()}
+                    employee={selectedEmployee}
+                  />
+                </Suspense>
+              );
+            })}
+          </Stack>
+        );
+      }, 0);
+    } else {
+      alert("No dates selected");
+    }
   }, [dateList, selectedEmployee]);
 
   return (

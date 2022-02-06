@@ -5,9 +5,9 @@ const styles = {
   display: "flex",
   m: "20vh auto",
   justifyContent: "center",
-  alignItems: "center",
   textAlign: "left",
   maxWidth: "600px",
+  height: "100vh",
 };
 
 export default function Welcome() {

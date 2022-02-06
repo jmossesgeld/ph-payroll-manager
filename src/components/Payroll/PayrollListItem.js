@@ -5,22 +5,22 @@ import ExportToExcel from "./ExportToExcel";
 
 export default function PayrollListItem(props) {
   const CustomGrid = (props) => (
-    <Grid item xs={props.xs} sx={{ display: "flex", alignItems: "center" }}>
+    <Grid item {...props} sx={{ display: "flex", alignItems: "center" }}>
       {props.children}
     </Grid>
   );
 
   return (
     <Grid container sx={{ border: "solid 1px #cccccc", p: 2 }}>
-      <CustomGrid xs={4}>
+      <CustomGrid xs={12} sm={12} md={4}>
         <Typography variant="caption">
           Date Created: {new Date(props.pay.dateCreated).toLocaleString()}
         </Typography>
       </CustomGrid>
-      <CustomGrid xs={2.5}>
+      <CustomGrid xs={12} sm={12} md={2.5}>
         <Typography variant="caption">No. of Employees: {props.pay.rows.length}</Typography>
       </CustomGrid>
-      <CustomGrid xs={2.5}>
+      <CustomGrid xs={12} sm={12} md={2.5}>
         <Typography variant="caption">
           Net Pay:{" "}
           {props.pay.rows
@@ -31,15 +31,15 @@ export default function PayrollListItem(props) {
             })}
         </Typography>
       </CustomGrid>
-      <Grid item xs={1.5}>
+      <Grid item xs={4} sm={3} md={1.5}>
         <ExportToExcel pay={props.pay} />
       </Grid>
-      <Grid item xs={0.75}>
+      <Grid item xs={2} sm={2} md={0.75}>
         <Button>
           <EditIcon />
         </Button>
       </Grid>
-      <Grid item xs={0.75}>
+      <Grid item xs={4} sm={4} md={0.75}>
         <Button>
           <DeleteIcon />
         </Button>

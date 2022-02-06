@@ -11,6 +11,8 @@ const paperStyle = {
   maxWidth: "80vw",
   padding: 4,
   mt: 5,
+  maxHeight: "80vh",
+  overflow: "auto",
 };
 
 export default function PayrollList() {
@@ -46,7 +48,7 @@ export default function PayrollList() {
               </Grid>
             ))
           )}
-          <Grid item xs={12}>
+          <Grid item xs={12} pb={2}>
             <Button variant="contained" onClick={() => navigate("/new")}>
               Create New Payroll
             </Button>

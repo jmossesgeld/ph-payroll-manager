@@ -65,10 +65,9 @@ export default function NewHoliday(props) {
     ""
   );
 
-
   return (
     <>
-      <Button onClick={toggleModal} variant="contained" color="warning">
+      <Button onClick={toggleModal} variant="contained">
         Set Holidays
       </Button>
       <CustomModal open={open} onClose={toggleModal}>

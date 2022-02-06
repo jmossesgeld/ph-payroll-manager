@@ -5,8 +5,8 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from "@mui/icons-material/Settings";
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined';
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Button } from "@mui/material";
@@ -48,7 +48,8 @@ export default function NavBar({ modeState }) {
             variant="h5"
             color="#fff"
             mr={2}
-            sx={{ fontFamily: "segoe ui", letterSpacing: "1px", fontWeight: "600" }}
+            sx={{ fontFamily: "segoe ui", letterSpacing: "1px", fontWeight: "600", cursor: "pointer" }}
+            onClick={() => navigate("/")}
           >
             MAGE
           </Typography>
@@ -62,8 +63,11 @@ export default function NavBar({ modeState }) {
             <Button onClick={() => localStorage.clear()} color="inherit">
               Clear Local Storage
             </Button>
-            <Button color="inherit" onClick={() => setMode((prev) => (prev === "light" ? "dark" : "light"))}>
-              {mode === "light" ? <LightbulbIcon/> : <LightbulbOutlinedIcon/>}
+            <Button
+              color="inherit"
+              onClick={() => setMode((prev) => (prev === "light" ? "dark" : "light"))}
+            >
+              {mode === "light" ? <LightbulbIcon /> : <LightbulbOutlinedIcon />}
             </Button>
             <IconButton
               size="large"

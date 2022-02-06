@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { getFullName } from "../../store/employees";
 import EmployeeDetails from "./EmployeeForm";
 import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/system";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -80,16 +81,26 @@ const Employees = () => {
             <Typography variant="h5">Employees</Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={6} sx={{ textAlign: "right" }}>
-            <Button onClick={controlForm.newEmployee} variant="contained" color="success">
+            <Button onClick={controlForm.newEmployee} variant="contained" >
               Add New Employee
             </Button>
           </Grid>
         </Grid>
         {formState.open && <EmployeeDetails formState={formState} setFormState={controlForm} />}
         <DataGrid rows={rows} columns={columns} autoHeight checkboxSelection />
-        <Button variant="contained" onClick={() => navigate("/timekeeping")}>
-          Timekeeping
-        </Button>
+        <Box sx={{ textAlign: "right", mt: 2 }}>
+          <Button variant="contained" onClick={() => navigate("/timekeeping")}>
+            Timekeeping
+          </Button>
+          <Button
+            sx={{ ml: 2 }}
+            variant="contained"
+            color="success"
+            onClick={() => navigate("/new")}
+          >
+            Create New Payroll
+          </Button>
+        </Box>
       </Paper>
     </Container>
   );

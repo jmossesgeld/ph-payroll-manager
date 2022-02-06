@@ -14,7 +14,6 @@ export default function ChoosePeriod(props) {
         <TextField
           type="date"
           label="from"
-          helperText="Covered Period"
           value={startDate}
           onChange={(e) => {
             dispatch(setPayrollPeriodFrom(e.target.value));
