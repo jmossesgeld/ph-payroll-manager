@@ -2,18 +2,15 @@ import { Button, Typography, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const styles = {
-  display: "flex",
-  m: "20vh auto",
-  justifyContent: "center",
+  m: "10vh auto",
   textAlign: "left",
   maxWidth: "600px",
-  height: "100vh",
 };
 
 export default function Welcome() {
   const navigate = useNavigate();
   return (
-    <Grid container spacing={3} sx={styles}>
+    <Grid container rowSpacing={2} sx={styles}>
       <Grid item xs={12} sm={6}>
         <Typography variant="h1" fontWeight="bold">
           MAGE
@@ -24,7 +21,7 @@ export default function Welcome() {
           Payroll System
         </Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} mt={3}>
         <Button variant="contained" onClick={() => navigate("/employees")}>
           Get Started
         </Button>

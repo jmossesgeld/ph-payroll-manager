@@ -28,7 +28,7 @@ export default function OtherPayrollItems() {
 
   return (
     <>
-      <Button onClick={toggleModal} variant="contained" color="warning">
+      <Button onClick={toggleModal} variant="contained" color="secondary">
         Other Items
       </Button>
       <CustomModal open={open} onClose={toggleModal}>
