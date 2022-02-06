@@ -1,8 +1,7 @@
 import xlsx from "xlsx-js-style";
-import { Button,  } from "@mui/material";
+import { Button } from "@mui/material";
 
 export default function ExportToExcel(props) {
-
   const exportFile = () => {
     const data = props.pay.rows.map((row) => {
       const newRow = {};

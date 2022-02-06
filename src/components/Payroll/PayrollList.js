@@ -24,13 +24,18 @@ export default function PayrollList() {
     <Box sx={{ display: "flex", flexDirection: "column", margin: "auto" }}>
       <Paper sx={paperStyle} elevation={5}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Typography variant="h5">Payroll History</Typography>
+          </Grid>
+          <Grid item xs={6} pb={2} textAlign="right">
+            <Button variant="contained" onClick={() => navigate("/new")}>
+              Create New Payroll
+            </Button>
           </Grid>
           {sortedPayroll.length === 0 ? (
             <Box
               sx={{
-                width: "95%",
+                width: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -48,11 +53,6 @@ export default function PayrollList() {
               </Grid>
             ))
           )}
-          <Grid item xs={12} pb={2}>
-            <Button variant="contained" onClick={() => navigate("/new")}>
-              Create New Payroll
-            </Button>
-          </Grid>
         </Grid>
       </Paper>
     </Box>

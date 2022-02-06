@@ -16,9 +16,20 @@ function App() {
   const theme = createTheme({
     palette: {
       mode,
-      primary: {
-        main: "#333",
-      },
+      ...(mode === "light"
+        ? {
+            primary: {
+              main: "#125",
+            },
+          }
+        : {
+            primary: {
+              main: "#458",
+            },
+          }),
+      // primary: {
+      //   main: "#125",
+      // },
     },
   });
 
