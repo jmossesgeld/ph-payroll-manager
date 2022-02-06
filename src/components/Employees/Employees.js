@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFullName } from "../../store/employees";
 import EmployeeDetails from "./EmployeeForm";
+import { useNavigate } from "react-router-dom";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -21,6 +22,7 @@ const styles = {
 };
 
 const Employees = () => {
+  const navigate = useNavigate();
   const [formState, setFormState] = useState({ open: false, employee: null });
   const controlForm = {
     toggle: () =>
@@ -77,14 +79,17 @@ const Employees = () => {
           <Grid item xs={12} sm={12} md={6}>
             <Typography variant="h5">Employees</Typography>
           </Grid>
-          <Grid item xs={12} sm={12} md={6} sx={{textAlign:"right"}}>
+          <Grid item xs={12} sm={12} md={6} sx={{ textAlign: "right" }}>
             <Button onClick={controlForm.newEmployee} variant="contained" color="success">
-              + New Employee
+              Add New Employee
             </Button>
           </Grid>
         </Grid>
         {formState.open && <EmployeeDetails formState={formState} setFormState={controlForm} />}
         <DataGrid rows={rows} columns={columns} autoHeight checkboxSelection />
+        <Button variant="contained" onClick={() => navigate("/timekeeping")}>
+          Timekeeping
+        </Button>
       </Paper>
     </Container>
   );

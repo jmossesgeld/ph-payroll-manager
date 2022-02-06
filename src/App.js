@@ -9,6 +9,7 @@ import PayrollList from "./components/Payroll/PayrollList";
 import { Box, CssBaseline } from "@mui/material";
 import NavDrawer from "./components/Controls/NavDrawer";
 import { useState } from "react";
+import Welcome from "./components/Company/Welcome";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -31,7 +32,7 @@ function App() {
       <Box sx={{ display: "flex", m: "4rem 0" }}>
         <NavDrawer />
         <Routes>
-          <Route path="/" element={<Employees />} />
+          <Route path="/" element={<Welcome />} />
           <Route path="employees" element={<Employees />} />
           <Route path="timekeeping" element={<TimeCard />} />
           <Route path="payroll" element={<PayrollList />} />
