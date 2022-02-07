@@ -14,6 +14,9 @@ import Welcome from "./components/Company/Welcome";
 function App() {
   const [mode, setMode] = useState("light");
   const theme = createTheme({
+    typography: {
+      fontFamily: "Segoe UI",
+    },
     palette: {
       mode,
       ...(mode === "light"
