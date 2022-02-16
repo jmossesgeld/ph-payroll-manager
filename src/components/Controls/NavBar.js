@@ -48,7 +48,12 @@ export default function NavBar({ modeState }) {
             variant="h5"
             color="#fff"
             mr={2}
-            sx={{ fontFamily: "segoe ui", letterSpacing: "1px", fontWeight: "600", cursor: "pointer" }}
+            sx={{
+              fontFamily: "segoe ui",
+              letterSpacing: "1px",
+              fontWeight: "600",
+              cursor: "pointer",
+            }}
             onClick={() => navigate("/")}
           >
             MAGE
@@ -60,8 +65,15 @@ export default function NavBar({ modeState }) {
             Payroll System
           </Typography>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Button onClick={() => localStorage.clear()} color="inherit">
-              Clear Local Storage
+            <Button
+              onClick={() => {
+                alert("Are you sure?");
+                localStorage.clear();
+                window.location.reload();
+              }}
+              color="inherit"
+            >
+              Reset Local Data
             </Button>
             <Button
               color="inherit"

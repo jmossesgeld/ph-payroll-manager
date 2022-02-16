@@ -13,20 +13,20 @@ import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 
-const H2 = ({ children }) => (
-  <Typography variant="h2" mt={4}>
+const H2 = ({ children, ...props }) => (
+  <Typography variant="h2" mt={4} {...props}>
     {children}
   </Typography>
 );
 
-const Body = ({ children }) => (
-  <Typography variant="body1" mt={4}>
+const Body = ({ children, ...props }) => (
+  <Typography variant="body1" mt={4} {...props}>
     {children}
   </Typography>
 );
 
-const Img = ({ src, ...rest }) => (
-  <img src={"/tutorial/" + src} alt={src} {...rest} style={{ margin: "1rem 0" }} />
+const Img = ({ src, ...props }) => (
+  <img src={"/tutorial/" + src} alt={src} {...props} style={{ margin: "1rem 0" }} />
 );
 
 export default function Tutorial() {
@@ -67,14 +67,15 @@ export default function Tutorial() {
       }}
       variant="outlined"
     >
-      <Typography variant="h6">
-        Preparing payroll has never been simple. It only includes 3 easy steps:
+      <H2 mt={1}>How to use?</H2>
+      <Typography variant="h6" mt={4}>
+        Preparing payroll has never been this simple. It only includes 3 easy steps:
       </Typography>
       {ListOfSteps}
       <Divider />
       <H2>Step 1: Employees</H2>
       <Typography variant="button" color="#b00" mt={4}>
-        If you have already updated the Employees information, skip this step.
+        If you have already updated the Employees information, You can skip this step.
       </Typography>
       <Body>
         In this section you can add a new employee by clicking the "Add New Employee" button. You
@@ -118,6 +119,77 @@ export default function Tutorial() {
         created yet, you can create one by clicking the "Create New Payroll" button.
       </Body>
       <Img src="payrollList.png" width={796} height={223} />
+      <Body>
+        As you can see below, the payroll is automatically generated based on the timecard of the
+        employee.
+      </Body>
+      <Img src="payroll.png" width={900} height={382} />
+      <Body>
+        The computation of the payroll is based on the following rules: <br /> <br />
+        <ul>
+          <li>
+            <b>Basic Pay:</b> This is based on the data from Employee Section.
+          </li>
+          <li>
+            <b>Overtime:</b>
+          </li>
+          <ul>
+            <li>
+              On Ordinary Days
+              <ul>
+                <li>Number of hours in excess of 8 hours (125% x hourly rate)</li>
+              </ul>
+            </li>
+            <li>
+              On a Rest Day or Special Day
+              <ul>
+                <li>On a Rest day and Special Day (130% x hourly rate)</li>
+                <li>Number of hours in excess of 8 hours (169% x hourly rate)</li>
+              </ul>
+            </li>
+          </ul>
+          <li>
+            <b>Rest Day and Holiday Pay:</b>
+            <ul>
+              <li>Rest Day (130% x basic daily rate)</li>
+              <li>Special Day (130% x basic daily rate)</li>
+              <li>Special Day, which is also a scheduled Rest Day (150% x basic daily rate)</li>
+              <li>Regular Holiday (200% x basic daily rate)</li>
+              <li>
+                A Regular Holiday, which is also a scheduled Rest Day (260% x basic daily rate)
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </Body>
+      <Body>
+        Computation of mandatory contributions such as SSS, PHIC, HDMF, and withholding tax are
+        automatically taken care of. You can also modify other allowances and deductions by clicking
+        the "Other Items" button.
+      </Body>
+      <Img src="otherItems.png" width={593} height={513} />
+      <Body>
+        If you are satisfied with the computation, you can click the "Finalize and Export" button
+        which will bring you back to the Payroll History section.
+      </Body>
+      <Img src="payrollList2.png" width={788} height={194} />
+      <Body>
+        You can immediately export the payroll to an excel file by clicking the "Export" button and
+        voila!
+      </Body>
+      <Img src="excel.png" width={800} height={296} />
+      <Divider />
+      <Body>
+        Congratulations! You can edit this excel file however you want. If you became familiar with
+        the whole process, it can only take you less than 5 minutes to generate payroll from
+        scratch. Goodbye hassle payroll!
+      </Body>
+      <Body>
+        Even so, if you have any further questions or concerns, please send us an{" "}
+        <a href="mailto:mage.cpas@gmail.com">email</a> or contact us on{" "}
+        <a href="https://facebook.com/miragefallingsky">facebook</a>.
+      </Body>
+      <Body>Thank you so much!</Body>
     </Paper>
   );
 }

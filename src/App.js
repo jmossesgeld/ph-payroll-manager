@@ -11,6 +11,7 @@ import NavDrawer from "./components/Controls/NavDrawer";
 import { useState } from "react";
 import Welcome from "./components/Company/Welcome";
 import Tutorial from "./components/Company/Tutorial";
+import Footer from "./components/Company/Footer";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -48,6 +49,7 @@ function App() {
           <Route path="payroll" element={<PayrollList />} />
           <Route index path="new" element={<Payroll />} />
         </Routes>
+        <Footer/>
       </Box>
     </ThemeProvider>
   );
