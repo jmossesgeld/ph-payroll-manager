@@ -9,6 +9,7 @@ import {
   Switch,
   Tooltip,
 } from "@mui/material";
+import numeral from "numeral";
 
 export default function PayrollTable(props) {
   const rows = props.rows ?? [];
@@ -83,10 +84,7 @@ export default function PayrollTable(props) {
     const isEmployeeName = column.field === "employeeName";
 
     if (!isEmployeeName) {
-      value = (Math.round(Number(value) * 100) / 100).toLocaleString("en-US", {
-        style: "currency",
-        currency: "PHP",
-      });
+      value = numeral(Math.round(Number(value) * 100) / 100).format("(0,0.00)");
     }
 
     return (
@@ -100,8 +98,8 @@ export default function PayrollTable(props) {
 
   return (
     <>
-      <TableContainer sx={{height:"100%"}}>
-        <Table sx={{ width: columns.length * 120, overflow:"scroll"}}>
+      <TableContainer sx={{ height: "100%" }}>
+        <Table sx={{ width: columns.length * 120, overflow: "scroll" }}>
           <TableHead>
             <TableRow>{columns.map((column) => renderHeader(column))}</TableRow>
           </TableHead>

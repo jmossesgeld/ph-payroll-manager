@@ -43,7 +43,7 @@ export function computeGrossModifiers(timeRecords) {
           (current.isRestDay && specialHolidays === 0 && regularHolidays === 0 ? multiplier : 0) *
             hours,
         late: prev.late + current.late * multiplier,
-        absences: prev.absences + (current.isAbsent ? 8 : 0),
+        absences: prev.absences + (current.isAbsent ? -8 : 0),
       }; //grossModifier object to be passed to next record
     },
     {
@@ -111,34 +111,34 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
     const restDay = hourlyRate * modifiers.restDay;
     const lateUndertime = hourlyRate * (modifiers.late + modifiers.undertime);
     const absences = hourlyRate * modifiers.absences;
-    const grossPay = basicPay + overtime + holiday + restDay - lateUndertime - absences;
+    const grossPay = basicPay + overtime + holiday + restDay + lateUndertime + absences;
 
     const { prevSSSConts, prevPHICConts, prevHDMFConts, accumGrossPay, accumBasicPay, prevTAX } =
       getPreviousContributions(previousPayrolls, employeeID);
 
     const sssCont =
       payrollOptions.sssCont && employee.eligibilities.SSS
-        ? new SSS().compute(accumGrossPay + grossPay, prevSSSConts).EE
+        ? -new SSS().compute(accumGrossPay + grossPay, -prevSSSConts).EE
         : 0;
     const phicCont =
       payrollOptions.phicCont && employee.eligibilities.PHIC
-        ? new PHIC().compute(accumBasicPay + basicPay, prevPHICConts)
+        ? -new PHIC().compute(accumBasicPay + basicPay, -prevPHICConts)
         : 0;
     const hdmfCont =
       payrollOptions.hdmfCont && employee.eligibilities.HDMF
-        ? new HDMF().compute(accumGrossPay + grossPay, prevHDMFConts).EE
+        ? -new HDMF().compute(accumGrossPay + grossPay, -prevHDMFConts).EE
         : 0;
 
     const netTaxableIncome =
       accumGrossPay +
-      grossPay -
-      sssCont -
-      phicCont -
+      grossPay +
+      sssCont +
+      phicCont +
       hdmfCont -
       prevSSSConts -
       prevPHICConts -
       prevHDMFConts;
-    const tax = netTaxableIncome > 0 ? TAX(netTaxableIncome, prevTAX) : 0;
+    const tax = netTaxableIncome > 0 ? -TAX(netTaxableIncome, prevTAX) : 0;
 
     const others = payrollOptions.others;
 
@@ -202,4 +202,3 @@ export function generatePayrollData(employees, dateList, filteredTimeRecords, ho
 
   return payrollData;
 }
-

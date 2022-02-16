@@ -129,6 +129,12 @@ const slice = createSlice({
       const employee = state.find((employee) => employee.id === id);
       Object.assign(employee, rest);
     },
+    deleteEmployee: (state, action) => {
+      console.log(action.payload);
+      const { id } = action.payload;
+      const employeeIndex = state.findIndex((employee) => employee.id === id);
+      state.splice(employeeIndex, 1);
+    },
   },
 });
 
@@ -136,5 +142,5 @@ export function getFullName(employee) {
   return `${employee.firstName} ${employee.middleName} ${employee.lastName} ${employee.suffix}`;
 }
 
-export const { addEmployee, updateEmployee } = slice.actions;
+export const { addEmployee, updateEmployee, deleteEmployee } = slice.actions;
 export default slice.reducer;

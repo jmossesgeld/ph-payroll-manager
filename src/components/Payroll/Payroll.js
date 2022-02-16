@@ -80,7 +80,7 @@ export default function Payroll() {
 
   rows.forEach((row) => {
     const netOtherItems = otherItemsList.reduce((prev, curr) => prev + (row[curr.name] ?? 0), 0);
-    row.netPay = row.grossPay - row.sssCont - row.phicCont - row.hdmfCont - row.tax - netOtherItems;
+    row.netPay = row.grossPay + row.sssCont + row.phicCont + row.hdmfCont + row.tax + netOtherItems;
   });
 
   const columns = [
