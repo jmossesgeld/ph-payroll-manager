@@ -59,6 +59,46 @@ export function computeGrossModifiers(timeRecords) {
   );
 }
 
+export function generatePayrollData(employees, dateList, filteredTimeRecords, holidays, dispatch) {
+  const payrollData = employees.map((employee) => {
+    const timeRecords = dateList.map((date) => {
+      const record = filteredTimeRecords.find(
+        (record) => record.date === date && record.employeeId === employee.id
+      );
+      const listOfHolidays = holidays.filter(
+        (holiday) => new Date(holiday.date).getTime() === date
+      );
+      const isRestDay = Boolean(
+        employee.restDays.filter((day) => day === new Date(date).getDay()).length
+      );
+      if (!record) {
+        const newRecord = {
+          employeeId: employee.id,
+          date,
+          timeIn: isRestDay || listOfHolidays.length ? "" : employee.workingHours.from,
+          timeOut: isRestDay || listOfHolidays.length ? "" : employee.workingHours.to,
+          overtime: 0.0,
+          late: 0.0,
+          isRestDay,
+          holidays: listOfHolidays,
+        };
+        dispatch(createRecord(newRecord));
+        return newRecord;
+      } else {
+        return { ...record, isRestDay, holidays: listOfHolidays };
+      }
+    });
+
+    return {
+      employee,
+      dateList,
+      grossModifiers: computeGrossModifiers(timeRecords),
+    };
+  });
+
+  return payrollData;
+}
+
 function getPreviousContributions(previousPayrolls, employeeID) {
   return previousPayrolls.reduce(
     (prev, curr) => {
@@ -161,44 +201,4 @@ export function createRows(payrollData, previousPayrolls, payrollOptions) {
       ...others,
     };
   });
-}
-
-export function generatePayrollData(employees, dateList, filteredTimeRecords, holidays, dispatch) {
-  const payrollData = employees.map((employee) => {
-    const timeRecords = dateList.map((date) => {
-      const record = filteredTimeRecords.find(
-        (record) => record.date === date && record.employeeId === employee.id
-      );
-      const listOfHolidays = holidays.filter(
-        (holiday) => new Date(holiday.date).getTime() === date
-      );
-      const isRestDay = Boolean(
-        employee.restDays.filter((day) => day === new Date(date).getDay()).length
-      );
-      if (!record) {
-        const newRecord = {
-          employeeId: employee.id,
-          date,
-          timeIn: isRestDay || listOfHolidays.length ? "" : employee.workingHours.from,
-          timeOut: isRestDay || listOfHolidays.length ? "" : employee.workingHours.to,
-          overtime: 0.0,
-          late: 0.0,
-          isRestDay,
-          holidays: listOfHolidays,
-        };
-        dispatch(createRecord(newRecord));
-        return newRecord;
-      } else {
-        return { ...record, isRestDay, holidays: listOfHolidays };
-      }
-    });
-
-    return {
-      employee,
-      dateList,
-      grossModifiers: computeGrossModifiers(timeRecords),
-    };
-  });
-
-  return payrollData;
 }
