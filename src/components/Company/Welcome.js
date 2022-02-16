@@ -23,9 +23,12 @@ export default function Welcome() {
       </Grid>
       <Grid item xs={12} mt={3}>
         <Button variant="contained" onClick={() => navigate("/employees")}>
-          Get Started
+          Manage Employees
         </Button>
-        <Button sx={{ ml: 2 }}>How to use</Button>
+        <Button sx={{ ml: 2 }} variant="contained" color="success" onClick={() => navigate("/new")}>
+          Create New Payroll
+        </Button>
+        <Button sx={{ ml: 2 }}  onClick={() => navigate("/tutorial")}>How to use</Button>
       </Grid>
     </Grid>
   );

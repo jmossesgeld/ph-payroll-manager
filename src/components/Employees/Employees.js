@@ -1,12 +1,11 @@
 import { Container, Paper, Typography, IconButton, Button, Grid } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { getFullName } from "../../store/employees";
-import EmployeeDetails from "./EmployeeForm";
-import { useNavigate } from "react-router-dom";
-import { Box } from "@mui/system";
+import { useSelector, useDispatch } from "react-redux";
+import { getFullName, deleteEmployee } from "../../store/employees";
+import EmployeeForm from "./EmployeeForm";
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -18,12 +17,12 @@ const styles = {
   flexDirection: "column",
   padding: 5,
   width: "100%",
-  maxWidth: "800px",
+  maxWidth: "840px",
   margin: "3rem 0",
 };
 
 const Employees = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formState, setFormState] = useState({ open: false, employee: null });
   const controlForm = {
     toggle: () =>
@@ -62,12 +61,28 @@ const Employees = () => {
     {
       field: "edit",
       headerName: "Edit",
-      width: 100,
+      width: 70,
       align: "right",
       headerAlign: "right",
       renderCell: (cell) => (
         <IconButton onClick={controlForm.editEmployee.bind(null, cell.row)}>
           <EditIcon />
+        </IconButton>
+      ),
+    },
+    {
+      field: "delete",
+      headerName: "Delete",
+      width: 70,
+      align: "right",
+      headerAlign: "right",
+      renderCell: (cell) => (
+        <IconButton
+          onClick={() => {
+            dispatch(deleteEmployee(cell.row));
+          }}
+        >
+          <DeleteIcon />
         </IconButton>
       ),
     },
@@ -81,26 +96,13 @@ const Employees = () => {
             <Typography variant="h5">Employees</Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={6} sx={{ textAlign: "right" }}>
-            <Button onClick={controlForm.newEmployee} variant="contained" >
+            <Button onClick={controlForm.newEmployee} variant="contained">
               Add New Employee
             </Button>
           </Grid>
         </Grid>
-        {formState.open && <EmployeeDetails formState={formState} setFormState={controlForm} />}
+        {formState.open && <EmployeeForm formState={formState} setFormState={controlForm} />}
         <DataGrid rows={rows} columns={columns} autoHeight checkboxSelection />
-        <Box sx={{ textAlign: "right", mt: 2 }}>
-          <Button variant="contained" onClick={() => navigate("/timekeeping")}>
-            Timekeeping
-          </Button>
-          <Button
-            sx={{ ml: 2 }}
-            variant="contained"
-            color="success"
-            onClick={() => navigate("/new")}
-          >
-            Create New Payroll
-          </Button>
-        </Box>
       </Paper>
     </Container>
   );

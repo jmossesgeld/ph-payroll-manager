@@ -94,7 +94,7 @@ export default function NavDrawer() {
       </List>
       <Divider />
       <List>
-        <ListItem button>
+        <ListItem button  onClick={() => navigate("/tutorial")}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>

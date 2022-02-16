@@ -10,6 +10,7 @@ import { Box, CssBaseline } from "@mui/material";
 import NavDrawer from "./components/Controls/NavDrawer";
 import { useState } from "react";
 import Welcome from "./components/Company/Welcome";
+import Tutorial from "./components/Company/Tutorial";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -30,9 +31,6 @@ function App() {
               main: "#458",
             },
           }),
-      // primary: {
-      //   main: "#125",
-      // },
     },
   });
 
@@ -44,6 +42,7 @@ function App() {
         <NavDrawer />
         <Routes>
           <Route path="/" element={<Welcome />} />
+          <Route path="tutorial" element={<Tutorial />} />
           <Route path="employees" element={<Employees />} />
           <Route path="timekeeping" element={<TimeCard />} />
           <Route path="payroll" element={<PayrollList />} />

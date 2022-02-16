@@ -64,7 +64,7 @@ export default function TimeKeeping() {
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between" }}>
             <Holidays dateList={dateList} />
-            <Button variant="contained" onClick={generateTimeRecords}>
+            <Button variant="contained" color="success" onClick={generateTimeRecords}>
               Generate Time Card
             </Button>
           </Grid>
