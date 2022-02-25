@@ -51,7 +51,7 @@ const StyledDrawer = styled(Drawer, { shouldForwardProp: (prop) => prop !== "ope
 );
 
 export default function NavDrawer() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const navigate = useNavigate();
   const toggleDrawer = () => {
     setOpen(!open);
