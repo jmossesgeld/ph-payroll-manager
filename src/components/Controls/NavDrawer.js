@@ -58,7 +58,7 @@ export default function NavDrawer() {
   };
 
   return (
-    <StyledDrawer variant="permanent" open={open}>
+    <StyledDrawer variant="permanent" open={open} sx={{ display: { xs: "none", md: "block" } }}>
       <Toolbar
         sx={{
           display: "flex",
@@ -94,7 +94,7 @@ export default function NavDrawer() {
       </List>
       <Divider />
       <List>
-        <ListItem button  onClick={() => navigate("/tutorial")}>
+        <ListItem button onClick={() => navigate("/tutorial")}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>

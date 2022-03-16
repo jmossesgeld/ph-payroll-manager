@@ -5,7 +5,16 @@ const styles = {
   m: "10vh auto",
   textAlign: "left",
   maxWidth: "600px",
+  p: "0 10px",
 };
+
+function FrontButton({ children, onClick, ...props }) {
+  return (
+    <Button sx={{ mt: 1 }} variant="contained" onClick={onClick} {...props}>
+      {children}
+    </Button>
+  );
+}
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -21,14 +30,14 @@ export default function Welcome() {
           Payroll System
         </Typography>
       </Grid>
-      <Grid item xs={12} mt={3}>
-        <Button variant="contained" onClick={() => navigate("/employees")}>
-          Manage Employees
-        </Button>
-        <Button sx={{ ml: 2 }} variant="contained" color="success" onClick={() => navigate("/new")}>
+      <Grid item xs={12} mt={3} sx={{ display: "flex", flexDirection: "column" }}>
+        <FrontButton onClick={() => navigate("/employees")}>Manage Employees</FrontButton>
+        <FrontButton color="success" onClick={() => navigate("/new")}>
           Create New Payroll
-        </Button>
-        <Button sx={{ ml: 2 }}  onClick={() => navigate("/tutorial")}>How to use</Button>
+        </FrontButton>
+        <FrontButton variant="text" onClick={() => navigate("/tutorial")}>
+          How to use
+        </FrontButton>
       </Grid>
     </Grid>
   );
