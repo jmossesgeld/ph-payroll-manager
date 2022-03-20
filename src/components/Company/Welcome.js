@@ -10,7 +10,7 @@ const styles = {
 
 function FrontButton({ children, onClick, ...props }) {
   return (
-    <Button sx={{ mt: 1 }} variant="contained" onClick={onClick} {...props}>
+    <Button sx={{ m: 1 }} variant="contained" onClick={onClick} {...props}>
       {children}
     </Button>
   );
@@ -30,7 +30,12 @@ export default function Welcome() {
           Payroll System
         </Typography>
       </Grid>
-      <Grid item xs={12} mt={3} sx={{ display: "flex", flexDirection: "column" }}>
+      <Grid
+        item
+        xs={12}
+        mt={3}
+        sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
+      >
         <FrontButton onClick={() => navigate("/employees")}>Manage Employees</FrontButton>
         <FrontButton color="success" onClick={() => navigate("/new")}>
           Create New Payroll

@@ -89,20 +89,22 @@ const Employees = () => {
   ];
 
   return (
-    <Container sx={{ display: "flex", justifyContent: "center" }}>
+    <Container
+      sx={{ display: "flex", justifyContent: "center", flexDirection: { xs: "column", md: "row" } }}
+    >
       <Paper elevation={5} sx={styles}>
         <Grid container sx={{ mb: 2 }}>
           <Grid item xs={12} sm={12} md={6}>
-            <Typography variant="h5">Employees</Typography>
+            <Typography variant="h5" mb={2}>Employees</Typography>
           </Grid>
-          <Grid item xs={12} sm={12} md={6} sx={{ textAlign: "right" }}>
+          <Grid item xs={12} sm={12} md={6} sx={{ textAlign: { xs: "left", md: "right" } }}>
             <Button onClick={controlForm.newEmployee} variant="contained">
               Add New Employee
             </Button>
           </Grid>
         </Grid>
         {formState.open && <EmployeeForm formState={formState} setFormState={controlForm} />}
-        <DataGrid rows={rows} columns={columns} autoHeight checkboxSelection />
+        <DataGrid rows={rows} columns={columns} autoHeight />
       </Paper>
     </Container>
   );
